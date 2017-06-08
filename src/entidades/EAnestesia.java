@@ -1,14 +1,13 @@
 package entidades;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.Date;
 
 public class EAnestesia implements Serializable{
 	
 	//Variables
-	private static final long serialVersionUID = 1L;
-	private int idAnestesia, nroAfiliado, nocturno, feriado, fds, nroTalon, nroVias;
+	private static final long serialVersionUID = 2L;
+	private int idAnestesia, nroAfiliado, nocturno, feriado, fds, nroTalon, nroVias, hora;
 	private int edad, idMedico, idAnestesista, idSanatorio, codProcedimiento, idOS, idTpoAnestesia;
 	private Date fecPrestacion, fecAra, FecRendicion, fecCarga;
 	private String afiliado, user;
@@ -20,7 +19,7 @@ public class EAnestesia implements Serializable{
 	
 	public EAnestesia(int idAnestesia, Date fecPrestacion, Date fecARA, Date fecRendicion,
 			Date fecCarga, String afiliado, int nroAfiliado, int nocturno, int feriado,
-			int fds, int nroTalon, int nroVias, int edad, String user, int idMedico,
+			int fds, int nroTalon, int nroVias, int edad, int hora, String user, int idMedico,
 			int idAnestesista, int idSanatorio, int codProcedimiento, int idOS,
 			int idTpoAnestesia){
 		this.idAnestesia = idAnestesia;
@@ -36,6 +35,7 @@ public class EAnestesia implements Serializable{
 		this.nroTalon = nroTalon;
 		this.nroVias = nroVias;
 		this.edad = edad;
+		this.hora = hora;
 		this.user = user;
 		this.idMedico = idMedico;
 		this.idAnestesista = idAnestesista;
@@ -203,6 +203,14 @@ public class EAnestesia implements Serializable{
 
 	public void setUser(String user) {
 		this.user = user;
+	}
+
+	public int getHora() {
+		return hora;
+	}
+
+	public void setHora(int hora) {
+		this.hora = hora;
 	}
 	
 	
