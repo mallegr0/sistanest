@@ -2,7 +2,7 @@ package entidades;
 import java.io.Serializable;
 
 
-public class EObraSocial implements Serializable{
+public class ObraSocial implements Serializable{
 	
 	//Variables
 	
@@ -12,9 +12,9 @@ public class EObraSocial implements Serializable{
 	
 	//Constructores
 	
-	public EObraSocial(){}
+	public ObraSocial(){}
 	
-	public EObraSocial(int idOS, String descOS, int diasMax){
+	public ObraSocial(int idOS, String descOS, int diasMax){
 		this.idOS = idOS;
 		this.descOS = descOS;
 		this.diasMax = diasMax;

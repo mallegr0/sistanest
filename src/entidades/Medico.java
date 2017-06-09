@@ -2,7 +2,7 @@ package entidades;
 import java.io.Serializable;
 
 
-public class EMedico implements Serializable{
+public class Medico implements Serializable{
 	
 	//Variables
 	
@@ -12,9 +12,9 @@ public class EMedico implements Serializable{
 	
 	//Constructores 
 	
-	public EMedico(){}
+	public Medico(){}
 	
-	public EMedico(int idMedico, String nombreMedico, String apellidoMedico, 
+	public Medico(int idMedico, String nombreMedico, String apellidoMedico, 
 			int idSanatorio){
 		this.idMedico = idMedico;
 		this.nombreMedico = nombreMedico;

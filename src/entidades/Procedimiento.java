@@ -3,18 +3,20 @@ import java.io.Serializable;
 
 
 
-public class EProcedimiento implements Serializable {
+public class Procedimiento implements Serializable {
 	
 	//Declaro variables
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
-	private int codProcedimiento, complejidad;
+	private int idProcedimiento, codProcedimiento, complejidad;
 	private String descProcedimiento;
 	
 	//Creo el constructor
-	public EProcedimiento(){}
+	public Procedimiento(){}
 	
-	public EProcedimiento(int codProcedimiento, String descProcedimiento, int complejidad){
+	public Procedimiento(int idProcedimiento, int codProcedimiento, 
+			String descProcedimiento, int complejidad){
+		this.idProcedimiento = idProcedimiento;
 		this.codProcedimiento = codProcedimiento;
 		this.descProcedimiento = descProcedimiento;
 		this.complejidad = complejidad;
@@ -43,8 +45,13 @@ public class EProcedimiento implements Serializable {
 	public void setDescProcedimiento(String descProcedimiento) {
 		this.descProcedimiento = descProcedimiento;
 	}
-	
-	
-	
 
+	public int getIdProcedimiento() {
+		return idProcedimiento;
+	}
+
+	public void setIdProcedimiento(int idProcedimiento) {
+		this.idProcedimiento = idProcedimiento;
+	}
+	
 }

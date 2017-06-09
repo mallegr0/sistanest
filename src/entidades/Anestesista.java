@@ -2,7 +2,7 @@ package entidades;
 import java.io.Serializable;
 
 
-public class EAnestesista implements Serializable{
+public class Anestesista implements Serializable{
 	
 	//Variables
 	private static final long serialVersionUID = 1L;
@@ -11,9 +11,9 @@ public class EAnestesista implements Serializable{
 	
 	//Constructores
 	
-	public EAnestesista(){}
+	public Anestesista(){}
 	
-	public EAnestesista(int idAnestesista, String nombreAnestesista, String apellidoAnestesista,
+	public Anestesista(int idAnestesista, String nombreAnestesista, String apellidoAnestesista,
 			int matricula, int grupo){
 		this.idAnestesista = idAnestesista;
 		this.nombreAnestesista = nombreAnestesista;

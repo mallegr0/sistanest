@@ -1,7 +1,7 @@
 package entidades;
 import java.io.Serializable;
 
-public class ESaldo implements Serializable{
+public class Saldo implements Serializable{
 	
 	//Variables
 	private static final long serialVersionUID = 1L;
@@ -11,9 +11,9 @@ public class ESaldo implements Serializable{
 	
 	//Constructores
 	
-	public ESaldo(){}
+	public Saldo(){}
 	
-	public ESaldo(int idAnestesia, float monto, String estado){
+	public Saldo(int idAnestesia, float monto, String estado){
 		this.idAnestesia = idAnestesia;
 		this.monto = monto;
 		this.estado = estado;

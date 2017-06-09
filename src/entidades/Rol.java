@@ -1,7 +1,7 @@
 package entidades;
 import java.io.Serializable;
 
-public class ERol implements Serializable {
+public class Rol implements Serializable {
 	
 	//Declaro las variables de la clase
 	
@@ -10,9 +10,9 @@ public class ERol implements Serializable {
 	private String descRol;
 	
 	//Declaro los constructores
-	public ERol() {}
+	public Rol() {}
 	
-	public ERol(int idRol, String descRol){
+	public Rol(int idRol, String descRol){
 		this.idRol = idRol;
 		this.descRol = descRol;
 	}

@@ -3,7 +3,7 @@ package entidades;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EPrecio implements Serializable{
+public class Precio implements Serializable{
 	
 	//Variables
 	
@@ -14,9 +14,9 @@ public class EPrecio implements Serializable{
 	
 	//Constructores
 	
-	public EPrecio(){}
+	public Precio(){}
 	
-	public EPrecio(Date fecha, int idSanatorio, int idTpoAnestesia, float valor){
+	public Precio(Date fecha, int idSanatorio, int idTpoAnestesia, float valor){
 		this.fecha = fecha;
 		this.idSanatorio = idSanatorio;
 		this.idTpoAnestesia = idTpoAnestesia;

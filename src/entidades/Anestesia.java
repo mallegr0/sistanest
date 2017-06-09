@@ -3,7 +3,7 @@ package entidades;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EAnestesia implements Serializable{
+public class Anestesia implements Serializable{
 	
 	//Variables
 	private static final long serialVersionUID = 2L;
@@ -15,9 +15,9 @@ public class EAnestesia implements Serializable{
 	
 	
 	//Constructores
-	public EAnestesia(){}
+	public Anestesia(){}
 	
-	public EAnestesia(int idAnestesia, Date fecPrestacion, Date fecARA, Date fecRendicion,
+	public Anestesia(int idAnestesia, Date fecPrestacion, Date fecARA, Date fecRendicion,
 			Date fecCarga, String afiliado, int nroAfiliado, int nocturno, int feriado,
 			int fds, int nroTalon, int nroVias, int edad, int hora, String user, int idMedico,
 			int idAnestesista, int idSanatorio, int codProcedimiento, int idOS,

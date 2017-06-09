@@ -1,7 +1,7 @@
 package entidades;
 import java.io.Serializable;
 
-public class ETpoAnestesia implements Serializable {
+public class TpoAnestesia implements Serializable {
 	
 	//Declaro las variables de la clase
 	
@@ -11,9 +11,9 @@ public class ETpoAnestesia implements Serializable {
 	private String descTpoAnestesia;
 	
 	//Declaro los constructores
-	public ETpoAnestesia(){}
+	public TpoAnestesia(){}
 	
-	public ETpoAnestesia(int idTpoAnestesia, String descTpoAnestesia){
+	public TpoAnestesia(int idTpoAnestesia, String descTpoAnestesia){
 		this.idTpoAnestesia = idTpoAnestesia;
 		this.descTpoAnestesia = descTpoAnestesia;
 	}

@@ -1,7 +1,7 @@
 package entidades;
 import java.io.Serializable;
 
-public class EUsuario implements Serializable {
+public class Usuario implements Serializable {
 	
 	//Declaro las variables de la clase
 	private static final long serialVersionUID = 1L;
@@ -9,9 +9,9 @@ public class EUsuario implements Serializable {
 	private int idRol;
 	
 	//Declaro los constructores
-	public EUsuario(){}
+	public Usuario(){}
 	
-	public EUsuario(String user, String password, String nombreUsuario, String apellidoUsuario,
+	public Usuario(String user, String password, String nombreUsuario, String apellidoUsuario,
 			String mailUsuario, int idRol){
 		this.user = user;
 		this.password = password;
