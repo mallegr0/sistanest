@@ -4,44 +4,45 @@ package data;
 
 import java.sql.*; // Adentro esta el preparedStatement y el SQLException que voy a usar mas adelante
 import java.util.ArrayList;
-import entidades.Procedimiento; // importo la clase para usarlo como objeto
+
+import entidades.ObraSocial; // importo la clase para usarlo como objeto
 import entidades.Sanatorio;
 import utilidades.ManejoExcepciones; // importo la clase para manejar excepcion
 
 
 
-public class DataProcedimientos {
+public class DataObrasSociales {
 	
 	//Constructor
 	
-	public DataProcedimientos(){}
+	public DataObrasSociales() {}
+	
+	// ALTA -- Hago el metodo con el insert en la BBDD
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
-			if(stmt != null) stmt.close();
-			if(rs != null) rs.close();
+			if(stmt != null)stmt.close();
+			if(rs != null)rs.close();
 			Conector.getInstacia().cerrarConn();
 		}
 		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
 	}
-	// ALTA -- Hago el metodo con el insert en la BBDD
 	
-	public void altaProcedimiento(Procedimiento p){
+	public void altaObraSocial(ObraSocial os){
 		// Declaro las variables a usar
 		
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		String sqlI = "INSERT INTO procedimientos (idProcedimiento, codProcedimiento, descProcedimiento, complejidad) VALUES(?,?,?,?)";
+		String sqlI = "INSERT INTO obras_sociales (idOS, descOS, diasMax) VALUES(?,?,?)";
 		
 		// Creo la sentencia insert 
 		try {
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			//Con este paso cambio los signos de pregunta por los datos del objeto en si
-			stmt.setInt(1, p.getIdProcedimiento());
-			stmt.setInt(2, p.getCodProcedimiento());
-			stmt.setString(3, p.getDescProcedimiento());
-			stmt.setInt(4, p.getComplejidad());
+			stmt.setInt(1, os.getIdOS());
+			stmt.setString(2, os.getDescOS());
+			stmt.setInt(4, os.getDiasMax());
 			
 			//Ejecutamos la consulta
 			
@@ -52,29 +53,29 @@ public class DataProcedimientos {
 			rs=stmt.getGeneratedKeys();
 			if(rs != null && rs.next())
 			{
-				p.setIdProcedimiento(rs.getInt(1));
+				os.setIdOS(rs.getInt(1));
 			}
 		}
-		catch (SQLException | ManejoExcepciones e){ e.printStackTrace();} 
+		catch (SQLException e){ e.printStackTrace();} 
+		catch (ManejoExcepciones e) { e.printStackTrace();} 
 		finally{cerrarConn(stmt, rs);}
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
 	
-	public void modificaProcedimiento(Procedimiento p) {
+	public void modificaObraSocial(ObraSocial os) {
 		
 		//Declaro las variables
 		
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE procedimientos SET codProcedimiento=?, descProcedimiento = ?, complejidad = ? WHERE codProcedimiento = ?";
+		String sqlU = "UPDATE obras_sociales SET descOS = ?, diasMax = ? WHERE idOS = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
 			
-			stmt.setInt(1, p.getCodProcedimiento());
-			stmt.setString(2, p.getDescProcedimiento());
-			stmt.setInt(3, p.getComplejidad());
-			stmt.setInt(4, p.getIdProcedimiento());
+			stmt.setString(1, os.getDescOS());
+			stmt.setInt(2, os.getDiasMax());
+			stmt.setInt(3, os.getIdOS());
 			
 			stmt.execute();
 		}
@@ -85,14 +86,14 @@ public class DataProcedimientos {
 	
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
 	
-	public void eliminaProcedimiento(Procedimiento p) {
+	public void eliminaObraSocial(ObraSocial os) {
 		
 		PreparedStatement stmt = null;
-		String sqlD = "DELETE FROM procedimientos where idProcedimiento = ?";
+		String sqlD = "DELETE FROM obras_sociales where idOS = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
-			stmt.setInt(1, p.getIdProcedimiento());
+			stmt.setInt(1, os.getIdOS());
 			
 			stmt.execute();
 		}
@@ -102,39 +103,38 @@ public class DataProcedimientos {
 	
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD
 	
-	public Procedimiento consultaProcedimiento(Procedimiento p){
+	public ObraSocial consultaObraSocial(ObraSocial os){
 		
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		Procedimiento procedimiento = null;
-		String sqlC = "SELECT * FROM procedimientos WHERE idProcedimiento = ?";
+		ObraSocial OS = null;
+		String sqlC = "SELECT * FROM obras_sociales WHERE idOS = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, p.getIdProcedimiento());
+			stmt.setInt(1, os.getIdOS());
 			
 			rs = stmt.executeQuery();
 			
 			
 			if(rs!=null && rs.next()){
-				procedimiento = new Procedimiento();
-				procedimiento.setIdProcedimiento(rs.getInt(1));
-				procedimiento.setCodProcedimiento(rs.getInt(2));
-				procedimiento.setDescProcedimiento(rs.getString(3));
-				procedimiento.setComplejidad(rs.getInt(4));
+				OS = new ObraSocial();
+				OS.setIdOS(rs.getInt(1));
+				OS.setDescOS(rs.getString(2));
+				OS.setDiasMax(rs.getInt(3));
 			}
 		}
 		catch(SQLException | ManejoExcepciones e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
-		return procedimiento;
+		return OS;
 	}
 	
-	public ArrayList<Procedimiento> listarProcedimientos(){
-		ArrayList<Procedimiento> listado = new ArrayList<>();
-		Procedimiento proceso = null;
+	public ArrayList<ObraSocial> listarObrasSociales(){
+		ArrayList<ObraSocial> listado = new ArrayList<>();
+		ObraSocial soc = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
-		String sql = "SELECT * FROM sanatorios";
+		String sql = "SELECT * FROM obras_sociales";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
@@ -142,13 +142,11 @@ public class DataProcedimientos {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
-				proceso = new Procedimiento();
+				soc = new ObraSocial();
 				while(rs.next()){
-					proceso.setIdProcedimiento(rs.getInt(1));
-					proceso.setCodProcedimiento(rs.getInt(2));
-					proceso.setDescProcedimiento(rs.getString(3));
-					proceso.setComplejidad(rs.getInt(4));
-					listado.add(proceso);
+					soc.setIdOS(rs.getInt(1));
+					soc.setDescOS(rs.getString(2));
+					listado.add(soc);
 				}
 			}
 		}
@@ -158,6 +156,3 @@ public class DataProcedimientos {
 	}
 		
 }
-
-
-

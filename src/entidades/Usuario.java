@@ -6,18 +6,19 @@ public class Usuario implements Serializable {
 	//Declaro las variables de la clase
 	private static final long serialVersionUID = 1L;
 	private String user, password, nombreUsuario, apellidoUsuario, mailUsuario;
-	private int idRol;
+	private int grupo, idRol;
 	
 	//Declaro los constructores
 	public Usuario(){}
 	
 	public Usuario(String user, String password, String nombreUsuario, String apellidoUsuario,
-			String mailUsuario, int idRol){
+			String mailUsuario, int grupo, int idRol){
 		this.user = user;
 		this.password = password;
 		this.nombreUsuario = nombreUsuario;
 		this.apellidoUsuario = apellidoUsuario;
 		this.mailUsuario = mailUsuario;
+		this.grupo = grupo;
 		this.idRol = idRol;
 	}
 
@@ -59,6 +60,15 @@ public class Usuario implements Serializable {
 
 	public void setMailUsuario(String mailUsuario) {
 		this.mailUsuario = mailUsuario;
+	}
+	
+
+	public int getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(int grupo) {
+		this.grupo = grupo;
 	}
 
 	public int getIdRol() {
