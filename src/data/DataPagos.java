@@ -53,7 +53,8 @@ public class DataPagos {
 
 	public void modificarPago(Saldo s){
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE saldos SET (monto = ?, estado = ?) WHERE idAnestesista = ?, mes = ?";
+		String sqlU = "UPDATE saldos SET (monto = ?, estado = ?) WHERE idAnestesista = ?, "
+				+ "mes = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);

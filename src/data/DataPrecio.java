@@ -18,7 +18,8 @@ public class DataPrecio {
 	public void altaPrecio(Precio p){
 		
 		PreparedStatement stmt = null;
-		String sqlU = "INSERT INTO precios (fecha, idSanatorio, idTpoAnestesia, valor) VALUES (?,?,?,?)";
+		String sqlU = "INSERT INTO precios (fecha, idSanatorio, idTpoAnestesia, valor) "
+				+ "VALUES (?,?,?,?)";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
@@ -38,7 +39,8 @@ public class DataPrecio {
 	public void bajaPrecio(Precio p){
 		
 		PreparedStatement stmt = null;
-		String sqlD = "DELETE FROM precios WHERE fecha = ? AND idSanatorio = ? AND idTpoAnestesia = ?";
+		String sqlD = "DELETE FROM precios WHERE fecha = ? AND idSanatorio = ? "
+				+ "AND idTpoAnestesia = ?";
 		
 		try{
 			
@@ -58,7 +60,8 @@ public class DataPrecio {
 	public void modificaPrecio(Precio p){
 		
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE precios SET valor = ? WHERE fecha = ?, idSanatorio = ?, idTpoAnestesia = ?";
+		String sqlU = "UPDATE precios SET valor = ? WHERE fecha = ?, idSanatorio = ?, "
+				+ "idTpoAnestesia = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
@@ -80,7 +83,8 @@ public class DataPrecio {
 		Precio precio = null;
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		String sqlC = "SELECT * FROM precios WHERE fecha = ?, idSanatorio = ?, idTpoAnestesia = ?";
+		String sqlC = "SELECT * FROM precios WHERE fecha = ?, idSanatorio = ?, "
+				+ "idTpoAnestesia = ?";
 		
 		try{
 			

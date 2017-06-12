@@ -1,9 +1,7 @@
 package data;
 import java.sql.*;
 import java.util.ArrayList;
-
 import utilidades.ManejoExcepciones;
-import entidades.Medico;
 import entidades.Sanatorio;
 
 public class DataSanatorio {
@@ -107,8 +105,8 @@ public class DataSanatorio {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
-				sana = new Sanatorio();
 				while(rs.next()){
+					sana = new Sanatorio();
 					sana.setIdSanatorio(rs.getInt(1));
 					sana.setRazonSocial(rs.getString(2));
 					listado.add(sana);

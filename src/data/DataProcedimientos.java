@@ -5,7 +5,6 @@ package data;
 import java.sql.*; // Adentro esta el preparedStatement y el SQLException que voy a usar mas adelante
 import java.util.ArrayList;
 import entidades.Procedimiento; // importo la clase para usarlo como objeto
-import entidades.Sanatorio;
 import utilidades.ManejoExcepciones; // importo la clase para manejar excepcion
 
 
@@ -31,7 +30,8 @@ public class DataProcedimientos {
 		
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		String sqlI = "INSERT INTO procedimientos (idProcedimiento, codProcedimiento, descProcedimiento, complejidad) VALUES(?,?,?,?)";
+		String sqlI = "INSERT INTO procedimientos (idProcedimiento, codProcedimiento, "
+				+ "descProcedimiento, complejidad) VALUES(?,?,?,?)";
 		
 		// Creo la sentencia insert 
 		try {
@@ -66,7 +66,8 @@ public class DataProcedimientos {
 		//Declaro las variables
 		
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE procedimientos SET codProcedimiento=?, descProcedimiento = ?, complejidad = ? WHERE codProcedimiento = ?";
+		String sqlU = "UPDATE procedimientos SET codProcedimiento=?, descProcedimiento = ?, "
+				+ "complejidad = ? WHERE codProcedimiento = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
@@ -142,8 +143,8 @@ public class DataProcedimientos {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
-				proceso = new Procedimiento();
 				while(rs.next()){
+					proceso = new Procedimiento();
 					proceso.setIdProcedimiento(rs.getInt(1));
 					proceso.setCodProcedimiento(rs.getInt(2));
 					proceso.setDescProcedimiento(rs.getString(3));

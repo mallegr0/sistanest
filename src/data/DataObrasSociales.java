@@ -4,9 +4,7 @@ package data;
 
 import java.sql.*; // Adentro esta el preparedStatement y el SQLException que voy a usar mas adelante
 import java.util.ArrayList;
-
 import entidades.ObraSocial; // importo la clase para usarlo como objeto
-import entidades.Sanatorio;
 import utilidades.ManejoExcepciones; // importo la clase para manejar excepcion
 
 
@@ -142,8 +140,8 @@ public class DataObrasSociales {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
-				soc = new ObraSocial();
 				while(rs.next()){
+					soc = new ObraSocial();
 					soc.setIdOS(rs.getInt(1));
 					soc.setDescOS(rs.getString(2));
 					listado.add(soc);

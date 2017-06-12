@@ -21,7 +21,8 @@ public class DataMedico {
 	public void altaMedico(Medico m){
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sqlI = "INSERT INTO medicos (idMedico, nombreMedico, apellidoMedico, idSanatorio) VALUES(?, ?, ?, ?)";
+		String sqlI = "INSERT INTO medicos (idMedico, nombreMedico, "
+				+ "apellidoMedico, idSanatorio) VALUES(?, ?, ?, ?)";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -58,7 +59,8 @@ public class DataMedico {
 	
 	public void modificaMedico(Medico m){
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE medicos SET (nombreMedico = ?,apellidoMedico = ?, idSanatorio = ?) WHERE idMEdico = ?";
+		String sqlU = "UPDATE medicos SET (nombreMedico = ?,apellidoMedico = ?, "
+				+ "idSanatorio = ?) WHERE idMEdico = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
@@ -112,8 +114,8 @@ public class DataMedico {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
-				med = new Medico();
 				while(rs.next()){
+					med = new Medico();
 					med.setIdMedico(rs.getInt(1));
 					med.setNombreMedico(rs.getString(2));
 					med.setApellidoMedico(rs.getString(3));

@@ -1,6 +1,7 @@
 package data;
 
 import java.sql.*;
+import java.util.*;
 import utilidades.ManejoExcepciones;
 import entidades.TpoAnestesia;
 
@@ -21,7 +22,8 @@ public class DataTpoAnestesia {
 		
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		String sqlI = "INSER INTO tpoanestesias (idTpoAnestesia, descTpoAnestesia) VALUES(?, ?)";
+		String sqlI = "INSER INTO tpoanestesias (idTpoAnestesia, descTpoAnestesia) "
+				+ "VALUES(?, ?)";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -94,4 +96,31 @@ public class DataTpoAnestesia {
 		}
 		return tipoA;
 	}
+	
+	public ArrayList<TpoAnestesia>listarTpoAnestesia(){
+		TpoAnestesia tpo = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ArrayList<TpoAnestesia> listado = new ArrayList<>();
+		String sql = "SELECT * FROM tpoAnestesias ORDER BY descTpoAnestesia";
+		
+		try{
+			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			
+			rs = stmt.executeQuery();
+			
+			if(rs != null && rs.next()){
+				while(rs.next()){
+					tpo = new TpoAnestesia();
+					tpo.setIdTpoAnestesia(rs.getInt(1));
+					tpo.setDescTpoAnestesia(rs.getString(2));
+					listado.add(tpo);
+				}
+			}
+		}
+		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		finally{cerrarConn(stmt, rs);}
+		return listado;
+	}
+	
 }

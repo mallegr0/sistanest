@@ -3,7 +3,7 @@ import java.sql.*;
 import java.util.*;
 import utilidades.ManejoExcepciones;
 import entidades.Anestesista;
-import entidades.Sanatorio;
+
 
 public class DataAnestesista {
 	
@@ -21,7 +21,8 @@ public class DataAnestesista {
 		
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sqlI = "INSERT INTO (idAnestesista, nombreAnestesista, apellidoAnestesista, matricula, grupo) VALUES (?, ?, ?, ?, ?)";
+		String sqlI = "INSERT INTO (idAnestesista, nombreAnestesista, apellidoAnestesista, "
+				+ "matricula, grupo) VALUES (?, ?, ?, ?, ?)";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -60,7 +61,8 @@ public class DataAnestesista {
 
 	public void modificaAnestesista(Anestesista a){
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE anestesistas SET (nombreAnestesista = ?, apellidoAnestesista = ?, matricula = ?, grupo = ?) WHERE idAnestesista = ?";
+		String sqlU = "UPDATE anestesistas SET (nombreAnestesista = ?, apellidoAnestesista = ?,"
+				+ " matricula = ?, grupo = ?) WHERE idAnestesista = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
@@ -103,5 +105,34 @@ public class DataAnestesista {
 		return anes;
 	}
 
-	
+	public ArrayList<Anestesista> listarAnestesista(){
+		ArrayList<Anestesista> listado = new ArrayList<>();
+		
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM anestesistas order by apellidoAnestesista, "
+				+ "nombreAnestesista";
+		Anestesista anes = null;
+		
+		try{
+			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			
+			rs = stmt.executeQuery();
+			
+			if(rs != null && rs.next()){
+				while(rs.next()){
+					anes = new Anestesista();
+					anes.setIdAnestesista(rs.getInt(1));
+					anes.setNombreAnestesista(rs.getString(2));
+					anes.setApellidoAnestesista(rs.getString(3));
+					anes.setMatricula(rs.getInt(4));
+					anes.setGrupo(rs.getInt(5));
+					listado.add(anes);
+				}
+			}
+		}
+		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		finally{cerrarConn(stmt, rs);}
+		return listado;
+	}
 }

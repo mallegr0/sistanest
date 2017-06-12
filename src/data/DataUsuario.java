@@ -1,6 +1,8 @@
 package data;
 
 import java.sql.*;
+import java.util.ArrayList;
+
 import utilidades.ManejoExcepciones;
 import entidades.Usuario;
 
@@ -19,7 +21,8 @@ public class DataUsuario {
 	public void altaUsuario(Usuario u){
 		
 		PreparedStatement stmt = null;
-		String sqlI = "INSERT INTO usuarios (user, password, nombreUsuario, apellidoUsuario, mailUsuario, grupo, idRol) VALUES(???????)";
+		String sqlI = "INSERT INTO usuarios (user, password, nombreUsuario, apellidoUsuario,"
+				+ " mailUsuario, grupo, idRol) VALUES(???????)";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI);
@@ -58,7 +61,7 @@ public class DataUsuario {
 		Usuario user = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sqlC = "SELECT * FROM user = ?";
+		String sqlC = "SELECT * FROM usuarios user = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC);
@@ -82,4 +85,67 @@ public class DataUsuario {
 		finally{cerrarConn(stmt, rs);}
 		return user;
 	}
+	
+	public ArrayList<Usuario>listarUsuario(){
+		Usuario user = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ArrayList<Usuario>listado = new ArrayList<>();
+		String sqla = "SELECT * FROM usuarios ORDER BY user";
+		
+		try{
+			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqla);
+			
+			rs = stmt.executeQuery();
+			
+			if(rs != null && rs.next()){
+				while(rs.next()){
+					user = new Usuario();
+					user.setUser(rs.getString(1));
+					user.setPassword(rs.getString(2));
+					user.setNombreUsuario(rs.getString(3));
+					user.setApellidoUsuario(rs.getString(4));
+					user.setMailUsuario(rs.getString(5));
+					user.setGrupo(rs.getInt(6));
+					user.setIdRol(rs.getInt(7));
+					listado.add(user);
+				}
+			}
+		}
+		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		finally{cerrarConn(stmt, rs);}
+		return listado;
+	}
+	
+	public ArrayList<Usuario>listarPendientes(){
+		Usuario user = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ArrayList<Usuario>listado = new ArrayList<>();
+		String sqla = "SELECT * FROM usuarios WHERE grupo = 'NULL' ORDER BY user";
+		
+		try{
+			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqla);
+			
+			rs = stmt.executeQuery();
+			
+			if(rs != null && rs.next()){
+				while(rs.next()){
+					user = new Usuario();
+					user.setUser(rs.getString(1));
+					user.setPassword(rs.getString(2));
+					user.setNombreUsuario(rs.getString(3));
+					user.setApellidoUsuario(rs.getString(4));
+					user.setMailUsuario(rs.getString(5));
+					user.setGrupo(rs.getInt(6));
+					user.setIdRol(rs.getInt(7));
+					listado.add(user);
+				}
+			}
+		}
+		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		finally{cerrarConn(stmt, rs);}
+		return listado;
+	}
+	
 }

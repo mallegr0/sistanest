@@ -3,12 +3,12 @@ package data;
 import java.sql.*;
 import java.util.*;
 import utilidades.ManejoExcepciones;
-import entidades.Rol;
+import entidades.AnestesiaProcedimiento;;
 
-public class DataRol {
+public class DataAnestesiaProcedimiento {
 	// Constructor
 	
-	public DataRol(){}
+	public DataAnestesiaProcedimiento(){}
 	
 	//--------------------------//
 	
@@ -25,21 +25,19 @@ public class DataRol {
 	
 	
 	//alta
-	public void altaRol(Rol r) {
+	public void altaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sqlI = "INSERT INTO roles (idRol, descRol) VALUES (?, ?)";
+		String sqlI = "INSERT INTO procedimietos_anestesias (idProcedimiento, idAnestesias) "
+				+ "VALUES (?, ?)";
 		
 		try {
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
 			
-			stmt.setInt(1, r.getIdRol());
-			stmt.setString(2, r.getDescRol());
+			stmt.setInt(1, ap.getIdProcedimiento());
+			stmt.setInt(2, ap.getIdAnestesia());
 			
 			stmt.execute();
-			
-			rs = stmt.getGeneratedKeys();
-			if(rs != null && rs.next()) r.setIdRol(rs.getInt(1));
 			
 		} catch (SQLException | ManejoExcepciones e) {
 			e.printStackTrace();
@@ -49,18 +47,21 @@ public class DataRol {
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
 		
-	public void modificaRol(Rol r) {
+	public void modificaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
 			
 		//Declaro las variables
 			
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE roles SET descRol = ? WHERE idRol = ?";
+		String sqlU = "UPDATE procedimientos_anestesias SET (idProcedimiento = ? , "
+				+ "idAnestesia = ? WHERE idProcedimiento = ? OR idAnestesia = ?";
 			
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
 			
-			stmt.setString(1, r.getDescRol());
-			stmt.setInt(2, r.getIdRol());
+			stmt.setInt(1, ap.getIdProcedimiento());
+			stmt.setInt(2, ap.getIdAnestesia());
+			stmt.setInt(3, ap.getIdProcedimiento());
+			stmt.setInt(4, ap.getIdAnestesia());
 				
 			stmt.execute();
 		}
@@ -71,14 +72,17 @@ public class DataRol {
 		
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
 		
-	public void eliminaRol(Rol r) {
+	public void eliminaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
 			
 		PreparedStatement stmt = null;
-		String sqlD = "DELETE FROM roles where idRol = ?";
+		String sqlD = "DELETE FROM procedimientos_anestesias where "
+				+ "idProcedimiento = ? or idAnestesia = ?";
 			
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
-			stmt.setInt(1, r.getIdRol());
+			
+			stmt.setInt(1, ap.getIdProcedimiento());
+			stmt.setInt(2, ap.getIdAnestesia());
 				
 			stmt.execute();
 		}
@@ -88,36 +92,38 @@ public class DataRol {
 		
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD
 		
-	public Rol consultaRol(Rol r){
+	public AnestesiaProcedimiento consultaAnestesiaProcedimiento(AnestesiaProcedimiento ap){
 		
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		Rol rol = null;
-		String sqlC = "SELECT * FROM roles WHERE idRol = ?";
+		AnestesiaProcedimiento a = null;
+		String sqlC = "SELECT * FROM procedimientos_anestesias "
+				+ "WHERE idprocedimiento = ? OR idAnestesia = ?";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, r.getIdRol());
+			stmt.setInt(1, ap.getIdProcedimiento());
+			stmt.setInt(2, ap.getIdAnestesia());
 			
 			rs = stmt.executeQuery();	
 				
 			if(rs!=null && rs.next()){
-				rol = new Rol();
-				rol.setIdRol(rs.getInt(1));
-				rol.setDescRol(rs.getString(3));
+				a = new AnestesiaProcedimiento();
+				a.setIdProcedimiento(rs.getInt(1));
+				a.setIdAnestesia(rs.getInt(2));
 			}
 		}
 		catch(SQLException | ManejoExcepciones e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
-		return rol;
+		return a;
 	}
 
-	public ArrayList<Rol>listarRoles(){
-		Rol r = null;
-		ArrayList<Rol>listado = new ArrayList<>();
+	public ArrayList<AnestesiaProcedimiento>listarProcedimientosAnestesias(){
+		AnestesiaProcedimiento ap = null;
+		ArrayList<AnestesiaProcedimiento>listado = new ArrayList<>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT * FROM roles ORDER BY descRol";
+		String sql = "SELECT * FROM procedimientos ORDER BY idAnestesia GROUP BY idAnestesia";
 		
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
@@ -126,10 +132,10 @@ public class DataRol {
 			
 			if(rs != null && rs.next()){
 				while(rs.next()){
-					r = new Rol();
-					r.setIdRol(rs.getInt(1));
-					r.setDescRol(rs.getString(2));
-					listado.add(r);
+					ap = new AnestesiaProcedimiento();
+					ap.setIdProcedimiento(rs.getInt(1));
+					ap.setIdAnestesia(rs.getInt(2));
+					listado.add(ap);
 				}
 			}
 		}
@@ -139,4 +145,3 @@ public class DataRol {
 		return listado;
 	}
 }
-
