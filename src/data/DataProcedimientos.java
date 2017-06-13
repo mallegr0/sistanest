@@ -5,7 +5,7 @@ package data;
 import java.sql.*; // Adentro esta el preparedStatement y el SQLException que voy a usar mas adelante
 import java.util.ArrayList;
 import entidades.Procedimiento; // importo la clase para usarlo como objeto
-import utilidades.ManejoExcepciones; // importo la clase para manejar excepcion
+import utilidades.ApplicationException; // importo la clase para manejar excepcion
 
 
 
@@ -21,11 +21,13 @@ public class DataProcedimientos {
 			if(rs != null) rs.close();
 			Conector.getInstacia().cerrarConn();
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
+	
+	boolean rta = false;
 	// ALTA -- Hago el metodo con el insert en la BBDD
 	
-	public void altaProcedimiento(Procedimiento p){
+	public boolean altaProcedimiento(Procedimiento p){
 		// Declaro las variables a usar
 		
 		ResultSet rs = null;
@@ -54,14 +56,16 @@ public class DataProcedimientos {
 			{
 				p.setIdProcedimiento(rs.getInt(1));
 			}
+			rta = true;
 		}
-		catch (SQLException | ManejoExcepciones e){ e.printStackTrace();} 
+		catch (SQLException | ApplicationException e){ e.printStackTrace();} 
 		finally{cerrarConn(stmt, rs);}
+		return rta;
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
 	
-	public void modificaProcedimiento(Procedimiento p) {
+	public boolean modificaProcedimiento(Procedimiento p) {
 		
 		//Declaro las variables
 		
@@ -78,15 +82,16 @@ public class DataProcedimientos {
 			stmt.setInt(4, p.getIdProcedimiento());
 			
 			stmt.execute();
+			rta = true;
 		}
-		catch (SQLException | ManejoExcepciones e) { e.printStackTrace();}
+		catch (SQLException | ApplicationException e) { e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
-			
+		return rta;	
 	}
 	
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
 	
-	public void eliminaProcedimiento(Procedimiento p) {
+	public boolean bajaProcedimiento(Procedimiento p) {
 		
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM procedimientos where idProcedimiento = ?";
@@ -96,9 +101,11 @@ public class DataProcedimientos {
 			stmt.setInt(1, p.getIdProcedimiento());
 			
 			stmt.execute();
+			rta = true;
 		}
-		catch (SQLException | ManejoExcepciones e ){ e.printStackTrace();}
+		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 	
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD
@@ -125,7 +132,7 @@ public class DataProcedimientos {
 				procedimiento.setComplejidad(rs.getInt(4));
 			}
 		}
-		catch(SQLException | ManejoExcepciones e) {e.printStackTrace();}
+		catch(SQLException | ApplicationException e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return procedimiento;
 	}
@@ -153,7 +160,7 @@ public class DataProcedimientos {
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

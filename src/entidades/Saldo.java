@@ -5,7 +5,7 @@ public class Saldo implements Serializable{
 	
 	//Variables
 	private static final long serialVersionUID = 1L;
-	private int idAnestesista, mes;
+	private int idAnestesista, mes, anio;
 	private float monto;
 	private String estado;
 	
@@ -13,9 +13,10 @@ public class Saldo implements Serializable{
 	
 	public Saldo(){}
 	
-	public Saldo(int idAnestesista, int mes, float monto, String estado){
+	public Saldo(int idAnestesista, int mes, int anio, float monto, String estado){
 		this.idAnestesista = idAnestesista;
 		this.mes = mes;
+		this.anio = anio;
 		this.monto = monto;
 		this.estado = estado;
 	}
@@ -34,6 +35,14 @@ public class Saldo implements Serializable{
 	
 	public void setMes(int mes) {
 		this.mes = mes;
+	}
+	
+	public int getAnio() {
+		return anio;
+	}
+	
+	public void setAnio(int anio) {
+		this.anio = anio;
 	}
 
 	public float getMonto() {

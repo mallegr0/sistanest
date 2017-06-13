@@ -1,7 +1,7 @@
 package data;
 import java.sql.*;
 import java.util.ArrayList;
-import utilidades.ManejoExcepciones;
+import utilidades.ApplicationException;
 import entidades.Sanatorio;
 
 public class DataSanatorio {
@@ -13,10 +13,12 @@ public class DataSanatorio {
 			if(stmt != null)stmt.close();
 			if(rs != null)rs.close();
 			Conector.getInstacia().cerrarConn();}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	public void altaSanatorio(Sanatorio s){
+	boolean rta = false;
+	
+	public boolean altaSanatorio(Sanatorio s){
 		
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
@@ -34,11 +36,13 @@ public class DataSanatorio {
 			if (rs != null && rs.next()){
 				s.setIdSanatorio(rs.getInt(1));
 			}
-		} catch (SQLException | ManejoExcepciones e ) { e.printStackTrace();}
+			rta = true;
+		} catch (SQLException | ApplicationException e ) { e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
+		return rta;
 	}
 	
-	public void bajaSanatorio(Sanatorio s){
+	public boolean bajaSanatorio(Sanatorio s){
 		
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM sanatorios WHERE idSanatorio = ?";
@@ -47,12 +51,14 @@ public class DataSanatorio {
 		stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
 		stmt.setInt(1, s.getIdSanatorio());
 		stmt.execute();
+		rta = true;
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
  	}
 	
-	public void modificaSanatorio(Sanatorio s){
+	public boolean modificaSanatorio(Sanatorio s){
 		
 		PreparedStatement stmt = null;
 		String sqlU = "UPDATE sanatorios SET razonSocial = ? WHERE idSanatorio = ?";
@@ -64,9 +70,13 @@ public class DataSanatorio {
 			stmt.setInt(2, s.getIdSanatorio());
 			
 			stmt.execute();
+			
+			rta = true;
 		}
-		catch (SQLException | ManejoExcepciones e){ e.printStackTrace();}
+		catch (SQLException | ApplicationException e){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		
+		return rta;
 	}
 	
 	public Sanatorio consultaSanatorio(Sanatorio s){
@@ -87,7 +97,7 @@ public class DataSanatorio {
 			san.setIdSanatorio(rs.getInt(1));
 			san.setRazonSocial(rs.getString(2));	
 		}
-		catch(SQLException | ManejoExcepciones e){ e.printStackTrace();}
+		catch(SQLException | ApplicationException e){ e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return san;
 	}
@@ -113,7 +123,7 @@ public class DataSanatorio {
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

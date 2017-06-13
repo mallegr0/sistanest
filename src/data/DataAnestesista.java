@@ -1,7 +1,7 @@
 package data;
 import java.sql.*;
 import java.util.*;
-import utilidades.ManejoExcepciones;
+import utilidades.ApplicationException;
 import entidades.Anestesista;
 
 
@@ -14,7 +14,7 @@ public class DataAnestesista {
 			if(stmt != null)stmt.close();
 			if(rs != null)rs.close();
 			Conector.getInstacia().cerrarConn();
-		}catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
 	public void altaAnestesista(Anestesista a){
@@ -39,7 +39,7 @@ public class DataAnestesista {
 				a.setIdAnestesista(rs.getInt(1));
 			}
 			
-		}catch(SQLException | ManejoExcepciones e){e.printStackTrace();}finally{cerrarConn(stmt, rs);}
+		}catch(SQLException | ApplicationException e){e.printStackTrace();}finally{cerrarConn(stmt, rs);}
 	}
 
 	public void bajaAnestesista(Anestesista a){
@@ -55,7 +55,7 @@ public class DataAnestesista {
 			stmt.execute();
 			
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
 	}
 
@@ -75,7 +75,7 @@ public class DataAnestesista {
 			
 			stmt.execute();
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
 	}
 
@@ -100,7 +100,7 @@ public class DataAnestesista {
 				anes.setGrupo(rs.getInt(5));
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return anes;
 	}
@@ -131,7 +131,7 @@ public class DataAnestesista {
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

@@ -1,6 +1,6 @@
 package data;
 import java.sql.*;
-import utilidades.ManejoExcepciones;
+import utilidades.ApplicationException;
 
 public class Conector {
 	
@@ -21,11 +21,11 @@ public class Conector {
 	
 	//Constructor del conector a BBDD -- es Singleton para que no haya mas de una conexion
 	//al mismo tiempo.
-	private Conector() throws ManejoExcepciones{
+	private Conector() throws ApplicationException{
 		try{
 			Class.forName(dbDriver);
 		} catch (ClassNotFoundException e){
-			throw new ManejoExcepciones("Error del Driver JDBC", e);
+			throw new ApplicationException("Error del Driver JDBC", e);
 		}
 		
 	}
@@ -34,14 +34,14 @@ public class Conector {
 	
 	private static Conector instancia;
 	
-	public static Conector getInstacia() throws ManejoExcepciones {
+	public static Conector getInstacia() throws ApplicationException {
 		if (instancia == null){
 			instancia = new Conector();
 		}
 		return instancia;
 	}
 	
-	public Connection abrirConn() throws ManejoExcepciones, SQLException{
+	public Connection abrirConn() throws ApplicationException, SQLException{
 		try{
 			if (conn == null || conn.isClosed()){
 				conn = DriverManager.getConnection("jdbc: "+dbType+"://"+host+":"+port+"/" 
@@ -49,18 +49,18 @@ public class Conector {
 				cantConn++;
 			}
 		}catch (SQLException e){
-			throw new ManejoExcepciones("Error al abrir la conexion a BBDD", e);
+			throw new ApplicationException("Error al abrir la conexion a BBDD", e);
 		}
 		return conn;
 	}
 	
-	public void cerrarConn() throws ManejoExcepciones{
+	public void cerrarConn() throws ApplicationException{
 		cantConn--;
 		if (cantConn == 0){
 			try{
 				conn.close();
 			}catch (SQLException e){
-				throw new ManejoExcepciones("Error al cerrar la conexion", e);
+				throw new ApplicationException("Error al cerrar la conexion", e);
 			}
 		}
 	}

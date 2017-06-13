@@ -3,7 +3,7 @@ package data;
 import java.sql.*;
 import java.util.ArrayList;
 
-import utilidades.ManejoExcepciones;
+import utilidades.ApplicationException;
 import entidades.Usuario;
 
 public class DataUsuario {
@@ -15,7 +15,7 @@ public class DataUsuario {
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
 			Conector.getInstacia().cerrarConn();
-		}catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
 	public void altaUsuario(Usuario u){
@@ -38,7 +38,7 @@ public class DataUsuario {
 			stmt.execute();
 			
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
 	}
 
@@ -53,7 +53,7 @@ public class DataUsuario {
 			
 			stmt.execute();
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
 	}
 	
@@ -81,7 +81,7 @@ public class DataUsuario {
 				user.setIdRol(rs.getInt(7));
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return user;
 	}
@@ -112,7 +112,7 @@ public class DataUsuario {
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
@@ -143,7 +143,7 @@ public class DataUsuario {
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

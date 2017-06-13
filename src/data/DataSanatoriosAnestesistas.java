@@ -2,7 +2,7 @@ package data;
 
 import java.sql.*;
 import java.util.*;
-import utilidades.ManejoExcepciones;
+import utilidades.ApplicationException;
 import entidades.AnestesistaSanatorio;
 
 public class DataSanatoriosAnestesistas {
@@ -20,7 +20,7 @@ public class DataSanatoriosAnestesistas {
 			if(rs != null) rs.close();
 			Conector.getInstacia().cerrarConn();
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
 	
@@ -39,7 +39,7 @@ public class DataSanatoriosAnestesistas {
 			
 			stmt.execute();
 			
-		} catch (SQLException | ManejoExcepciones e) {
+		} catch (SQLException | ApplicationException e) {
 			e.printStackTrace();
 		} finally {cerrarConn(stmt, rs);}
 		
@@ -65,7 +65,7 @@ public class DataSanatoriosAnestesistas {
 				
 			stmt.execute();
 		}
-		catch (SQLException | ManejoExcepciones e) { e.printStackTrace();}
+		catch (SQLException | ApplicationException e) { e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
 			
 	}
@@ -86,7 +86,7 @@ public class DataSanatoriosAnestesistas {
 				
 			stmt.execute();
 		}
-		catch (SQLException | ManejoExcepciones e ){ e.printStackTrace();}
+		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
 	}
 		
@@ -113,7 +113,7 @@ public class DataSanatoriosAnestesistas {
 				a.setIdAnestesista(rs.getInt(2));
 			}
 		}
-		catch(SQLException | ManejoExcepciones e) {e.printStackTrace();}
+		catch(SQLException | ApplicationException e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return a;
 	}
@@ -139,7 +139,7 @@ public class DataSanatoriosAnestesistas {
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		
 		return listado;

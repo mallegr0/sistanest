@@ -1,5 +1,5 @@
 package controlador;
 
-public class CUsuario {
+public class CtrlUsuario {
 
 }

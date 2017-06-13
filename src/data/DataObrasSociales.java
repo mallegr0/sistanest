@@ -5,7 +5,7 @@ package data;
 import java.sql.*; // Adentro esta el preparedStatement y el SQLException que voy a usar mas adelante
 import java.util.ArrayList;
 import entidades.ObraSocial; // importo la clase para usarlo como objeto
-import utilidades.ManejoExcepciones; // importo la clase para manejar excepcion
+import utilidades.ApplicationException; // importo la clase para manejar excepcion
 
 
 
@@ -23,10 +23,12 @@ public class DataObrasSociales {
 			if(rs != null)rs.close();
 			Conector.getInstacia().cerrarConn();
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	public void altaObraSocial(ObraSocial os){
+	boolean rta = false;
+	
+	public boolean altaObraSocial(ObraSocial os){
 		// Declaro las variables a usar
 		
 		ResultSet rs = null;
@@ -53,15 +55,17 @@ public class DataObrasSociales {
 			{
 				os.setIdOS(rs.getInt(1));
 			}
+			rta = true;
 		}
 		catch (SQLException e){ e.printStackTrace();} 
-		catch (ManejoExcepciones e) { e.printStackTrace();} 
+		catch (ApplicationException e) { e.printStackTrace();} 
 		finally{cerrarConn(stmt, rs);}
+		return rta;
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
 	
-	public void modificaObraSocial(ObraSocial os) {
+	public boolean modificaObraSocial(ObraSocial os) {
 		
 		//Declaro las variables
 		
@@ -76,15 +80,16 @@ public class DataObrasSociales {
 			stmt.setInt(3, os.getIdOS());
 			
 			stmt.execute();
+			rta = true;
 		}
-		catch (SQLException | ManejoExcepciones e) { e.printStackTrace();}
+		catch (SQLException | ApplicationException e) { e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
-			
+		return rta;	
 	}
 	
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
 	
-	public void eliminaObraSocial(ObraSocial os) {
+	public boolean eliminaObraSocial(ObraSocial os) {
 		
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM obras_sociales where idOS = ?";
@@ -94,9 +99,11 @@ public class DataObrasSociales {
 			stmt.setInt(1, os.getIdOS());
 			
 			stmt.execute();
+			rta = true;
 		}
-		catch (SQLException | ManejoExcepciones e ){ e.printStackTrace();}
+		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 	
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD
@@ -122,7 +129,7 @@ public class DataObrasSociales {
 				OS.setDiasMax(rs.getInt(3));
 			}
 		}
-		catch(SQLException | ManejoExcepciones e) {e.printStackTrace();}
+		catch(SQLException | ApplicationException e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return OS;
 	}
@@ -148,7 +155,7 @@ public class DataObrasSociales {
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

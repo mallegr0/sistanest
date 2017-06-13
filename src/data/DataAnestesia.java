@@ -3,7 +3,7 @@ package data;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
-import utilidades.ManejoExcepciones;
+import utilidades.ApplicationException;
 import entidades.Anestesia;
 
 public class DataAnestesia {
@@ -16,7 +16,7 @@ public class DataAnestesia {
 			if(rs != null) rs.close();
 			Conector.getInstacia().cerrarConn();
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 
 	public void altaAnestesia(Anestesia a){
@@ -24,8 +24,8 @@ public class DataAnestesia {
 		ResultSet rs = null;
 		String sqlI = "INSERT INTO anestesias (idAnestesia, fecPrestacion, fecARA, "
 				+ "fecRendicion, fecCarga, afiliado, nroAfiliado, nocturno, feriado, fds, "
-				+ "nroTalon, nroVias, edad, hora, user, idMedico, idAnestesista, idSanatorio,"
-				+ "idOS, idTpoAnestesia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+				+ "nroTalon, nroVias, edad, user, idMedico, idAnestesista, idSanatorio,"
+				+ "idOS, idTpoAnestesia) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 				+ "?, ?, ?, ?, ?, ?)";
 		
 		try{
@@ -44,13 +44,12 @@ public class DataAnestesia {
 			stmt.setInt(11, a.getNroTalon());
 			stmt.setInt(12, a.getNroVias());
 			stmt.setInt(13, a.getEdad());
-			stmt.setInt(14, a.getHora());
-			stmt.setString(15, a.getUser());
-			stmt.setInt(16, a.getIdMedico());
-			stmt.setInt(17, a.getIdAnestesista());
-			stmt.setInt(18, a.getIdSanatorio());
-			stmt.setInt(19, a.getIdOS());
-			stmt.setInt(20, a.getIdTpoAnestesia());
+			stmt.setString(14, a.getUser());
+			stmt.setInt(15, a.getIdMedico());
+			stmt.setInt(16, a.getIdAnestesista());
+			stmt.setInt(17, a.getIdSanatorio());
+			stmt.setInt(18, a.getIdOS());
+			stmt.setInt(19, a.getIdTpoAnestesia());
 			
 			stmt.execute();
 			
@@ -59,7 +58,7 @@ public class DataAnestesia {
 				a.setIdAnestesia(rs.getInt(1));
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 	}
 
@@ -74,7 +73,7 @@ public class DataAnestesia {
 			
 			stmt.execute();
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
 	}
 	
@@ -82,7 +81,7 @@ public class DataAnestesia {
 		PreparedStatement stmt = null;
 		String sqlU = "UPDATE anestesias SET (fecPrestacion = ?, fecARA = ?, fecRendicion = ?, "
 				+ "fecCarga = ?, afiliado = ?, nroAfiliado = ?, nocturno = ?, feriado = ?,"
-				+ "fds = ?, nroTalon = ?, nroVias = ?, edad = ?, hora = ?, user = ?,"
+				+ "fds = ?, nroTalon = ?, nroVias = ?, edad = ?, user = ?,"
 				+ "idMedico = ?, idAnestesistas = ?, idSanatorio = ?, idOS = ?, "
 				+ "idTpoAnestesia = ? WHERE idAnestesia = ?";
 		
@@ -101,20 +100,17 @@ public class DataAnestesia {
 			stmt.setInt(10, a.getNroTalon());
 			stmt.setInt(11, a.getNroVias());
 			stmt.setInt(12, a.getEdad());
-			stmt.setInt(13, a.getHora());
-			stmt.setString(14, a.getUser());
-			stmt.setInt(15, a.getIdMedico());
-			stmt.setInt(16, a.getIdAnestesista());
-			stmt.setInt(17, a.getIdSanatorio());
-			stmt.setInt(18, a.getIdOS());
-			stmt.setInt(19, a.getIdTpoAnestesia());
-			stmt.setInt(20, a.getIdAnestesia());
+			stmt.setString(13, a.getUser());
+			stmt.setInt(14, a.getIdMedico());
+			stmt.setInt(15, a.getIdAnestesista());
+			stmt.setInt(16, a.getIdSanatorio());
+			stmt.setInt(17, a.getIdOS());
+			stmt.setInt(18, a.getIdTpoAnestesia());
+			stmt.setInt(19, a.getIdAnestesia());
 			
 			stmt.execute();
-			
-			
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
 	}
 
@@ -145,16 +141,15 @@ public class DataAnestesia {
 				anes.setNroTalon(rs.getInt(11));
 				anes.setNroVias(rs.getInt(12));
 				anes.setEdad(rs.getInt(13));
-				anes.setHora(rs.getInt(14));
-				anes.setUser(rs.getString(15));
-				anes.setIdMedico(rs.getInt(16));
-				anes.setIdAnestesista(rs.getInt(17));
-				anes.setIdSanatorio(rs.getInt(18));
-				anes.setIdOS(rs.getInt(19));
-				anes.setIdTpoAnestesia(rs.getInt(20));
+				anes.setUser(rs.getString(14));
+				anes.setIdMedico(rs.getInt(15));
+				anes.setIdAnestesista(rs.getInt(16));
+				anes.setIdSanatorio(rs.getInt(17));
+				anes.setIdOS(rs.getInt(18));
+				anes.setIdTpoAnestesia(rs.getInt(19));
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return anes;
 	}
@@ -190,18 +185,17 @@ public class DataAnestesia {
 					anes.setNroTalon(rs.getInt(11));
 					anes.setNroVias(rs.getInt(12));
 					anes.setEdad(rs.getInt(13));
-					anes.setHora(rs.getInt(14));
-					anes.setUser(rs.getString(15));
-					anes.setIdMedico(rs.getInt(16));
-					anes.setIdAnestesista(rs.getInt(17));
-					anes.setIdSanatorio(rs.getInt(18));
-					anes.setIdOS(rs.getInt(19));
-					anes.setIdTpoAnestesia(rs.getInt(20));
+					anes.setUser(rs.getString(14));
+					anes.setIdMedico(rs.getInt(15));
+					anes.setIdAnestesista(rs.getInt(16));
+					anes.setIdSanatorio(rs.getInt(17));
+					anes.setIdOS(rs.getInt(18));
+					anes.setIdTpoAnestesia(rs.getInt(19));
 					listado.add(anes);
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
@@ -252,19 +246,18 @@ public class DataAnestesia {
 					anes.setNroTalon(rs.getInt(11));
 					anes.setNroVias(rs.getInt(12));
 					anes.setEdad(rs.getInt(13));
-					anes.setHora(rs.getInt(14));
-					anes.setUser(rs.getString(15));
-					anes.setIdMedico(rs.getInt(16));
-					anes.setIdAnestesista(rs.getInt(17));
-					anes.setIdSanatorio(rs.getInt(18));
-					anes.setIdOS(rs.getInt(19));
-					anes.setIdTpoAnestesia(rs.getInt(20));
+					anes.setUser(rs.getString(14));
+					anes.setIdMedico(rs.getInt(15));
+					anes.setIdAnestesista(rs.getInt(16));
+					anes.setIdSanatorio(rs.getInt(17));
+					anes.setIdOS(rs.getInt(18));
+					anes.setIdTpoAnestesia(rs.getInt(19));
 					listado.add(anes);
 					
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
@@ -315,19 +308,18 @@ public class DataAnestesia {
 					anes.setNroTalon(rs.getInt(11));
 					anes.setNroVias(rs.getInt(12));
 					anes.setEdad(rs.getInt(13));
-					anes.setHora(rs.getInt(14));
-					anes.setUser(rs.getString(15));
-					anes.setIdMedico(rs.getInt(16));
-					anes.setIdAnestesista(rs.getInt(17));
-					anes.setIdSanatorio(rs.getInt(18));
-					anes.setIdOS(rs.getInt(19));
-					anes.setIdTpoAnestesia(rs.getInt(20));
+					anes.setUser(rs.getString(14));
+					anes.setIdMedico(rs.getInt(15));
+					anes.setIdAnestesista(rs.getInt(16));
+					anes.setIdSanatorio(rs.getInt(17));
+					anes.setIdOS(rs.getInt(18));
+					anes.setIdTpoAnestesia(rs.getInt(19));
 					listado.add(anes);
 					
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
@@ -358,16 +350,15 @@ public class DataAnestesia {
 					anes.setNroTalon(rs.getInt(11));
 					anes.setNroVias(rs.getInt(12));
 					anes.setEdad(rs.getInt(13));
-					anes.setHora(rs.getInt(14));
-					anes.setUser(rs.getString(15));
-					anes.setIdMedico(rs.getInt(16));
-					anes.setIdAnestesista(rs.getInt(17));
-					anes.setIdSanatorio(rs.getInt(18));
-					anes.setIdOS(rs.getInt(19));
-					anes.setIdTpoAnestesia(rs.getInt(20));
+					anes.setUser(rs.getString(14));
+					anes.setIdMedico(rs.getInt(15));
+					anes.setIdAnestesista(rs.getInt(16));
+					anes.setIdSanatorio(rs.getInt(17));
+					anes.setIdOS(rs.getInt(18));
+					anes.setIdTpoAnestesia(rs.getInt(19));
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return anes;
 	}

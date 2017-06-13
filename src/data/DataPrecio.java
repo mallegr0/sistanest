@@ -1,6 +1,6 @@
 package data;
 import java.sql.*;
-import utilidades.ManejoExcepciones;
+import utilidades.ApplicationException;
 import entidades.Precio;
 
 public class DataPrecio {
@@ -12,10 +12,11 @@ public class DataPrecio {
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
 			Conector.getInstacia().cerrarConn();
-		}catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
-	
-	public void altaPrecio(Precio p){
+	boolean rta = false;
+
+	public boolean altaPrecio(Precio p){
 		
 		PreparedStatement stmt = null;
 		String sqlU = "INSERT INTO precios (fecha, idSanatorio, idTpoAnestesia, valor) "
@@ -30,13 +31,14 @@ public class DataPrecio {
 			stmt.setFloat(4, p.getValor());
 			
 			stmt.execute();
-			
+			rta = true;
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, null);}
+		return rta;
 	}
 	
-	public void bajaPrecio(Precio p){
+	public boolean bajaPrecio(Precio p){
 		
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM precios WHERE fecha = ? AND idSanatorio = ? "
@@ -51,13 +53,15 @@ public class DataPrecio {
 			stmt.setInt(3, p.getIdTpoAnestesia());
 			
 			stmt.execute();
+			rta = true;
 			
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, null);}
+		return rta;
 	}
 	
-	public void modificaPrecio(Precio p){
+	public boolean modificaPrecio(Precio p){
 		
 		PreparedStatement stmt = null;
 		String sqlU = "UPDATE precios SET valor = ? WHERE fecha = ?, idSanatorio = ?, "
@@ -72,10 +76,12 @@ public class DataPrecio {
 			stmt.setInt(4, p.getIdTpoAnestesia());
 			
 			stmt.execute();
+			rta = true;
 			
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 	
 	public Precio consultaPrecio(Precio p) {
@@ -104,7 +110,7 @@ public class DataPrecio {
 				precio.setValor(rs.getFloat(4));
 			}
 		}
-		catch(SQLException | ManejoExcepciones e) {e.printStackTrace();}
+		catch(SQLException | ApplicationException e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return precio;
 	}

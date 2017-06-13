@@ -2,7 +2,7 @@ package data;
 
 import java.sql.*;
 import java.util.*;
-import utilidades.ManejoExcepciones;
+import utilidades.ApplicationException;
 import entidades.TpoAnestesia;
 
 public class DataTpoAnestesia {
@@ -14,11 +14,12 @@ public class DataTpoAnestesia {
 			if(rs != null) rs.close();
 			if(stmt != null)stmt.close();
 			Conector.getInstacia().cerrarConn();
-		}catch(SQLException | ManejoExcepciones e) {e.printStackTrace();}		
+		}catch(SQLException | ApplicationException e) {e.printStackTrace();}		
 	}
 	
+	boolean rta = false;
 	
-	public void altaTpoAnestesia(TpoAnestesia tpoa){
+	public boolean altaTpoAnestesia(TpoAnestesia tpoa){
 		
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
@@ -38,12 +39,14 @@ public class DataTpoAnestesia {
 			{
 				tpoa.setIdTpoAnestesia(rs.getInt(1));
 			}
+			rta = true;
 		}
-		catch (SQLException | ManejoExcepciones e){ e.printStackTrace();}
+		catch (SQLException | ApplicationException e){ e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
+		return rta;
 	}
 
-	public void bajaTpoAnestesia(TpoAnestesia tpoa) {
+	public boolean bajaTpoAnestesia(TpoAnestesia tpoa) {
 		
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM tpoanestesias WHERE idTpoAnestesia = ?";
@@ -51,13 +54,15 @@ public class DataTpoAnestesia {
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
 			stmt.setInt(1, tpoa.getIdTpoAnestesia());
-			stmt.execute();			
+			stmt.execute();	
+			rta = true;
 		}
-		catch( SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch( SQLException | ApplicationException e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, null); }
+		return rta;
 	}
 	
-	public void modificaTpoAnestesia(TpoAnestesia tpoa) {
+	public boolean modificaTpoAnestesia(TpoAnestesia tpoa) {
 		
 		PreparedStatement stmt = null;
 		String sqlU ="UPDATE tpoAnestesia SET descTpoAnestesia = ? WHERE idTpoAnestesia = ?";
@@ -69,9 +74,11 @@ public class DataTpoAnestesia {
 			stmt.setInt(2, tpoa.getIdTpoAnestesia());
 			
 			stmt.execute();
+			rta = true;
 			
-		}catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, null);}
+		return rta;
 	}
 	
 	public TpoAnestesia consultaTpoAnestesia(TpoAnestesia tpoa){
@@ -91,7 +98,7 @@ public class DataTpoAnestesia {
 			tipoA.setIdTpoAnestesia(rs.getInt(1));
 			tipoA.setDescTpoAnestesia(rs.getString(2));
 			
-		}catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, rs);
 		}
 		return tipoA;
@@ -118,7 +125,7 @@ public class DataTpoAnestesia {
 				}
 			}
 		}
-		catch(SQLException | ManejoExcepciones e){e.printStackTrace();}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
