@@ -17,7 +17,7 @@ public class DataTpoAnestesia {
 		}catch(SQLException | ApplicationException e) {e.printStackTrace();}		
 	}
 	
-	boolean rta = false;
+	private boolean rta = false;
 	
 	public boolean altaTpoAnestesia(TpoAnestesia tpoa){
 		
@@ -32,14 +32,13 @@ public class DataTpoAnestesia {
 			stmt.setInt(1, tpoa.getIdTpoAnestesia());
 			stmt.setString(2, tpoa.getDescTpoAnestesia());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			rs = stmt.getGeneratedKeys();
 			
 			if(rs != null && rs.next()) 
 			{
 				tpoa.setIdTpoAnestesia(rs.getInt(1));
 			}
-			rta = true;
 		}
 		catch (SQLException | ApplicationException e){ e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
@@ -54,8 +53,7 @@ public class DataTpoAnestesia {
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
 			stmt.setInt(1, tpoa.getIdTpoAnestesia());
-			stmt.execute();	
-			rta = true;
+			rta = stmt.execute();	
 		}
 		catch( SQLException | ApplicationException e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, null); }
@@ -73,8 +71,7 @@ public class DataTpoAnestesia {
 			stmt.setString(1, tpoa.getDescTpoAnestesia());
 			stmt.setInt(2, tpoa.getIdTpoAnestesia());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 			
 		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, null);}

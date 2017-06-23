@@ -9,10 +9,10 @@ public class CtrlProcedimiento {
 	
 	public CtrlProcedimiento(){}
 	
-	boolean rta = false;
-	Procedimiento proceso = new Procedimiento();
-	DataProcedimientos dp = new DataProcedimientos();
-	ArrayList<Procedimiento> listado = new ArrayList<>();
+	private boolean rta = false;
+	private Procedimiento proceso = new Procedimiento();
+	private DataProcedimientos dp = new DataProcedimientos();
+	private ArrayList<Procedimiento> listado = new ArrayList<>();
 	
 	public boolean altaProcedimiento(Procedimiento p) {
 		if(dp.altaProcedimiento(p) == true) rta = true;

@@ -14,7 +14,8 @@ public class DataPrecio {
 			Conector.getInstacia().cerrarConn();
 		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
-	boolean rta = false;
+	
+	private boolean rta = false;
 
 	public boolean altaPrecio(Precio p){
 		
@@ -30,8 +31,7 @@ public class DataPrecio {
 			stmt.setInt(2, 3);
 			stmt.setFloat(4, p.getValor());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, null);}
@@ -52,8 +52,7 @@ public class DataPrecio {
 			stmt.setInt(2, p.getIdSanatorio());
 			stmt.setInt(3, p.getIdTpoAnestesia());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 			
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
@@ -75,8 +74,7 @@ public class DataPrecio {
 			stmt.setInt(3, p.getIdSanatorio());
 			stmt.setInt(4, p.getIdTpoAnestesia());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 			
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}

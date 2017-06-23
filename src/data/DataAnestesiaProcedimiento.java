@@ -6,11 +6,14 @@ import utilidades.ApplicationException;
 import entidades.AnestesiaProcedimiento;;
 
 public class DataAnestesiaProcedimiento {
+	
 	// Constructor
 	
 	public DataAnestesiaProcedimiento(){}
 	
 	//--------------------------//
+	
+	private boolean rta = false;
 	
 	//METODOS
 	
@@ -25,7 +28,7 @@ public class DataAnestesiaProcedimiento {
 	
 	
 	//alta
-	public void altaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
+	public boolean altaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sqlI = "INSERT INTO procedimietos_anestesias (idProcedimiento, idAnestesias) "
@@ -37,17 +40,18 @@ public class DataAnestesiaProcedimiento {
 			stmt.setInt(1, ap.getIdProcedimiento());
 			stmt.setInt(2, ap.getIdAnestesia());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 		} catch (SQLException | ApplicationException e) {
 			e.printStackTrace();
 		} finally {cerrarConn(stmt, rs);}
+		return rta;
 		
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
 		
-	public void modificaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
+	public boolean modificaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
 			
 		//Declaro las variables
 			
@@ -63,16 +67,16 @@ public class DataAnestesiaProcedimiento {
 			stmt.setInt(3, ap.getIdProcedimiento());
 			stmt.setInt(4, ap.getIdAnestesia());
 				
-			stmt.execute();
+			rta = stmt.execute();
 		}
 		catch (SQLException | ApplicationException e) { e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
-			
+		return rta;
 	}
 		
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
 		
-	public void eliminaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
+	public boolean bajaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
 			
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM procedimientos_anestesias where "
@@ -84,10 +88,11 @@ public class DataAnestesiaProcedimiento {
 			stmt.setInt(1, ap.getIdProcedimiento());
 			stmt.setInt(2, ap.getIdAnestesia());
 				
-			stmt.execute();
+			rta = stmt.execute();
 		}
 		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 		
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD

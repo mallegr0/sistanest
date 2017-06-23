@@ -26,7 +26,7 @@ public class DataObrasSociales {
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	boolean rta = false;
+	private boolean rta = false;
 	
 	public boolean altaObraSocial(ObraSocial os){
 		// Declaro las variables a usar
@@ -46,7 +46,7 @@ public class DataObrasSociales {
 			
 			//Ejecutamos la consulta
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 			//Devuelvo el siguiente id de la tabla
 			
@@ -55,7 +55,6 @@ public class DataObrasSociales {
 			{
 				os.setIdOS(rs.getInt(1));
 			}
-			rta = true;
 		}
 		catch (SQLException e){ e.printStackTrace();} 
 		catch (ApplicationException e) { e.printStackTrace();} 
@@ -79,8 +78,8 @@ public class DataObrasSociales {
 			stmt.setInt(2, os.getDiasMax());
 			stmt.setInt(3, os.getIdOS());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
+
 		}
 		catch (SQLException | ApplicationException e) { e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
@@ -89,7 +88,7 @@ public class DataObrasSociales {
 	
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
 	
-	public boolean eliminaObraSocial(ObraSocial os) {
+	public boolean bajaObraSocial(ObraSocial os) {
 		
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM obras_sociales where idOS = ?";
@@ -98,8 +97,7 @@ public class DataObrasSociales {
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
 			stmt.setInt(1, os.getIdOS());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 		}
 		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}

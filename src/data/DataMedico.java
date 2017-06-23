@@ -8,6 +8,8 @@ public class DataMedico {
 	
 	public DataMedico(){}
 	
+	private boolean rta = false;
+	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs) {
 		try{
 			if(stmt != null) stmt.close();
@@ -15,10 +17,9 @@ public class DataMedico {
 			Conector.getInstacia().cerrarConn();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
-		
 	}
 
-	public void altaMedico(Medico m){
+	public boolean altaMedico(Medico m){
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sqlI = "INSERT INTO medicos (idMedico, nombreMedico, "
@@ -32,7 +33,7 @@ public class DataMedico {
 			stmt.setString(3, m.getApellidoMedico());
 			stmt.setInt(4, m.getIdSanatorio());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 			rs = stmt.getGeneratedKeys();
 			if(rs != null && rs.next())
@@ -42,22 +43,24 @@ public class DataMedico {
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
+		return rta;
 	}
 
-	public void bajaMedico(Medico m){
+	public boolean bajaMedico(Medico m){
 		PreparedStatement stmt = null;
 		String sqlD ="DELETE FROM medicos WHERE idMedico = ?";
 		
 		try {
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
 			stmt.setInt(1, m.getIdMedico());
-			stmt.execute();
+			rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 	
-	public void modificaMedico(Medico m){
+	public boolean modificaMedico(Medico m){
 		PreparedStatement stmt = null;
 		String sqlU = "UPDATE medicos SET (nombreMedico = ?,apellidoMedico = ?, "
 				+ "idSanatorio = ?) WHERE idMEdico = ?";
@@ -68,11 +71,12 @@ public class DataMedico {
 			stmt.setString(2, m.getApellidoMedico());
 			stmt.setInt(3, m.getIdSanatorio());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 
 	public Medico consultaMedico(Medico m){

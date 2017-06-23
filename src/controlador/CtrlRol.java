@@ -18,21 +18,22 @@ public class CtrlRol {
 	}
 	
 	public boolean bajaRol(Rol r) throws ApplicationException{
-		if(dr.eliminaRol(r) == true) rta = true;
+		if(dr.bajaRol(r) == true) rta = true;
 		return true;
 	}
 
-	public boolean modificaRol(Rol r){
+	public boolean modificaRol(Rol r) throws ApplicationException{
 		if (dr.modificaRol(r) == true) rta = true;
 		return rta;
 	}
-
-	public Rol consultaRol(Rol r){
+	
+	public Rol consultaRol(Rol r) throws ApplicationException{
 		rol = dr.consultaRol(r);
 		return rol;
 	}
 
 	public ArrayList<Rol> listarRol(Rol r){
+		listado = dr.listarRoles();
 		return listado;
 	}
 	

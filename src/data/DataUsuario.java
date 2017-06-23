@@ -10,6 +10,8 @@ public class DataUsuario {
 	
 	public DataUsuario(){}
 	
+	boolean rta = false;
+	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null) stmt.close();
@@ -18,7 +20,7 @@ public class DataUsuario {
 		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	public void altaUsuario(Usuario u){
+	public boolean altaUsuario(Usuario u){
 		
 		PreparedStatement stmt = null;
 		String sqlI = "INSERT INTO usuarios (user, password, nombreUsuario, apellidoUsuario,"
@@ -35,14 +37,14 @@ public class DataUsuario {
 			stmt.setInt(6, u.getGrupo());
 			stmt.setInt(7, u.getIdRol());
 			
-			stmt.execute();
-			
+			rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 
-	public void borraUsuario(Usuario u){
+	public boolean borraUsuario(Usuario u){
 		PreparedStatement stmt = null;
 		String sqlD ="DELETE FROM usuarios WHERE user = ?";
 		
@@ -51,10 +53,36 @@ public class DataUsuario {
 			
 			stmt.setString(1, u.getUser());
 			
-			stmt.execute();
+			rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
+	}
+	
+	public boolean modificaUsuario(Usuario u) {
+		
+		PreparedStatement stmt = null;
+		String sqlU = "UPDATE usuarios SET (password = ?, nombreUsuario = ?, apellidoUsuario = ?,"
+				+ "mailUSuario = ?, idRol = ?, grupo = ? WHERE user = ?)";
+		
+		try{
+			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			
+			stmt.setString(1, u.getPassword());
+			stmt.setString(2, u.getNombreUsuario());
+			stmt.setString(3, u.getApellidoUsuario());
+			stmt.setString(4, u.getMailUsuario());
+			stmt.setInt(5, u.getIdRol());
+			stmt.setInt(6, u.getGrupo());
+			stmt.setString(7, u.getUser());
+			
+			rta = stmt.execute();
+			
+		}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 	
 	public Usuario consultaUsuario(Usuario u){

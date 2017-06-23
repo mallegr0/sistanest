@@ -7,9 +7,9 @@ import entidades.Precio;
 public class CtrlPrecio {
 	public CtrlPrecio(){}
 	
-	boolean rta = false;
-	Precio precio = new Precio();
-	DataPrecio dp = new DataPrecio();
+	private boolean rta = false;
+	private Precio precio = new Precio();
+	private DataPrecio dp = new DataPrecio();
 	
 	public boolean altaPrecio(Precio p) {
 		if(dp.altaPrecio(p) == true) rta = true;

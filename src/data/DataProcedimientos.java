@@ -24,7 +24,7 @@ public class DataProcedimientos {
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	boolean rta = false;
+	private boolean rta = false;
 	// ALTA -- Hago el metodo con el insert en la BBDD
 	
 	public boolean altaProcedimiento(Procedimiento p){
@@ -47,7 +47,7 @@ public class DataProcedimientos {
 			
 			//Ejecutamos la consulta
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 			//Devuelvo el siguiente id de la tabla
 			
@@ -56,7 +56,6 @@ public class DataProcedimientos {
 			{
 				p.setIdProcedimiento(rs.getInt(1));
 			}
-			rta = true;
 		}
 		catch (SQLException | ApplicationException e){ e.printStackTrace();} 
 		finally{cerrarConn(stmt, rs);}
@@ -81,8 +80,7 @@ public class DataProcedimientos {
 			stmt.setInt(3, p.getComplejidad());
 			stmt.setInt(4, p.getIdProcedimiento());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 		}
 		catch (SQLException | ApplicationException e) { e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
@@ -100,8 +98,7 @@ public class DataProcedimientos {
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
 			stmt.setInt(1, p.getIdProcedimiento());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 		}
 		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}

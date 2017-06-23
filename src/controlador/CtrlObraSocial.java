@@ -9,10 +9,10 @@ public class CtrlObraSocial {
 	
 	public CtrlObraSocial(){}
 	
-	ArrayList<ObraSocial> listado = new ArrayList<>();
-	boolean rta = false;
-	ObraSocial os = new ObraSocial();
-	DataObrasSociales dos = new DataObrasSociales();
+	private ArrayList<ObraSocial> listado = new ArrayList<>();
+	private boolean rta = false;
+	private ObraSocial os = new ObraSocial();
+	private DataObrasSociales dos = new DataObrasSociales();
 	
 	public boolean altaObraSocial(ObraSocial os){
 		if(dos.altaObraSocial(os) == true) rta = true;
@@ -20,7 +20,7 @@ public class CtrlObraSocial {
 	}
 	
 	public boolean bajaObraSocial(ObraSocial os){
-		if(dos.eliminaObraSocial(os) == true) rta = true;
+		if(dos.bajaObraSocial(os) == true) rta = true;
 		return rta;
 	}
 	

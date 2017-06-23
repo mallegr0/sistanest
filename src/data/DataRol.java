@@ -23,13 +23,13 @@ public class DataRol {
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
+	private boolean rta = false;
 	
 	//alta
 	public Boolean altaRol(Rol r) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sqlI = "INSERT INTO roles (idRol, descRol) VALUES (?, ?)";
-		boolean rta = false;
 		
 		try {
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
@@ -37,11 +37,11 @@ public class DataRol {
 			stmt.setInt(1, r.getIdRol());
 			stmt.setString(2, r.getDescRol());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 			rs = stmt.getGeneratedKeys();
 			if(rs != null && rs.next()) r.setIdRol(rs.getInt(1));
-			rta = true;
+
 			
 		} catch (SQLException | ApplicationException e) {
 			e.printStackTrace();
@@ -58,7 +58,6 @@ public class DataRol {
 			
 		PreparedStatement stmt = null;
 		String sqlU = "UPDATE roles SET descRol = ? WHERE idRol = ?";
-		boolean rta = false;
 			
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
@@ -66,8 +65,7 @@ public class DataRol {
 			stmt.setString(1, r.getDescRol());
 			stmt.setInt(2, r.getIdRol());
 				
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 			
 		}
 		catch (SQLException | ApplicationException e) { e.printStackTrace();}
@@ -77,18 +75,16 @@ public class DataRol {
 		
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
 		
-	public boolean eliminaRol(Rol r) {
+	public boolean bajaRol(Rol r) {
 			
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM roles where idRol = ?";
-		boolean rta = false;
-			
+
 		try{
 			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
 			stmt.setInt(1, r.getIdRol());
 				
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 		}
 		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}

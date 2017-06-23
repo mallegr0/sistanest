@@ -23,9 +23,10 @@ public class DataSanatoriosAnestesistas {
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
+	private boolean rta = false;
 	
 	//alta
-	public void altaSanatorioAnestesista(AnestesistaSanatorio as) {
+	public boolean altaSanatorioAnestesista(AnestesistaSanatorio as) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sqlI = "INSERT INTO sanatorios_anestesistas "
@@ -37,17 +38,17 @@ public class DataSanatoriosAnestesistas {
 			stmt.setInt(1, as.getIdSanatorio());
 			stmt.setInt(2, as.getIdAnestesista());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 		} catch (SQLException | ApplicationException e) {
 			e.printStackTrace();
 		} finally {cerrarConn(stmt, rs);}
-		
+		return rta;
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
 		
-	public void modificaSanatorioAnestesista(AnestesistaSanatorio as) {
+	public boolean modificaSanatorioAnestesista(AnestesistaSanatorio as) {
 			
 		//Declaro las variables
 			
@@ -63,16 +64,17 @@ public class DataSanatoriosAnestesistas {
 			stmt.setInt(3, as.getIdSanatorio());
 			stmt.setInt(4, as.getIdAnestesista());
 				
-			stmt.execute();
+			rta = stmt.execute();
 		}
 		catch (SQLException | ApplicationException e) { e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta; 
 			
 	}
 		
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
 		
-	public void eliminaSanatorioAnestesista(AnestesistaSanatorio as) {
+	public boolean	bajaSanatorioAnestesista(AnestesistaSanatorio as) {
 			
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM sanatorios_anestesistas where "
@@ -84,10 +86,11 @@ public class DataSanatoriosAnestesistas {
 			stmt.setInt(1, as.getIdSanatorio());
 			stmt.setInt(2, as.getIdAnestesista());
 				
-			stmt.execute();
+			rta = stmt.execute();
 		}
 		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 		
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD

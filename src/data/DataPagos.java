@@ -16,7 +16,7 @@ public class DataPagos {
 		
 	}
 	
-	boolean rta = false;
+	private boolean rta = false;
 	
 	public boolean altaPago(Saldo s){
 		PreparedStatement stmt = null;
@@ -32,8 +32,7 @@ public class DataPagos {
 			stmt.setFloat(4, s.getMonto());
 			stmt.setString(5, s.getEstado());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
@@ -51,8 +50,8 @@ public class DataPagos {
 			stmt.setInt(2, s.getMes());
 			stmt.setInt(3, s.getAnio());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
+
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
@@ -73,8 +72,7 @@ public class DataPagos {
 			stmt.setInt(4, s.getMes());
 			stmt.setInt(5, s.getAnio());
 			
-			stmt.execute();
-			rta = true;
+			rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}

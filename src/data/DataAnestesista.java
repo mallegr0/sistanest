@@ -9,6 +9,8 @@ public class DataAnestesista {
 	
 	public DataAnestesista(){}
 	
+	private boolean rta = false;
+	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null)stmt.close();
@@ -17,7 +19,7 @@ public class DataAnestesista {
 		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	public void altaAnestesista(Anestesista a){
+	public boolean altaAnestesista(Anestesista a){
 		
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -33,16 +35,18 @@ public class DataAnestesista {
 			stmt.setInt(4, a.getMatricula());
 			stmt.setInt(5, a.getGrupo());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			rs = stmt.getGeneratedKeys();
 			if(rs != null && rs.next()){
 				a.setIdAnestesista(rs.getInt(1));
 			}
 			
-		}catch(SQLException | ApplicationException e){e.printStackTrace();}finally{cerrarConn(stmt, rs);}
+		}catch(SQLException | ApplicationException e){e.printStackTrace();}
+		finally{cerrarConn(stmt, rs);}
+		return rta;
 	}
 
-	public void bajaAnestesista(Anestesista a){
+	public boolean bajaAnestesista(Anestesista a){
 		
 		PreparedStatement stmt = null;
 		String sqlD ="DELETE FROM anestesistas WHERE idAnestesista = ?";
@@ -52,14 +56,15 @@ public class DataAnestesista {
 			
 			stmt.setInt(1, a.getIdAnestesista());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 
-	public void modificaAnestesista(Anestesista a){
+	public boolean modificaAnestesista(Anestesista a){
 		PreparedStatement stmt = null;
 		String sqlU = "UPDATE anestesistas SET (nombreAnestesista = ?, apellidoAnestesista = ?,"
 				+ " matricula = ?, grupo = ?) WHERE idAnestesista = ?";
@@ -73,10 +78,11 @@ public class DataAnestesista {
 			stmt.setInt(4, a.getGrupo());
 			stmt.setInt(5, a.getIdAnestesista());
 			
-			stmt.execute();
+			rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
-		finally{cerrarConn(stmt, null);}
+		finally{cerrarConn(stmt, null);} 
+		return rta;
 	}
 
 	public Anestesista consultaAnestesista(Anestesista a){

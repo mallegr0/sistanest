@@ -10,6 +10,8 @@ public class DataAnestesia {
 	
 	public DataAnestesia(){}
 	
+	private boolean rta = false;
+	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null) stmt.close();
@@ -19,7 +21,7 @@ public class DataAnestesia {
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 
-	public void altaAnestesia(Anestesia a){
+	public boolean altaAnestesia(Anestesia a){
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sqlI = "INSERT INTO anestesias (idAnestesia, fecPrestacion, fecARA, "
@@ -51,7 +53,7 @@ public class DataAnestesia {
 			stmt.setInt(18, a.getIdOS());
 			stmt.setInt(19, a.getIdTpoAnestesia());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 			rs = stmt.getGeneratedKeys();
 			if(rs != null && rs.next()){
@@ -60,9 +62,10 @@ public class DataAnestesia {
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
+		return rta;
 	}
 
-	public void bajaAnestesia(Anestesia a){
+	public boolean bajaAnestesia(Anestesia a){
 		PreparedStatement stmt = null;
 		String sqlD = "DELETE FROM anestesias WHERE idAnestesia = ?";
 		
@@ -71,13 +74,14 @@ public class DataAnestesia {
 			
 			stmt.setInt(1, a.getIdAnestesia());
 			
-			stmt.execute();
+			rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 	
-	public void modificaAnestesia(Anestesia a){
+	public boolean modificaAnestesia(Anestesia a){
 		PreparedStatement stmt = null;
 		String sqlU = "UPDATE anestesias SET (fecPrestacion = ?, fecARA = ?, fecRendicion = ?, "
 				+ "fecCarga = ?, afiliado = ?, nroAfiliado = ?, nocturno = ?, feriado = ?,"
@@ -108,10 +112,11 @@ public class DataAnestesia {
 			stmt.setInt(18, a.getIdTpoAnestesia());
 			stmt.setInt(19, a.getIdAnestesia());
 			
-			stmt.execute();
+			rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
+		return rta;
 	}
 
 	public Anestesia consultaAnestesia(Anestesia a){

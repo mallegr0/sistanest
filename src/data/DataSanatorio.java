@@ -16,7 +16,7 @@ public class DataSanatorio {
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	boolean rta = false;
+	private boolean rta = false;
 	
 	public boolean altaSanatorio(Sanatorio s){
 		
@@ -30,13 +30,12 @@ public class DataSanatorio {
 			stmt.setInt(1, s.getIdSanatorio());
 			stmt.setString(2, s.getRazonSocial());
 			
-			stmt.execute();
+			rta = stmt.execute();
 			
 			rs = stmt.getGeneratedKeys();
 			if (rs != null && rs.next()){
 				s.setIdSanatorio(rs.getInt(1));
 			}
-			rta = true;
 		} catch (SQLException | ApplicationException e ) { e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return rta;
@@ -50,8 +49,7 @@ public class DataSanatorio {
 		try{
 		stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
 		stmt.setInt(1, s.getIdSanatorio());
-		stmt.execute();
-		rta = true;
+		rta = stmt.execute();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}
@@ -69,9 +67,8 @@ public class DataSanatorio {
 			stmt.setString(1, s.getRazonSocial());
 			stmt.setInt(2, s.getIdSanatorio());
 			
-			stmt.execute();
-			
-			rta = true;
+			rta = stmt.execute();
+
 		}
 		catch (SQLException | ApplicationException e){ e.printStackTrace();}
 		finally{cerrarConn(stmt, null);}

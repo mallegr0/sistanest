@@ -9,10 +9,10 @@ public class CtrlTpoAnestesia {
 	
 	public CtrlTpoAnestesia() {}
 	
-	boolean rta = false;
-	TpoAnestesia proceso = new TpoAnestesia();
-	DataTpoAnestesia dta = new DataTpoAnestesia();
-	ArrayList<TpoAnestesia> listado = new ArrayList<>();
+	private boolean rta = false;
+	private TpoAnestesia proceso = new TpoAnestesia();
+	private DataTpoAnestesia dta = new DataTpoAnestesia();
+	private ArrayList<TpoAnestesia> listado = new ArrayList<>();
 	
 	public boolean altaTpoAnestesia(TpoAnestesia ta) {
 		if(dta.altaTpoAnestesia(ta) == true) rta = true;

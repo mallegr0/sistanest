@@ -8,9 +8,9 @@ public class CtrlSaldo {
 	
 	public CtrlSaldo() {}
 	
-	boolean rta = false;
-	Saldo saldo = new Saldo();
-	DataPagos ds = new DataPagos();
+	private boolean rta = false;
+	private Saldo saldo = new Saldo();
+	private DataPagos ds = new DataPagos();
 	
 	public boolean altaSaldo(Saldo s) {
 		if(ds.altaPago(s) == true) rta = true;
