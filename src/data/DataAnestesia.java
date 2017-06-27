@@ -159,7 +159,50 @@ public class DataAnestesia {
 		return anes;
 	}
 
-	public ArrayList<Anestesia>listarFecha(Date fecIni, Date fecFin){
+	public ArrayList<Anestesia> listarAnestesias(){
+		ArrayList<Anestesia>listado = new ArrayList<>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Anestesia anes = null;
+		String sql = "SELECT * FROM anestesias";
+		
+		try{
+			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			
+			rs = stmt.executeQuery();
+			
+			if(rs != null && rs.next()){
+				while(rs.next()){
+					anes = new Anestesia();
+					anes.setFecPrestacion(rs.getDate(2));
+					anes.setFecAra(rs.getDate(3));
+					anes.setFecRendicion(rs.getDate(4));
+					anes.setFecCarga(rs.getDate(5));
+					anes.setAfiliado(rs.getString(6));
+					anes.setNroAfiliado(rs.getInt(7));
+					anes.setNocturno(rs.getInt(8));
+					anes.setFeriado(rs.getInt(9));
+					anes.setFds(rs.getInt(10));
+					anes.setNroTalon(rs.getInt(11));
+					anes.setNroVias(rs.getInt(12));
+					anes.setEdad(rs.getInt(13));
+					anes.setUser(rs.getString(14));
+					anes.setIdMedico(rs.getInt(15));
+					anes.setIdAnestesista(rs.getInt(16));
+					anes.setIdSanatorio(rs.getInt(17));
+					anes.setIdOS(rs.getInt(18));
+					anes.setIdTpoAnestesia(rs.getInt(19));
+					listado.add(anes);
+				}
+			}
+		}
+		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		finally{cerrarConn(stmt, rs);}
+		
+		return listado;
+	}
+		
+	public ArrayList<Anestesia>listarPorFecha(Date fecIni, Date fecFin){
 		ArrayList<Anestesia>listado = new ArrayList<>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
