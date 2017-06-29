@@ -8,15 +8,17 @@ public class DataSanatorio {
 	
 	public DataSanatorio(){}
 	
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
+	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null)stmt.close();
 			if(rs != null)rs.close();
-			Conector.getInstacia().cerrarConn();}
+			conexion.cerrarConn();}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	private boolean rta = false;
 	
 	public boolean altaSanatorio(Sanatorio s){
 		
@@ -25,20 +27,23 @@ public class DataSanatorio {
 		String sqlI = "INSERT INTO sanatorios (idSanatorio, razonSocial) VALUES (?, ?)";
 		
 		try {
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS );
+			stmt = conn.prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS );
 			
 			stmt.setInt(1, s.getIdSanatorio());
 			stmt.setString(2, s.getRazonSocial());
 			
-			rta = stmt.execute();
-			
+			stmt.execute();
+		
 			rs = stmt.getGeneratedKeys();
 			if (rs != null && rs.next()){
 				s.setIdSanatorio(rs.getInt(1));
 			}
-		} catch (SQLException | ApplicationException e ) { e.printStackTrace();}
+			return true;
+		} catch (SQLException  e ) { 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, rs);}
-		return rta;
+		
 	}
 	
 	public boolean bajaSanatorio(Sanatorio s){
@@ -47,13 +52,16 @@ public class DataSanatorio {
 		String sqlD = "DELETE FROM sanatorios WHERE idSanatorio = ?";
 		
 		try{
-		stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+		stmt = conn.prepareStatement(sqlD);
 		stmt.setInt(1, s.getIdSanatorio());
-		rta = stmt.execute();
+		stmt.execute();
+		return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
  	}
 	
 	public boolean modificaSanatorio(Sanatorio s){
@@ -62,18 +70,20 @@ public class DataSanatorio {
 		String sqlU = "UPDATE sanatorios SET razonSocial = ? WHERE idSanatorio = ?";
 		
 		try {
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setString(1, s.getRazonSocial());
 			stmt.setInt(2, s.getIdSanatorio());
 			
-			rta = stmt.execute();
-
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e){ e.printStackTrace();}
+		catch (SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
 		
-		return rta;
+		
 	}
 	
 	public Sanatorio consultaSanatorio(Sanatorio s){
@@ -84,7 +94,7 @@ public class DataSanatorio {
 		Sanatorio san = null;
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			stmt.setInt(1, s.getIdSanatorio());
 			rs = stmt.executeQuery();
@@ -94,7 +104,7 @@ public class DataSanatorio {
 			san.setIdSanatorio(rs.getInt(1));
 			san.setRazonSocial(rs.getString(2));	
 		}
-		catch(SQLException | ApplicationException e){ e.printStackTrace();}
+		catch(SQLException  e){ e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return san;
 	}
@@ -107,7 +117,7 @@ public class DataSanatorio {
 		String sql = "SELECT * FROM sanatorios";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			
@@ -120,7 +130,7 @@ public class DataSanatorio {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

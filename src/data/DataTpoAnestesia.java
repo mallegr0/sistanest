@@ -9,15 +9,16 @@ public class DataTpoAnestesia {
 	
 	public DataTpoAnestesia(){}
 	
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
+	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(rs != null) rs.close();
 			if(stmt != null)stmt.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}catch(SQLException | ApplicationException e) {e.printStackTrace();}		
 	}
-	
-	private boolean rta = false;
 	
 	public boolean altaTpoAnestesia(TpoAnestesia tpoa){
 		
@@ -27,22 +28,25 @@ public class DataTpoAnestesia {
 				+ "VALUES(?, ?)";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			stmt.setInt(1, tpoa.getIdTpoAnestesia());
 			stmt.setString(2, tpoa.getDescTpoAnestesia());
 			
-			rta = stmt.execute();
+			stmt.execute();
 			rs = stmt.getGeneratedKeys();
 			
 			if(rs != null && rs.next()) 
 			{
 				tpoa.setIdTpoAnestesia(rs.getInt(1));
 			}
+			return true;
 		}
-		catch (SQLException | ApplicationException e){ e.printStackTrace();}
+		catch (SQLException  e){ 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, rs);}
-		return rta;
+		
 	}
 
 	public boolean bajaTpoAnestesia(TpoAnestesia tpoa) {
@@ -51,13 +55,16 @@ public class DataTpoAnestesia {
 		String sqlD = "DELETE FROM tpoanestesias WHERE idTpoAnestesia = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			stmt.setInt(1, tpoa.getIdTpoAnestesia());
-			rta = stmt.execute();	
+			stmt.execute();	
+			return true;
 		}
-		catch( SQLException | ApplicationException e){e.printStackTrace();}
+		catch( SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{ cerrarConn(stmt, null); }
-		return rta;
+		
 	}
 	
 	public boolean modificaTpoAnestesia(TpoAnestesia tpoa) {
@@ -66,16 +73,18 @@ public class DataTpoAnestesia {
 		String sqlU ="UPDATE tpoAnestesia SET descTpoAnestesia = ? WHERE idTpoAnestesia = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setString(1, tpoa.getDescTpoAnestesia());
 			stmt.setInt(2, tpoa.getIdTpoAnestesia());
 			
-			rta = stmt.execute();
-			
-		}catch(SQLException | ApplicationException e){e.printStackTrace();}
+			stmt.execute();
+			return true;
+		}catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{ cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 	
 	public TpoAnestesia consultaTpoAnestesia(TpoAnestesia tpoa){
@@ -86,7 +95,7 @@ public class DataTpoAnestesia {
 		String sqlC = "SELECT * FROM tpoAnestesia WHERE idTpoAnestesia = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			stmt.setInt(1, tpoa.getIdTpoAnestesia());
 			
@@ -95,7 +104,7 @@ public class DataTpoAnestesia {
 			tipoA.setIdTpoAnestesia(rs.getInt(1));
 			tipoA.setDescTpoAnestesia(rs.getString(2));
 			
-		}catch(SQLException | ApplicationException e){e.printStackTrace();}
+		}catch(SQLException  e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, rs);
 		}
 		return tipoA;
@@ -109,7 +118,7 @@ public class DataTpoAnestesia {
 		String sql = "SELECT * FROM tpoAnestesias ORDER BY descTpoAnestesia";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			
@@ -122,7 +131,7 @@ public class DataTpoAnestesia {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

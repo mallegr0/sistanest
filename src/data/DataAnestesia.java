@@ -10,13 +10,14 @@ public class DataAnestesia {
 	
 	public DataAnestesia(){}
 	
-	private boolean rta = false;
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
@@ -31,7 +32,7 @@ public class DataAnestesia {
 				+ "?, ?, ?, ?, ?, ?)";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			stmt.setInt(1, a.getIdAnestesia());
 			stmt.setDate(2, (Date)a.getFecPrestacion());
@@ -53,16 +54,18 @@ public class DataAnestesia {
 			stmt.setInt(18, a.getIdOS());
 			stmt.setInt(19, a.getIdTpoAnestesia());
 			
-			rta = stmt.execute();
+			stmt.execute();
 			
 			rs = stmt.getGeneratedKeys();
 			if(rs != null && rs.next()){
 				a.setIdAnestesia(rs.getInt(1));
 			}
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, rs);}
-		return rta;
 	}
 
 	public boolean bajaAnestesia(Anestesia a){
@@ -70,15 +73,17 @@ public class DataAnestesia {
 		String sqlD = "DELETE FROM anestesias WHERE idAnestesia = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			
 			stmt.setInt(1, a.getIdAnestesia());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
 	}
 	
 	public boolean modificaAnestesia(Anestesia a){
@@ -90,7 +95,7 @@ public class DataAnestesia {
 				+ "idTpoAnestesia = ? WHERE idAnestesia = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setDate(1, (Date)a.getFecPrestacion());
 			stmt.setDate(2, (Date)a.getFecAra());
@@ -112,11 +117,13 @@ public class DataAnestesia {
 			stmt.setInt(18, a.getIdTpoAnestesia());
 			stmt.setInt(19, a.getIdAnestesia());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
 	}
 
 	public Anestesia consultaAnestesia(Anestesia a){
@@ -126,7 +133,7 @@ public class DataAnestesia {
 		String sqlC = "SELECT * FROM anestesias WHERE idAnestesia = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC);
+			stmt =conn.prepareStatement(sqlC);
 			
 			stmt.setInt(1, a.getIdAnestesia());
 			
@@ -154,7 +161,7 @@ public class DataAnestesia {
 				anes.setIdTpoAnestesia(rs.getInt(19));
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return anes;
 	}
@@ -167,7 +174,7 @@ public class DataAnestesia {
 		String sql = "SELECT * FROM anestesias";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			
@@ -196,7 +203,7 @@ public class DataAnestesia {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		
 		return listado;
@@ -211,7 +218,7 @@ public class DataAnestesia {
 				+ "ORDER BY fecPrestacion";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			stmt.setDate(1, fecIni);
 			stmt.setDate(2, fecFin);
@@ -243,7 +250,7 @@ public class DataAnestesia {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
@@ -266,7 +273,7 @@ public class DataAnestesia {
 		}
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			if(fecIni != null && fecFin != null){
 				stmt.setInt(1, id);
@@ -305,7 +312,7 @@ public class DataAnestesia {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
@@ -328,7 +335,7 @@ public class DataAnestesia {
 		}
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			if(fecIni != null && fecFin != null){
 				stmt.setInt(1, id);
@@ -367,7 +374,7 @@ public class DataAnestesia {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
@@ -378,7 +385,7 @@ public class DataAnestesia {
 		Anestesia anes = null;
 		String sql = "SELECT * FROM anestesias WHERE afiliado LIKE CONCAT('%', ?, '%')";
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			stmt.setString(1, paciente);
 			
@@ -406,7 +413,7 @@ public class DataAnestesia {
 					anes.setIdTpoAnestesia(rs.getInt(19));
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return anes;
 	}

@@ -18,12 +18,13 @@ public class DataSanatoriosAnestesistas {
 		try{
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	private boolean rta = false;
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
 	
 	//alta
 	public boolean altaSanatorioAnestesista(AnestesistaSanatorio as) {
@@ -33,17 +34,18 @@ public class DataSanatoriosAnestesistas {
 				+ "(idsanatorio, idAnestesista) VALUES (?, ?)";
 		
 		try {
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			stmt.setInt(1, as.getIdSanatorio());
 			stmt.setInt(2, as.getIdAnestesista());
 			
-			rta = stmt.execute();
-			
-		} catch (SQLException | ApplicationException e) {
+			stmt.execute();
+			return true;
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} finally {cerrarConn(stmt, rs);}
-		return rta;
+		
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
@@ -57,18 +59,21 @@ public class DataSanatoriosAnestesistas {
 				+ "idAnestesista = ? WHERE idSanatorio = ? OR idAnestesista = ?";
 			
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setInt(1, as.getIdSanatorio());
 			stmt.setInt(2, as.getIdAnestesista());
 			stmt.setInt(3, as.getIdSanatorio());
 			stmt.setInt(4, as.getIdAnestesista());
 				
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e) { e.printStackTrace();}
+		catch (SQLException e) { 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta; 
+		 
 			
 	}
 		
@@ -81,16 +86,19 @@ public class DataSanatoriosAnestesistas {
 				+ "idSanatorio = ? or idAnestesista = ?";
 			
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			
 			stmt.setInt(1, as.getIdSanatorio());
 			stmt.setInt(2, as.getIdAnestesista());
 				
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
+		catch (SQLException  e ){	
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 		
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD
@@ -104,7 +112,7 @@ public class DataSanatoriosAnestesistas {
 				+ "WHERE idSanatorio = ? OR idAnestesista = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, as.getIdSanatorio());
 			stmt.setInt(2, as.getIdAnestesista());
 			
@@ -116,7 +124,7 @@ public class DataSanatoriosAnestesistas {
 				a.setIdAnestesista(rs.getInt(2));
 			}
 		}
-		catch(SQLException | ApplicationException e) {e.printStackTrace();}
+		catch(SQLException  e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return a;
 	}
@@ -129,7 +137,7 @@ public class DataSanatoriosAnestesistas {
 		String sql = "SELECT * FROM procedimientos ORDER BY idSanatorio GROUP BY idSanatorio";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			
@@ -142,7 +150,7 @@ public class DataSanatoriosAnestesistas {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		
 		return listado;

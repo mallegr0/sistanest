@@ -7,16 +7,18 @@ public class DataPagos {
 	
 	public DataPagos(){}
 	
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
+	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 		
 	}
 	
-	private boolean rta = false;
 	
 	public boolean altaPago(Saldo s){
 		PreparedStatement stmt = null;
@@ -24,7 +26,7 @@ public class DataPagos {
 				+ "VALUES(?, ?, ?, ?, ?)";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI);
+			stmt = conn.prepareStatement(sqlI);
 			
 			stmt.setInt(1, s.getIdAnestesista());
 			stmt.setInt(2, s.getMes());
@@ -32,11 +34,14 @@ public class DataPagos {
 			stmt.setFloat(4, s.getMonto());
 			stmt.setString(5, s.getEstado());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 	
 	public boolean bajaPago(Saldo s) {
@@ -44,18 +49,20 @@ public class DataPagos {
 		String sqlD = "DELETE FROM saldo WHERE idAnestesista = ?, mes = ?, anio = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			
 			stmt.setInt(1, s.getIdAnestesista());
 			stmt.setInt(2, s.getMes());
 			stmt.setInt(3, s.getAnio());
 			
-			rta = stmt.execute();
-
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 
 	public boolean modificarPago(Saldo s){
@@ -64,7 +71,7 @@ public class DataPagos {
 				+ "mes = ?, anio = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setFloat(1, s.getMonto());
 			stmt.setString(2, s.getEstado());
@@ -72,11 +79,14 @@ public class DataPagos {
 			stmt.setInt(4, s.getMes());
 			stmt.setInt(5, s.getAnio());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 
 	public Saldo consultaPago(Saldo s){
@@ -86,7 +96,7 @@ public class DataPagos {
 		String sqlC = "SELECT * FROM WHERE idAnestesista = ?, mes = ?, anio = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC);
+			stmt = conn.prepareStatement(sqlC);
 			
 			stmt.setInt(1, s.getIdAnestesista());
 			stmt.setInt(2, s.getMes());
@@ -103,7 +113,7 @@ public class DataPagos {
 				pago.setEstado(rs.getString(5));
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		
 		

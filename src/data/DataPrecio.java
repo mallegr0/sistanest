@@ -7,15 +7,17 @@ public class DataPrecio {
 	
 	public DataPrecio(){}
 	
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
+	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	private boolean rta = false;
 
 	public boolean altaPrecio(Precio p){
 		
@@ -24,18 +26,21 @@ public class DataPrecio {
 				+ "VALUES (?,?,?,?)";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setDate(1, (Date) p.getFecha());
 			stmt.setInt(1, p.getIdSanatorio());
 			stmt.setInt(2, 3);
 			stmt.setFloat(4, p.getValor());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{ cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 	
 	public boolean bajaPrecio(Precio p){
@@ -46,18 +51,20 @@ public class DataPrecio {
 		
 		try{
 			
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			
 			stmt.setDate(1, (Date)p.getFecha());
 			stmt.setInt(2, p.getIdSanatorio());
 			stmt.setInt(3, p.getIdTpoAnestesia());
 			
-			rta = stmt.execute();
-			
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{ cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 	
 	public boolean modificaPrecio(Precio p){
@@ -67,19 +74,21 @@ public class DataPrecio {
 				+ "idTpoAnestesia = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setFloat(1, p.getValor());
 			stmt.setDate(2, (Date)p.getFecha());
 			stmt.setInt(3, p.getIdSanatorio());
 			stmt.setInt(4, p.getIdTpoAnestesia());
 			
-			rta = stmt.execute();
-			
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 	
 	public Precio consultaPrecio(Precio p) {
@@ -92,7 +101,7 @@ public class DataPrecio {
 		
 		try{
 			
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			stmt.setDate(1, (Date)p.getFecha());
 			stmt.setInt(2, p.getIdSanatorio());
@@ -108,7 +117,7 @@ public class DataPrecio {
 				precio.setValor(rs.getFloat(4));
 			}
 		}
-		catch(SQLException | ApplicationException e) {e.printStackTrace();}
+		catch(SQLException  e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return precio;
 	}

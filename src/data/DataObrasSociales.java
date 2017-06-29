@@ -15,18 +15,20 @@ public class DataObrasSociales {
 	
 	public DataObrasSociales() {}
 	
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
+	
 	// ALTA -- Hago el metodo con el insert en la BBDD
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null)stmt.close();
 			if(rs != null)rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	private boolean rta = false;
 	
 	public boolean altaObraSocial(ObraSocial os){
 		// Declaro las variables a usar
@@ -37,7 +39,7 @@ public class DataObrasSociales {
 		
 		// Creo la sentencia insert 
 		try {
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			//Con este paso cambio los signos de pregunta por los datos del objeto en si
 			stmt.setInt(1, os.getIdOS());
@@ -46,7 +48,7 @@ public class DataObrasSociales {
 			
 			//Ejecutamos la consulta
 			
-			rta = stmt.execute();
+			stmt.execute();
 			
 			//Devuelvo el siguiente id de la tabla
 			
@@ -55,11 +57,13 @@ public class DataObrasSociales {
 			{
 				os.setIdOS(rs.getInt(1));
 			}
+			return true;
 		}
-		catch (SQLException e){ e.printStackTrace();} 
-		catch (ApplicationException e) { e.printStackTrace();} 
+		catch (SQLException e){ 
+			e.printStackTrace();
+			return false;} 
 		finally{cerrarConn(stmt, rs);}
-		return rta;
+		
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
@@ -72,18 +76,20 @@ public class DataObrasSociales {
 		String sqlU = "UPDATE obras_sociales SET descOS = ?, diasMax = ? WHERE idOS = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setString(1, os.getDescOS());
 			stmt.setInt(2, os.getDiasMax());
 			stmt.setInt(3, os.getIdOS());
 			
-			rta = stmt.execute();
-
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e) { e.printStackTrace();}
+		catch (SQLException  e) { 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;	
+			
 	}
 	
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
@@ -94,14 +100,17 @@ public class DataObrasSociales {
 		String sqlD = "DELETE FROM obras_sociales where idOS = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			stmt.setInt(1, os.getIdOS());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
+		catch (SQLException  e ){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 	
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD
@@ -114,7 +123,7 @@ public class DataObrasSociales {
 		String sqlC = "SELECT * FROM obras_sociales WHERE idOS = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, os.getIdOS());
 			
 			rs = stmt.executeQuery();
@@ -127,7 +136,7 @@ public class DataObrasSociales {
 				OS.setDiasMax(rs.getInt(3));
 			}
 		}
-		catch(SQLException | ApplicationException e) {e.printStackTrace();}
+		catch(SQLException  e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return OS;
 	}
@@ -140,7 +149,7 @@ public class DataObrasSociales {
 		String sql = "SELECT * FROM obras_sociales";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			
@@ -153,7 +162,7 @@ public class DataObrasSociales {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

@@ -4,6 +4,8 @@ package data;
 
 import java.sql.*; // Adentro esta el preparedStatement y el SQLException que voy a usar mas adelante
 import java.util.ArrayList;
+
+
 import entidades.Procedimiento; // importo la clase para usarlo como objeto
 import utilidades.ApplicationException; // importo la clase para manejar excepcion
 
@@ -15,16 +17,18 @@ public class DataProcedimientos {
 	
 	public DataProcedimientos(){}
 	
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
+	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	private boolean rta = false;
 	// ALTA -- Hago el metodo con el insert en la BBDD
 	
 	public boolean altaProcedimiento(Procedimiento p){
@@ -34,32 +38,28 @@ public class DataProcedimientos {
 		PreparedStatement stmt = null;
 		String sqlI = "INSERT INTO procedimientos (idProcedimiento, codProcedimiento, "
 				+ "descProcedimiento, complejidad) VALUES(?,?,?,?)";
-		
 		// Creo la sentencia insert 
 		try {
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
-			
-			//Con este paso cambio los signos de pregunta por los datos del objeto en si
-			stmt.setInt(1, p.getIdProcedimiento());
-			stmt.setInt(2, p.getCodProcedimiento());
-			stmt.setString(3, p.getDescProcedimiento());
-			stmt.setInt(4, p.getComplejidad());
-			
-			//Ejecutamos la consulta
-			
-			rta = stmt.execute();
-			
-			//Devuelvo el siguiente id de la tabla
-			
-			rs=stmt.getGeneratedKeys();
-			if(rs != null && rs.next())
-			{
-				p.setIdProcedimiento(rs.getInt(1));
-			}
+				stmt = conn.prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
+				//Con este paso cambio los signos de pregunta por los datos del objeto en si
+				stmt.setInt(1, p.getIdProcedimiento());
+				stmt.setInt(2, p.getCodProcedimiento());
+				stmt.setString(3, p.getDescProcedimiento());
+				stmt.setInt(4, p.getComplejidad());
+				//Ejecutamos la consulta
+				stmt.execute();
+				rs = stmt.getGeneratedKeys();
+				if(rs != null && rs.next()){
+					p.setIdProcedimiento(rs.getInt(1));
+					System.out.println(p.getIdProcedimiento());
+				}
+				
+			return true;
 		}
-		catch (SQLException | ApplicationException e){ e.printStackTrace();} 
+		catch (SQLException  e){ 
+			e.printStackTrace();
+			return false;} 
 		finally{cerrarConn(stmt, rs);}
-		return rta;
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
@@ -73,18 +73,20 @@ public class DataProcedimientos {
 				+ "complejidad = ? WHERE codProcedimiento = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setInt(1, p.getCodProcedimiento());
 			stmt.setString(2, p.getDescProcedimiento());
 			stmt.setInt(3, p.getComplejidad());
 			stmt.setInt(4, p.getIdProcedimiento());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e) { e.printStackTrace();}
+		catch (SQLException  e) { 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;	
 	}
 	
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
@@ -95,14 +97,16 @@ public class DataProcedimientos {
 		String sqlD = "DELETE FROM procedimientos where idProcedimiento = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			stmt.setInt(1, p.getIdProcedimiento());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
+		catch (SQLException  e ){ 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
 	}
 	
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD
@@ -115,7 +119,7 @@ public class DataProcedimientos {
 		String sqlC = "SELECT * FROM procedimientos WHERE idProcedimiento = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, p.getIdProcedimiento());
 			
 			rs = stmt.executeQuery();
@@ -129,7 +133,7 @@ public class DataProcedimientos {
 				procedimiento.setComplejidad(rs.getInt(4));
 			}
 		}
-		catch(SQLException | ApplicationException e) {e.printStackTrace();}
+		catch(SQLException  e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return procedimiento;
 	}
@@ -142,7 +146,7 @@ public class DataProcedimientos {
 		String sql = "SELECT * FROM sanatorios";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			
@@ -157,7 +161,7 @@ public class DataProcedimientos {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

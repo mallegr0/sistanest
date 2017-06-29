@@ -1,6 +1,5 @@
 package controlador;
 
-import java.sql.Array;
 import java.util.*;
 import entidades.Usuario;
 import data.DataUsuario;

@@ -10,13 +10,14 @@ public class DataUsuario {
 	
 	public DataUsuario(){}
 	
-	boolean rta = false;
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
@@ -27,7 +28,7 @@ public class DataUsuario {
 				+ " mailUsuario, grupo, idRol) VALUES(???????)";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI);
+			stmt = conn.prepareStatement(sqlI);
 			
 			stmt.setString(1, u.getUser());
 			stmt.setString(2, u.getPassword());
@@ -37,11 +38,14 @@ public class DataUsuario {
 			stmt.setInt(6, u.getGrupo());
 			stmt.setInt(7, u.getIdRol());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 
 	public boolean borraUsuario(Usuario u){
@@ -49,15 +53,18 @@ public class DataUsuario {
 		String sqlD ="DELETE FROM usuarios WHERE user = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			
 			stmt.setString(1, u.getUser());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 	
 	public boolean modificaUsuario(Usuario u) {
@@ -67,7 +74,7 @@ public class DataUsuario {
 				+ "mailUSuario = ?, idRol = ?, grupo = ? WHERE user = ?)";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setString(1, u.getPassword());
 			stmt.setString(2, u.getNombreUsuario());
@@ -77,12 +84,14 @@ public class DataUsuario {
 			stmt.setInt(6, u.getGrupo());
 			stmt.setString(7, u.getUser());
 			
-			rta = stmt.execute();
-			
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 	
 	public Usuario consultaUsuario(Usuario u){
@@ -92,7 +101,7 @@ public class DataUsuario {
 		String sqlC = "SELECT * FROM usuarios user = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC);
+			stmt = conn.prepareStatement(sqlC);
 			
 			stmt.setString(1, u.getUser());
 			
@@ -109,7 +118,7 @@ public class DataUsuario {
 				user.setIdRol(rs.getInt(7));
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return user;
 	}
@@ -122,7 +131,7 @@ public class DataUsuario {
 		String sqla = "SELECT * FROM usuarios ORDER BY user";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqla);
+			stmt = conn.prepareStatement(sqla);
 			
 			rs = stmt.executeQuery();
 			
@@ -140,7 +149,7 @@ public class DataUsuario {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
@@ -153,7 +162,7 @@ public class DataUsuario {
 		String sqla = "SELECT * FROM usuarios WHERE grupo = 'NULL' ORDER BY user";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqla);
+			stmt = conn.prepareStatement(sqla);
 			
 			rs = stmt.executeQuery();
 			
@@ -171,7 +180,7 @@ public class DataUsuario {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

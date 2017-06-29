@@ -11,7 +11,7 @@ public class CtrlObraSocial {
 	
 	private ArrayList<ObraSocial> listado = new ArrayList<>();
 	private boolean rta = false;
-	private ObraSocial os = new ObraSocial();
+	private ObraSocial osl = new ObraSocial();
 	private DataObrasSociales dos = new DataObrasSociales();
 	
 	public boolean altaObraSocial(ObraSocial os){
@@ -30,8 +30,8 @@ public class CtrlObraSocial {
 	}
 	
 	public ObraSocial consultaObraSocial(ObraSocial os){
-		os = dos.consultaObraSocial(os);
-		return os;
+		osl = dos.consultaObraSocial(os);
+		return osl;
 	}
 	
 	public ArrayList<ObraSocial> listarObraSocial(){

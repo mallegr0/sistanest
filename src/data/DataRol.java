@@ -18,12 +18,13 @@ public class DataRol {
 		try{
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	private boolean rta = false;
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
 	
 	//alta
 	public Boolean altaRol(Rol r) {
@@ -32,22 +33,23 @@ public class DataRol {
 		String sqlI = "INSERT INTO roles (idRol, descRol) VALUES (?, ?)";
 		
 		try {
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			stmt.setInt(1, r.getIdRol());
 			stmt.setString(2, r.getDescRol());
 			
-			rta = stmt.execute();
-			
+			stmt.execute();
+
 			rs = stmt.getGeneratedKeys();
 			if(rs != null && rs.next()) r.setIdRol(rs.getInt(1));
 
-			
-		} catch (SQLException | ApplicationException e) {
+			return true;
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} finally {cerrarConn(stmt, rs);}
 		
-		return rta;
+		
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
@@ -60,17 +62,19 @@ public class DataRol {
 		String sqlU = "UPDATE roles SET descRol = ? WHERE idRol = ?";
 			
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setString(1, r.getDescRol());
 			stmt.setInt(2, r.getIdRol());
 				
-			rta = stmt.execute();
-			
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e) { e.printStackTrace();}
+		catch (SQLException e) { 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 		
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
@@ -81,14 +85,17 @@ public class DataRol {
 		String sqlD = "DELETE FROM roles where idRol = ?";
 
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			stmt.setInt(1, r.getIdRol());
 				
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
+		catch (SQLException  e ){ 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
+		
 	}
 		
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD
@@ -101,7 +108,7 @@ public class DataRol {
 		String sqlC = "SELECT * FROM roles WHERE idRol = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, r.getIdRol());
 			
 			rs = stmt.executeQuery();	
@@ -112,7 +119,7 @@ public class DataRol {
 				rol.setDescRol(rs.getString(3));
 			}
 		}
-		catch(SQLException | ApplicationException e) {e.printStackTrace();}
+		catch(SQLException  e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return rol;
 	}
@@ -125,7 +132,7 @@ public class DataRol {
 		String sql = "SELECT * FROM roles ORDER BY descRol";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			
@@ -138,7 +145,7 @@ public class DataRol {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		
 		return listado;
@@ -151,12 +158,12 @@ public class DataRol {
 		ResultSet rs = null;
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			a = rs.getInt(1);
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally {cerrarConn(stmt, rs);}
 		return a;
 	}

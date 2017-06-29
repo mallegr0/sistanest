@@ -8,13 +8,14 @@ public class DataMedico {
 	
 	public DataMedico(){}
 	
-	private boolean rta = false;
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs) {
 		try{
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
@@ -26,24 +27,26 @@ public class DataMedico {
 				+ "apellidoMedico, idSanatorio) VALUES(?, ?, ?, ?)";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			stmt.setInt(1, m.getIdMedico());
 			stmt.setString(2, m.getNombreMedico());
 			stmt.setString(3, m.getApellidoMedico());
 			stmt.setInt(4, m.getIdSanatorio());
 			
-			rta = stmt.execute();
+			stmt.execute();
 			
 			rs = stmt.getGeneratedKeys();
 			if(rs != null && rs.next())
 			{
 				m.setIdMedico(rs.getInt(1));
 			}
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, rs);}
-		return rta;
 	}
 
 	public boolean bajaMedico(Medico m){
@@ -51,13 +54,16 @@ public class DataMedico {
 		String sqlD ="DELETE FROM medicos WHERE idMedico = ?";
 		
 		try {
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			stmt.setInt(1, m.getIdMedico());
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false; 
+		}
 		finally{cerrarConn(stmt, null);}
-		return rta;
 	}
 	
 	public boolean modificaMedico(Medico m){
@@ -66,17 +72,18 @@ public class DataMedico {
 				+ "idSanatorio = ?) WHERE idMEdico = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			stmt.setString(1, m.getNombreMedico());
 			stmt.setString(2, m.getApellidoMedico());
 			stmt.setInt(3, m.getIdSanatorio());
 			
-			rta = stmt.execute();
-			
+			stmt.execute();
+			return true;
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
 	}
 
 	public Medico consultaMedico(Medico m){
@@ -86,7 +93,7 @@ public class DataMedico {
 		String sqlC = "SELECT * FROM medicos WHERE idMedico = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC);
+			stmt = conn.prepareStatement(sqlC);
 			
 			stmt.setInt(1, m.getIdMedico());
 			
@@ -99,7 +106,7 @@ public class DataMedico {
 				med.setIdSanatorio(rs.getInt(4));
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		
 		return med;
@@ -113,7 +120,7 @@ public class DataMedico {
 		String sql = "SELECT * FROM medicos";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			
@@ -128,7 +135,7 @@ public class DataMedico {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}

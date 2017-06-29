@@ -12,8 +12,10 @@ public class DataAnestesiaProcedimiento {
 	public DataAnestesiaProcedimiento(){}
 	
 	//--------------------------//
+
+	Conexion conexion = new Conexion();
+	Connection conn = conexion.abrirConn();
 	
-	private boolean rta = false;
 	
 	//METODOS
 	
@@ -21,7 +23,7 @@ public class DataAnestesiaProcedimiento {
 		try{
 			if(stmt != null) stmt.close();
 			if(rs != null) rs.close();
-			Conector.getInstacia().cerrarConn();
+			conexion.cerrarConn();
 		}
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
@@ -35,24 +37,24 @@ public class DataAnestesiaProcedimiento {
 				+ "VALUES (?, ?)";
 		
 		try {
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlI);
 			
 			stmt.setInt(1, ap.getIdProcedimiento());
 			stmt.setInt(2, ap.getIdAnestesia());
 			
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 			
-		} catch (SQLException | ApplicationException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} finally {cerrarConn(stmt, rs);}
-		return rta;
 		
 	}
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
 		
 	public boolean modificaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
-			
 		//Declaro las variables
 			
 		PreparedStatement stmt = null;
@@ -60,18 +62,20 @@ public class DataAnestesiaProcedimiento {
 				+ "idAnestesia = ? WHERE idProcedimiento = ? OR idAnestesia = ?";
 			
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlU);
+			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setInt(1, ap.getIdProcedimiento());
 			stmt.setInt(2, ap.getIdAnestesia());
 			stmt.setInt(3, ap.getIdProcedimiento());
 			stmt.setInt(4, ap.getIdAnestesia());
 				
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e) { e.printStackTrace();}
+		catch (SQLException e) { 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
 	}
 		
 	// ELIMINAR -- Hago el metodo con el delete en la BBDD
@@ -83,16 +87,18 @@ public class DataAnestesiaProcedimiento {
 				+ "idProcedimiento = ? or idAnestesia = ?";
 			
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlD);
+			stmt = conn.prepareStatement(sqlD);
 			
 			stmt.setInt(1, ap.getIdProcedimiento());
 			stmt.setInt(2, ap.getIdAnestesia());
 				
-			rta = stmt.execute();
+			stmt.execute();
+			return true;
 		}
-		catch (SQLException | ApplicationException e ){ e.printStackTrace();}
+		catch (SQLException e ){ 
+			e.printStackTrace();
+			return false;}
 		finally{cerrarConn(stmt, null);}
-		return rta;
 	}
 		
 	// CONSULTAR -- Hago el metodo con la consulta a la BBDD
@@ -106,7 +112,7 @@ public class DataAnestesiaProcedimiento {
 				+ "WHERE idprocedimiento = ? OR idAnestesia = ?";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, ap.getIdProcedimiento());
 			stmt.setInt(2, ap.getIdAnestesia());
 			
@@ -118,7 +124,7 @@ public class DataAnestesiaProcedimiento {
 				a.setIdAnestesia(rs.getInt(2));
 			}
 		}
-		catch(SQLException | ApplicationException e) {e.printStackTrace();}
+		catch(SQLException e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return a;
 	}
@@ -131,7 +137,7 @@ public class DataAnestesiaProcedimiento {
 		String sql = "SELECT * FROM procedimientos ORDER BY idAnestesia GROUP BY idAnestesia";
 		
 		try{
-			stmt = Conector.getInstacia().abrirConn().prepareStatement(sql);
+			stmt = conn.prepareStatement(sql);
 			
 			rs = stmt.executeQuery();
 			
@@ -144,7 +150,7 @@ public class DataAnestesiaProcedimiento {
 				}
 			}
 		}
-		catch(SQLException | ApplicationException e){e.printStackTrace();}
+		catch(SQLException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		
 		return listado;
