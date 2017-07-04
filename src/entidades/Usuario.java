@@ -4,21 +4,20 @@ import java.io.Serializable;
 public class Usuario implements Serializable {
 	
 	//Declaro las variables de la clase
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private String user, password, nombreUsuario, apellidoUsuario, mailUsuario;
-	private int grupo, idRol;
+	private int idRol;
 	
 	//Declaro los constructores
 	public Usuario(){}
 	
 	public Usuario(String user, String password, String nombreUsuario, String apellidoUsuario,
-			String mailUsuario, int grupo, int idRol){
+			String mailUsuario, int idRol){
 		this.user = user;
 		this.password = password;
 		this.nombreUsuario = nombreUsuario;
 		this.apellidoUsuario = apellidoUsuario;
 		this.mailUsuario = mailUsuario;
-		this.grupo = grupo;
 		this.idRol = idRol;
 	}
 
@@ -62,15 +61,6 @@ public class Usuario implements Serializable {
 		this.mailUsuario = mailUsuario;
 	}
 	
-
-	public int getGrupo() {
-		return grupo;
-	}
-
-	public void setGrupo(int grupo) {
-		this.grupo = grupo;
-	}
-
 	public int getIdRol() {
 		return idRol;
 	}

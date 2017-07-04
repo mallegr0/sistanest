@@ -10,8 +10,8 @@ public class DataUsuario {
 	
 	public DataUsuario(){}
 	
-	Conexion conexion = new Conexion();
-	Connection conn = conexion.abrirConn();
+	private Conexion conexion = new Conexion();
+	private Connection conn = conexion.abrirConn();
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
@@ -25,7 +25,7 @@ public class DataUsuario {
 		
 		PreparedStatement stmt = null;
 		String sqlI = "INSERT INTO usuarios (user, password, nombreUsuario, apellidoUsuario,"
-				+ " mailUsuario, grupo, idRol) VALUES(???????)";
+				+ " mailUsuario, idRol) VALUES(?,?,?,?,?,null)";
 		
 		try{
 			stmt = conn.prepareStatement(sqlI);
@@ -35,8 +35,7 @@ public class DataUsuario {
 			stmt.setString(3, u.getNombreUsuario());
 			stmt.setString(4, u.getApellidoUsuario());
 			stmt.setString(5, u.getMailUsuario());
-			stmt.setInt(6, u.getGrupo());
-			stmt.setInt(7, u.getIdRol());
+
 			
 			stmt.execute();
 			return true;
@@ -70,8 +69,8 @@ public class DataUsuario {
 	public boolean modificaUsuario(Usuario u) {
 		
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE usuarios SET (password = ?, nombreUsuario = ?, apellidoUsuario = ?,"
-				+ "mailUSuario = ?, idRol = ?, grupo = ? WHERE user = ?)";
+		String sqlU = "UPDATE usuarios SET password = ?, nombreUsuario = ?, apellidoUsuario = ?,"
+				+ "mailUSuario = ? WHERE user = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlU);
@@ -80,9 +79,7 @@ public class DataUsuario {
 			stmt.setString(2, u.getNombreUsuario());
 			stmt.setString(3, u.getApellidoUsuario());
 			stmt.setString(4, u.getMailUsuario());
-			stmt.setInt(5, u.getIdRol());
-			stmt.setInt(6, u.getGrupo());
-			stmt.setString(7, u.getUser());
+			stmt.setString(5, u.getUser());
 			
 			stmt.execute();
 			return true;
@@ -94,11 +91,32 @@ public class DataUsuario {
 		
 	}
 	
+	public boolean actualizaUsuario(Usuario u){
+		
+		PreparedStatement stmt = null;
+		String sqlU = "UPDATE usuarios SET idRol = ? WHERE user = ?";
+		
+		try{
+			stmt = conn.prepareStatement(sqlU);
+			
+			stmt.setInt(1, u.getIdRol());
+			stmt.setString(2, u.getUser());
+			stmt.execute();
+			return true;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return false;
+		}
+		finally{cerrarConn(stmt, null);}
+	}
+	
+	
 	public Usuario consultaUsuario(Usuario u){
 		Usuario user = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sqlC = "SELECT * FROM usuarios user = ?";
+		String sqlC = "SELECT * FROM usuarios WHERE user = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlC);
@@ -114,8 +132,7 @@ public class DataUsuario {
 				user.setNombreUsuario(rs.getString(3));
 				user.setApellidoUsuario(rs.getString(4));
 				user.setMailUsuario(rs.getString(5));
-				user.setGrupo(rs.getInt(6));
-				user.setIdRol(rs.getInt(7));
+				user.setIdRol(rs.getInt(6));
 			}
 		}
 		catch(SQLException  e){e.printStackTrace();}
@@ -136,6 +153,7 @@ public class DataUsuario {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					user = new Usuario();
 					user.setUser(rs.getString(1));
@@ -143,8 +161,7 @@ public class DataUsuario {
 					user.setNombreUsuario(rs.getString(3));
 					user.setApellidoUsuario(rs.getString(4));
 					user.setMailUsuario(rs.getString(5));
-					user.setGrupo(rs.getInt(6));
-					user.setIdRol(rs.getInt(7));
+					user.setIdRol(rs.getInt(6));
 					listado.add(user);
 				}
 			}
@@ -159,7 +176,7 @@ public class DataUsuario {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		ArrayList<Usuario>listado = new ArrayList<>();
-		String sqla = "SELECT * FROM usuarios WHERE grupo = 'NULL' ORDER BY user";
+		String sqla = "SELECT * FROM usuarios WHERE idRol IS NULL ORDER BY user";
 		
 		try{
 			stmt = conn.prepareStatement(sqla);
@@ -167,6 +184,7 @@ public class DataUsuario {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					user = new Usuario();
 					user.setUser(rs.getString(1));
@@ -174,8 +192,7 @@ public class DataUsuario {
 					user.setNombreUsuario(rs.getString(3));
 					user.setApellidoUsuario(rs.getString(4));
 					user.setMailUsuario(rs.getString(5));
-					user.setGrupo(rs.getInt(6));
-					user.setIdRol(rs.getInt(7));
+					user.setIdRol(rs.getInt(6));
 					listado.add(user);
 				}
 			}
@@ -183,6 +200,26 @@ public class DataUsuario {
 		catch(SQLException  e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
+	}
+	
+	public boolean cambiaPassword(Usuario u){
+		PreparedStatement stmt = null;
+		String sqlU ="UPDATE INTO usuarios SET password = ? WHERE user = ? ";
+		
+		try{
+			stmt = conn.prepareStatement(sqlU);
+			
+			stmt.setString(1, u.getPassword());
+			stmt.setString(2, u.getUser());
+			
+			stmt.execute();
+			return true;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return false;
+		}
+		finally{cerrarConn(stmt, null);}
 	}
 	
 }

@@ -14,9 +14,10 @@ public class CtrlUsuario {
 	private Usuario usuario = new Usuario();
 	private boolean rta = false;
 	
-	public boolean altaUsuario(Usuario u) {
-		if( du.consultaUsuario(u) != null){
-				if(du.altaUsuario(u) == true) rta = true;
+	public boolean altaUsuario(Usuario u) throws ApplicationException {
+		
+		if(du.consultaUsuario(u) == null ){
+			if(du.altaUsuario(u) == true) rta = true;
 		}
 		return rta;
 	}
@@ -28,6 +29,16 @@ public class CtrlUsuario {
 	
 	public boolean modificaUsuario(Usuario u) {
 		if(du.modificaUsuario(u) == true) rta = true;
+		return rta;
+	}
+	
+	public boolean actualizaUsuario(Usuario u){
+		if(du.actualizaUsuario(u) == true) rta = true;
+		return rta;
+	}
+	
+	public boolean cambiaPassword(Usuario u){
+		if(du.cambiaPassword(u) == true) rta = true;
 		return rta;
 	}
 	
@@ -45,4 +56,6 @@ public class CtrlUsuario {
 		listado = du.listarPendientes();
 		return listado;
 	}
+	
+	
 }

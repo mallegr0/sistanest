@@ -116,11 +116,11 @@ public class DataProcedimientos {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Procedimiento procedimiento = null;
-		String sqlC = "SELECT * FROM procedimientos WHERE idProcedimiento = ?";
+		String sqlC = "SELECT * FROM procedimientos WHERE codProcedimiento = ?";
 		
 		try{
-			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, p.getIdProcedimiento());
+			stmt = conn.prepareStatement(sqlC);
+			stmt.setInt(1, p.getCodProcedimiento());
 			
 			rs = stmt.executeQuery();
 			
@@ -143,7 +143,7 @@ public class DataProcedimientos {
 		Procedimiento proceso = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
-		String sql = "SELECT * FROM sanatorios";
+		String sql = "SELECT * FROM procedimientos ORDER BY codProcedimiento";
 		
 		try{
 			stmt = conn.prepareStatement(sql);
@@ -151,6 +151,7 @@ public class DataProcedimientos {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					proceso = new Procedimiento();
 					proceso.setIdProcedimiento(rs.getInt(1));

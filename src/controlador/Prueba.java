@@ -1,22 +1,35 @@
 package controlador;
 
-import data.DataSanatorio;
-import entidades.Sanatorio;
+import java.util.ArrayList;
+import data.*;
+import entidades.*;
+import utilidades.ApplicationException;
 
 public class Prueba {
+	
 	public static void main(String[] args){
-			Data d = new Data();
-			Sanatorio s = new Sanatorio();
-			boolean t;
-			
-			s.setRazonSocial("Los Alerces");
-			
-			if(d.alta(s) == false){
-				System.out.println("no hizo nada");
-			}
-			else{
-				//System.out.println(t);
-				System.out.println("OK");
-			}
+		
+		Usuario user = new Usuario();
+		Usuario k = new Usuario();
+		CtrlUsuario dos = new CtrlUsuario();
+		ArrayList<Usuario> listado = new ArrayList<>();
+		
+		user.setUser("user");
+		//user.setPassword("user");
+		//user.setNombreUsuario("Matias");
+		//user.setApellidoUsuario("Allegranza");
+		//user.setMailUsuario("mallegr0@rosario.gov.ar");
+		//user.setIdRol(2);
+
+		
+		
+		if(dos.bajaUsuario(user) != false){
+			System.out.println("OK");
+		}
+		else{System.out.println("error");};
+		
 	}
 }
+
+	
+

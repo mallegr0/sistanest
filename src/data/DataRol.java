@@ -116,7 +116,7 @@ public class DataRol {
 			if(rs!=null && rs.next()){
 				rol = new Rol();
 				rol.setIdRol(rs.getInt(1));
-				rol.setDescRol(rs.getString(3));
+				rol.setDescRol(rs.getString(2));
 			}
 		}
 		catch(SQLException  e) {e.printStackTrace();}
@@ -136,7 +136,7 @@ public class DataRol {
 			
 			rs = stmt.executeQuery();
 			
-			if(rs != null && rs.next()){
+			if(rs != null){
 				while(rs.next()){
 					r = new Rol();
 					r.setIdRol(rs.getInt(1));

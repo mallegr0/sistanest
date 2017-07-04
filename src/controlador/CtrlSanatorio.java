@@ -10,7 +10,7 @@ public class CtrlSanatorio {
 	public CtrlSanatorio(){};
 	
 	private boolean rta = false;
-	private Sanatorio san = new Sanatorio();
+	private Sanatorio san = null;
 	private ArrayList<Sanatorio> listado = new ArrayList<>();
 	private DataSanatorio ds = new DataSanatorio();
 	
@@ -31,12 +31,10 @@ public class CtrlSanatorio {
 	
 	
 	public Sanatorio consultaSanatorio(Sanatorio s){
-		san = ds.consultaSanatorio(s);
-		return san;
+		return ds.consultaSanatorio(s);
 	}
 	
 	public  ArrayList<Sanatorio>listarSanatorio(){
-		listado = ds.listarSanatorios();
-		return listado;
+		return ds.listarSanatorios();
 	}
 }

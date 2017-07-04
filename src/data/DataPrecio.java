@@ -7,8 +7,8 @@ public class DataPrecio {
 	
 	public DataPrecio(){}
 	
-	Conexion conexion = new Conexion();
-	Connection conn = conexion.abrirConn();
+	private Conexion conexion = new Conexion();
+	private Connection conn = conexion.abrirConn();
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
@@ -18,7 +18,6 @@ public class DataPrecio {
 		}catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-
 	public boolean altaPrecio(Precio p){
 		
 		PreparedStatement stmt = null;

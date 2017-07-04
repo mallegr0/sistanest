@@ -5,21 +5,22 @@ import java.io.Serializable;
 public class Anestesista implements Serializable{
 	
 	//Variables
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private int idAnestesista, matricula, grupo;
-	private String nombreAnestesista, apellidoAnestesista;
+	private String nombreAnestesista, apellidoAnestesista, user;
 	
 	//Constructores
 	
 	public Anestesista(){}
 	
 	public Anestesista(int idAnestesista, String nombreAnestesista, String apellidoAnestesista,
-			int matricula, int grupo){
+			int matricula, int grupo, String user){
 		this.idAnestesista = idAnestesista;
 		this.nombreAnestesista = nombreAnestesista;
 		this.apellidoAnestesista = apellidoAnestesista;
 		this.matricula = matricula;
 		this.grupo = grupo;
+		this.user = user;
 	}
 
 	public int getIdAnestesista() {
@@ -62,6 +63,12 @@ public class Anestesista implements Serializable{
 		this.apellidoAnestesista = apellidoAnestesista;
 	}
 	
+	public String getUser(){
+		return user;
+	}
 	
+	public void setUser(String user) {
+		this.user = user;
+	}
 
 }

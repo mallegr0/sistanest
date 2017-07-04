@@ -44,7 +44,7 @@ public class DataObrasSociales {
 			//Con este paso cambio los signos de pregunta por los datos del objeto en si
 			stmt.setInt(1, os.getIdOS());
 			stmt.setString(2, os.getDescOS());
-			stmt.setInt(4, os.getDiasMax());
+			stmt.setInt(3, os.getDiasMax());
 			
 			//Ejecutamos la consulta
 			
@@ -123,7 +123,7 @@ public class DataObrasSociales {
 		String sqlC = "SELECT * FROM obras_sociales WHERE idOS = ?";
 		
 		try{
-			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC);
 			stmt.setInt(1, os.getIdOS());
 			
 			rs = stmt.executeQuery();
@@ -154,6 +154,7 @@ public class DataObrasSociales {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					soc = new ObraSocial();
 					soc.setIdOS(rs.getInt(1));

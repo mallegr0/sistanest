@@ -93,6 +93,27 @@ public class DataAnestesista {
 		 
 	}
 
+	public boolean ActualizaAnestesista(Anestesista a){
+		PreparedStatement stmt = null;
+		String sqlU = "UPDATE anestesistas SET (user = ?) WHERE idAnestesista = ?";
+		
+		try{
+			stmt = conn.prepareStatement(sqlU);
+			
+			stmt.setString(1, a.getUser());
+			stmt.setInt(2, a.getIdAnestesista());
+			
+			stmt.execute();
+			return true;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return false;}
+		finally{cerrarConn(stmt, null);} 
+		 
+	}
+
+	
 	public Anestesista consultaAnestesista(Anestesista a){
 		Anestesista anes = null;
 		PreparedStatement stmt = null;

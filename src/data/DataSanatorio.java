@@ -98,11 +98,11 @@ public class DataSanatorio {
 			
 			stmt.setInt(1, s.getIdSanatorio());
 			rs = stmt.executeQuery();
-			
 			san = new Sanatorio();
-			
-			san.setIdSanatorio(rs.getInt(1));
-			san.setRazonSocial(rs.getString(2));	
+			if(rs.next()){
+			san.setIdSanatorio(rs.getInt("idSanatorio"));
+			san.setRazonSocial(rs.getString("razonSocial"));
+			}
 		}
 		catch(SQLException  e){ e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
@@ -121,7 +121,7 @@ public class DataSanatorio {
 			
 			rs = stmt.executeQuery();
 			
-			if(rs != null && rs.next()){
+			if(rs != null){
 				while(rs.next()){
 					sana = new Sanatorio();
 					sana.setIdSanatorio(rs.getInt(1));

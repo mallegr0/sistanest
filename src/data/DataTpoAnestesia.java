@@ -24,7 +24,7 @@ public class DataTpoAnestesia {
 		
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		String sqlI = "INSER INTO tpoanestesias (idTpoAnestesia, descTpoAnestesia) "
+		String sqlI = "INSERT INTO tpoanestesias (idTpoAnestesia, descTpoAnestesia) "
 				+ "VALUES(?, ?)";
 		
 		try{
@@ -34,6 +34,7 @@ public class DataTpoAnestesia {
 			stmt.setString(2, tpoa.getDescTpoAnestesia());
 			
 			stmt.execute();
+			
 			rs = stmt.getGeneratedKeys();
 			
 			if(rs != null && rs.next()) 
@@ -92,17 +93,20 @@ public class DataTpoAnestesia {
 		TpoAnestesia tipoA = null;
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		String sqlC = "SELECT * FROM tpoAnestesia WHERE idTpoAnestesia = ?";
+		String sqlC = "SELECT * FROM tpoAnestesias WHERE idTpoAnestesia = ?";
 		
 		try{
-			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC);
 			
 			stmt.setInt(1, tpoa.getIdTpoAnestesia());
 			
 			rs = stmt.executeQuery();
-			tipoA = new TpoAnestesia();
-			tipoA.setIdTpoAnestesia(rs.getInt(1));
-			tipoA.setDescTpoAnestesia(rs.getString(2));
+			if(rs != null && rs.next())
+			{
+				tipoA = new TpoAnestesia();
+				tipoA.setIdTpoAnestesia(rs.getInt(1));
+				tipoA.setDescTpoAnestesia(rs.getString(2));
+			}
 			
 		}catch(SQLException  e){e.printStackTrace();}
 		finally{ cerrarConn(stmt, rs);
@@ -123,6 +127,7 @@ public class DataTpoAnestesia {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					tpo = new TpoAnestesia();
 					tpo.setIdTpoAnestesia(rs.getInt(1));
