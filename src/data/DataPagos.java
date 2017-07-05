@@ -1,5 +1,6 @@
 package data;
 import java.sql.*;
+import java.util.*;
 import utilidades.ApplicationException;
 import entidades.Saldo;
 
@@ -22,7 +23,7 @@ public class DataPagos {
 	
 	public boolean altaPago(Saldo s){
 		PreparedStatement stmt = null;
-		String sqlI = "INSERT INTO saldos (idAnestesia, mes, anio, monto, estado) "
+		String sqlI = "INSERT INTO saldos (idAnestesista, mes, anio, monto, estado) "
 				+ "VALUES(?, ?, ?, ?, ?)";
 		
 		try{
@@ -46,7 +47,7 @@ public class DataPagos {
 	
 	public boolean bajaPago(Saldo s) {
 		PreparedStatement stmt = null;
-		String sqlD = "DELETE FROM saldo WHERE idAnestesista = ?, mes = ?, anio = ?";
+		String sqlD = "DELETE FROM saldos WHERE idAnestesista = ? AND mes = ? AND anio = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlD);
@@ -67,8 +68,8 @@ public class DataPagos {
 
 	public boolean modificarPago(Saldo s){
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE saldos SET (monto = ?, estado = ?) WHERE idAnestesista = ?, "
-				+ "mes = ?, anio = ?";
+		String sqlU = "UPDATE saldos SET monto = ?, estado = ? WHERE idAnestesista = ? AND "
+				+ "mes = ? AND anio = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlU);
@@ -93,7 +94,7 @@ public class DataPagos {
 		Saldo pago = null;
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		String sqlC = "SELECT * FROM WHERE idAnestesista = ?, mes = ?, anio = ?";
+		String sqlC = "SELECT * FROM saldos WHERE idAnestesista = ? AND mes = ? AND anio = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlC);
@@ -118,5 +119,42 @@ public class DataPagos {
 		
 		
 		return pago;
+	}
+	
+	public ArrayList<Saldo> ListarPago(Saldo s){
+		Saldo pago = null;
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+		ArrayList<Saldo> listado = new ArrayList<>();
+		String sqlC = "SELECT * FROM saldos WHERE idAnestesista = ? AND anio = ?";
+		
+		try{
+			stmt = conn.prepareStatement(sqlC);
+			
+			stmt.setInt(1, s.getIdAnestesista());
+			stmt.setInt(2, s.getAnio());
+			
+			rs = stmt.executeQuery();
+			
+			if(rs != null && rs.next()){
+				rs.beforeFirst();
+				while(rs.next()){
+					pago = new Saldo();
+					pago.setIdAnestesista(rs.getInt(1));
+					pago.setMes(rs.getInt(2));
+					pago.setAnio(rs.getInt(3));
+					pago.setMonto(rs.getFloat(4));
+					pago.setEstado(rs.getString(5));
+					listado.add(pago);
+				}
+			}
+		}
+		catch(SQLException  e){
+			e.printStackTrace();
+			return null;
+		}
+		
+		finally{cerrarConn(stmt, rs);}
+		return listado;
 	}
 }

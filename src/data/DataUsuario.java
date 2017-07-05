@@ -111,7 +111,6 @@ public class DataUsuario {
 		finally{cerrarConn(stmt, null);}
 	}
 	
-	
 	public Usuario consultaUsuario(Usuario u){
 		Usuario user = null;
 		PreparedStatement stmt = null;

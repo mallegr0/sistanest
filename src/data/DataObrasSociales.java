@@ -29,7 +29,6 @@ public class DataObrasSociales {
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	
 	public boolean altaObraSocial(ObraSocial os){
 		// Declaro las variables a usar
 		
@@ -146,7 +145,7 @@ public class DataObrasSociales {
 		ObraSocial soc = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
-		String sql = "SELECT * FROM obras_sociales";
+		String sql = "SELECT * FROM obras_sociales ORDER BY idOS";
 		
 		try{
 			stmt = conn.prepareStatement(sql);

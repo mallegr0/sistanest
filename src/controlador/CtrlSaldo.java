@@ -2,6 +2,9 @@ package controlador;
 
 import utilidades.ApplicationException;
 import entidades.Saldo;
+
+import java.util.ArrayList;
+
 import data.DataPagos;
 
 public class CtrlSaldo {
@@ -31,6 +34,9 @@ public class CtrlSaldo {
 		saldo = ds.consultaPago(s);
 		return saldo;
 	}
-
+	
+	public ArrayList<Saldo> listarSaldo(Saldo s) {
+		return ds.ListarPago(s);
+	}
 
 }

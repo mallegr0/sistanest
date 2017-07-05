@@ -1,6 +1,9 @@
 package controlador;
 
 import utilidades.ApplicationException;
+
+import java.util.ArrayList;
+
 import data.DataPrecio;
 import entidades.Precio;
 
@@ -29,5 +32,9 @@ public class CtrlPrecio {
 	public Precio consultaPrecio(Precio p) {
 		precio = dp.consultaPrecio(p);
 		return precio;
+	}
+	
+	public ArrayList<Precio> listarPrecio(){
+		return dp.listarPrecio();
 	}
 }

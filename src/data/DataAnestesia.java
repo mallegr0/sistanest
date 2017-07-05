@@ -171,7 +171,7 @@ public class DataAnestesia {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Anestesia anes = null;
-		String sql = "SELECT * FROM anestesias";
+		String sql = "SELECT * FROM anestesias ORDER BY fecPrestacion";
 		
 		try{
 			stmt = conn.prepareStatement(sql);
@@ -264,7 +264,7 @@ public class DataAnestesia {
 		
 		if (fecIni != null && fecFin != null){
 			sql = "SELECT * FROM anestesias WHERE idAnestesista = ? AND "
-					+ "fecPrestacion BETWEEN ? AND ? ORDER BY idAnestesista, fecPrestacion";
+					+ "fecPrestacion BETWEEN ? AND ? ORDER BY fecPrestacion";
 		}
 		else
 		{
@@ -383,7 +383,7 @@ public class DataAnestesia {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Anestesia anes = null;
-		String sql = "SELECT * FROM anestesias WHERE afiliado LIKE CONCAT('%', ?, '%')";
+		String sql = "SELECT * FROM anestesias WHERE afiliado LIKE CONCAT('%', ?, '%') ORDER BY fecPrestacion, afiliado";
 		try{
 			stmt = conn.prepareStatement(sql);
 			

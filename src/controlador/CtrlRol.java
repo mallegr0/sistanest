@@ -32,13 +32,8 @@ public class CtrlRol {
 		return rol;
 	}
 
-	public ArrayList<Rol> listarRol(Rol r){
+	public ArrayList<Rol> listarRol(){
 		listado = dr.listarRoles();
 		return listado;
 	}
-	
-	public int ultimoID(){
-		return dr.ultimoID();
-	}
-
 }

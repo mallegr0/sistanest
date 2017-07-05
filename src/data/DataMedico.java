@@ -117,7 +117,7 @@ public class DataMedico {
 		Medico med = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null; 
-		String sql = "SELECT * FROM medicos";
+		String sql = "SELECT * FROM medicos ORDER BY apellidoMedico, nombreMedico";
 		
 		try{
 			stmt = conn.prepareStatement(sql);
@@ -125,6 +125,7 @@ public class DataMedico {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					med = new Medico();
 					med.setIdMedico(rs.getInt(1));

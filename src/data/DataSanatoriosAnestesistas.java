@@ -112,7 +112,7 @@ public class DataSanatoriosAnestesistas {
 				+ "WHERE idSanatorio = ? OR idAnestesista = ?";
 		
 		try{
-			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC);
 			stmt.setInt(1, as.getIdSanatorio());
 			stmt.setInt(2, as.getIdAnestesista());
 			

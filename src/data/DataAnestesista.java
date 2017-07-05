@@ -113,7 +113,6 @@ public class DataAnestesista {
 		 
 	}
 
-	
 	public Anestesista consultaAnestesista(Anestesista a){
 		Anestesista anes = null;
 		PreparedStatement stmt = null;
@@ -145,7 +144,7 @@ public class DataAnestesista {
 		
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT * FROM anestesistas order by apellidoAnestesista, "
+		String sql = "SELECT * FROM anestesistas ORDER BY apellidoAnestesista, "
 				+ "nombreAnestesista";
 		Anestesista anes = null;
 		

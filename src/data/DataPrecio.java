@@ -1,5 +1,7 @@
 package data;
 import java.sql.*;
+import java.util.ArrayList;
+
 import utilidades.ApplicationException;
 import entidades.Precio;
 
@@ -100,7 +102,7 @@ public class DataPrecio {
 		
 		try{
 			
-			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC);
 			
 			stmt.setDate(1, (Date)p.getFecha());
 			stmt.setInt(2, p.getIdSanatorio());
@@ -119,6 +121,37 @@ public class DataPrecio {
 		catch(SQLException  e) {e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return precio;
+	}
+
+	public ArrayList<Precio> listarPrecio() {
+		Precio precio = null;
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+		ArrayList<Precio> listado = new ArrayList<>();
+		String sqlC = "SELECT * FROM precios ORDER BY fecha desc";
+		
+		try{
+			
+			stmt = conn.prepareStatement(sqlC);
+			
+			rs = stmt.executeQuery();
+			
+			if(rs != null && rs.next()){
+				rs.beforeFirst();
+				while(rs.next()){
+					precio = new Precio();
+					precio.setFecha(rs.getDate(1));
+					precio.setIdSanatorio(rs.getInt(2));
+					precio.setIdTpoAnestesia(3);
+					precio.setValor(rs.getFloat(4));
+					listado.add(precio);
+				}
+			}
+			else{listado = null;}
+		}
+		catch(SQLException  e) {e.printStackTrace();}
+		finally{cerrarConn(stmt, rs);}
+		return listado;
 	}
 
 }

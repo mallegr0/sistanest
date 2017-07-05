@@ -108,7 +108,7 @@ public class DataRol {
 		String sqlC = "SELECT * FROM roles WHERE idRol = ?";
 		
 		try{
-			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC);
 			stmt.setInt(1, r.getIdRol());
 			
 			rs = stmt.executeQuery();	
@@ -129,7 +129,7 @@ public class DataRol {
 		ArrayList<Rol>listado = new ArrayList<>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT * FROM roles ORDER BY descRol";
+		String sql = "SELECT * FROM roles ORDER BY idRol";
 		
 		try{
 			stmt = conn.prepareStatement(sql);

@@ -71,7 +71,7 @@ public class DataTpoAnestesia {
 	public boolean modificaTpoAnestesia(TpoAnestesia tpoa) {
 		
 		PreparedStatement stmt = null;
-		String sqlU ="UPDATE tpoAnestesia SET descTpoAnestesia = ? WHERE idTpoAnestesia = ?";
+		String sqlU ="UPDATE tpoAnestesias SET descTpoAnestesia = ? WHERE idTpoAnestesia = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlU);
@@ -119,7 +119,7 @@ public class DataTpoAnestesia {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		ArrayList<TpoAnestesia> listado = new ArrayList<>();
-		String sql = "SELECT * FROM tpoAnestesias ORDER BY descTpoAnestesia";
+		String sql = "SELECT * FROM tpoAnestesias ORDER BY idTpoAnestesia";
 		
 		try{
 			stmt = conn.prepareStatement(sql);
