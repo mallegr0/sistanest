@@ -34,7 +34,7 @@ public class CtrlPrecio {
 		return precio;
 	}
 	
-	public ArrayList<Precio> listarPrecio(){
-		return dp.listarPrecio();
+	public ArrayList<Precio> listarPrecio(Precio p){
+		return dp.listarPrecio(p);
 	}
 }

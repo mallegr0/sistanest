@@ -23,16 +23,16 @@ public class DataPrecio {
 	public boolean altaPrecio(Precio p){
 		
 		PreparedStatement stmt = null;
-		String sqlU = "INSERT INTO precios (fecha, idSanatorio, idTpoAnestesia, valor) "
+		String sqlU = "INSERT INTO precios (fecha, idSanatorio, idTpoAnestesia, precio) "
 				+ "VALUES (?,?,?,?)";
 		
 		try{
 			stmt = conn.prepareStatement(sqlU);
 			
-			stmt.setDate(1, (Date) p.getFecha());
-			stmt.setInt(1, p.getIdSanatorio());
-			stmt.setInt(2, 3);
-			stmt.setFloat(4, p.getValor());
+			stmt.setTimestamp(1, (Timestamp) p.getFecha());
+			stmt.setInt(2, p.getIdSanatorio());
+			stmt.setInt(3, p.getIdTpoAnestesia());
+			stmt.setFloat(4, p.getPrecio());
 			
 			stmt.execute();
 			return true;
@@ -54,7 +54,7 @@ public class DataPrecio {
 			
 			stmt = conn.prepareStatement(sqlD);
 			
-			stmt.setDate(1, (Date)p.getFecha());
+			stmt.setTimestamp(1, (Timestamp)p.getFecha());
 			stmt.setInt(2, p.getIdSanatorio());
 			stmt.setInt(3, p.getIdTpoAnestesia());
 			
@@ -71,14 +71,14 @@ public class DataPrecio {
 	public boolean modificaPrecio(Precio p){
 		
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE precios SET valor = ? WHERE fecha = ?, idSanatorio = ?, "
+		String sqlU = "UPDATE precios SET precio = ? WHERE fecha = ? AND idSanatorio = ? AND "
 				+ "idTpoAnestesia = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlU);
 			
-			stmt.setFloat(1, p.getValor());
-			stmt.setDate(2, (Date)p.getFecha());
+			stmt.setFloat(1, p.getPrecio());
+			stmt.setTimestamp(2, (Timestamp)p.getFecha());
 			stmt.setInt(3, p.getIdSanatorio());
 			stmt.setInt(4, p.getIdTpoAnestesia());
 			
@@ -97,14 +97,14 @@ public class DataPrecio {
 		Precio precio = null;
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
-		String sqlC = "SELECT * FROM precios WHERE fecha = ?, idSanatorio = ?, "
+		String sqlC = "SELECT * FROM precios WHERE fecha = ? AND idSanatorio = ? AND "
 				+ "idTpoAnestesia = ?";
 		
 		try{
 			
 			stmt = conn.prepareStatement(sqlC);
 			
-			stmt.setDate(1, (Date)p.getFecha());
+			stmt.setTimestamp(1, (Timestamp)p.getFecha());
 			stmt.setInt(2, p.getIdSanatorio());
 			stmt.setInt(3, p.getIdTpoAnestesia());
 			
@@ -115,7 +115,7 @@ public class DataPrecio {
 				precio.setFecha(rs.getDate(1));
 				precio.setIdSanatorio(rs.getInt(2));
 				precio.setIdTpoAnestesia(3);
-				precio.setValor(rs.getFloat(4));
+				precio.setPrecio(rs.getFloat(4));
 			}
 		}
 		catch(SQLException  e) {e.printStackTrace();}
@@ -123,16 +123,18 @@ public class DataPrecio {
 		return precio;
 	}
 
-	public ArrayList<Precio> listarPrecio() {
+	public ArrayList<Precio> listarPrecio(Precio p) {
 		Precio precio = null;
 		ResultSet rs = null;
 		PreparedStatement stmt = null;
 		ArrayList<Precio> listado = new ArrayList<>();
-		String sqlC = "SELECT * FROM precios ORDER BY fecha desc";
+		String sqlC = "SELECT * FROM precios WHERE idSanatorio = ? ORDER BY fecha desc, idTpoAnestesia";
 		
 		try{
 			
 			stmt = conn.prepareStatement(sqlC);
+			
+			stmt.setInt(1, p.getIdSanatorio());
 			
 			rs = stmt.executeQuery();
 			
@@ -143,7 +145,7 @@ public class DataPrecio {
 					precio.setFecha(rs.getDate(1));
 					precio.setIdSanatorio(rs.getInt(2));
 					precio.setIdTpoAnestesia(3);
-					precio.setValor(rs.getFloat(4));
+					precio.setPrecio(rs.getFloat(4));
 					listado.add(precio);
 				}
 			}

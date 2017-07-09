@@ -24,8 +24,9 @@ public class DataAnestesista {
 		
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sqlI = "INSERT INTO (idAnestesista, nombreAnestesista, apellidoAnestesista, "
-				+ "matricula, grupo) VALUES (?, ?, ?, ?, ?)";
+		String sqlI = "INSERT INTO anestesistas "
+				+ "SET idAnestesista = ?, nombreAnestesista = ?, apellidoAnestesista = ?, matricula =? "
+				+ ", grupo = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -168,5 +169,28 @@ public class DataAnestesista {
 		catch(SQLException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
 		return listado;
+	}
+
+	public int ultimoID(){
+		int nro = 0; 
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM anestesistas";
+		
+		try {
+			stmt = conn.prepareStatement(sql);
+			
+			rs = stmt.executeQuery();
+			
+			if(rs.last()){
+				nro = rs.getInt(1);
+			}
+			return nro; 
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return nro;
+		}
+		finally{ cerrarConn(stmt, rs);}
 	}
 }

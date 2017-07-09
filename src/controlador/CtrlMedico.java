@@ -16,7 +16,7 @@ public class CtrlMedico {
 	private DataMedico dm = new DataMedico();
 	
 	public boolean altaMedico(Medico m) {
-		if(dm.consultaMedico(m) != null){
+		if(dm.consultaMedico(m) == null){
 			if(dm.altaMedico(m) == true) rta = true;
 		}
 		return rta;

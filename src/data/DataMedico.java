@@ -23,8 +23,8 @@ public class DataMedico {
 	public boolean altaMedico(Medico m){
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sqlI = "INSERT INTO medicos (idMedico, nombreMedico, "
-				+ "apellidoMedico, idSanatorio) VALUES(?, ?, ?, ?)";
+		String sqlI = "INSERT INTO medicos (idMedico, nombreMedico, apellidoMedico, idSanatorio)"
+				+ " VALUES(?, ?, ?, ?)";
 		
 		try{
 			stmt = conn.prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -45,8 +45,10 @@ public class DataMedico {
 		}
 		catch(SQLException  e){
 			e.printStackTrace();
-			return false;}
+			//return false;
+			}
 		finally{cerrarConn(stmt, rs);}
+		return false;
 	}
 
 	public boolean bajaMedico(Medico m){
@@ -68,14 +70,15 @@ public class DataMedico {
 	
 	public boolean modificaMedico(Medico m){
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE medicos SET (nombreMedico = ?,apellidoMedico = ?, "
-				+ "idSanatorio = ?) WHERE idMEdico = ?";
+		String sqlU = "UPDATE medicos SET nombreMedico = ?,apellidoMedico = ?, idSanatorio = ? "
+				+ "WHERE idMedico = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlU);
 			stmt.setString(1, m.getNombreMedico());
 			stmt.setString(2, m.getApellidoMedico());
 			stmt.setInt(3, m.getIdSanatorio());
+			stmt.setInt(4, m.getIdMedico());
 			
 			stmt.execute();
 			return true;

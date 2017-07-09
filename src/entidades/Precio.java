@@ -7,20 +7,20 @@ public class Precio implements Serializable{
 	
 	//Variables
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private int idSanatorio, idTpoAnestesia;
 	private Date fecha;
-	private float valor;
+	private float precio;
 	
 	//Constructores
 	
 	public Precio(){}
 	
-	public Precio(Date fecha, int idSanatorio, int idTpoAnestesia, float valor){
+	public Precio(Date fecha, int idSanatorio, int idTpoAnestesia, float precio){
 		this.fecha = fecha;
 		this.idSanatorio = idSanatorio;
 		this.idTpoAnestesia = idTpoAnestesia;
-		this.valor = valor;
+		this.precio = precio;
 	}
 
 	public int getIdSanatorio() {
@@ -47,12 +47,12 @@ public class Precio implements Serializable{
 		this.fecha = fecha;
 	}
 
-	public float getValor() {
-		return valor;
+	public float getPrecio() {
+		return precio;
 	}
 
-	public void setValor(float valor) {
-		this.valor = valor;
+	public void setPrecio(float precio) {
+		this.precio = precio;
 	}
 
 }

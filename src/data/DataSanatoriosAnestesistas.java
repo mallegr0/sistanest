@@ -31,10 +31,10 @@ public class DataSanatoriosAnestesistas {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		String sqlI = "INSERT INTO sanatorios_anestesistas "
-				+ "(idsanatorio, idAnestesista) VALUES (?, ?)";
+				+ "SET idsanatorio = ?, idAnestesista = ?";
 		
 		try {
-			stmt = conn.prepareStatement(sqlI,PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlI);
 			
 			stmt.setInt(1, as.getIdSanatorio());
 			stmt.setInt(2, as.getIdAnestesista());
@@ -50,22 +50,49 @@ public class DataSanatoriosAnestesistas {
 
 	// MODIFICAR -- Hago el metodo con el update en la BBDD
 		
-	public boolean modificaSanatorioAnestesista(AnestesistaSanatorio as) {
+	//MODIFICO EL ANESTESISTA SEGUN EL SANATORIO
+	public boolean modificaSanatorioAnestesistaA(AnestesistaSanatorio as) {
 			
 		//Declaro las variables
 			
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE sanatorio_anestesistas SET (idSanatorio = ? , "
-				+ "idAnestesista = ? WHERE idSanatorio = ? OR idAnestesista = ?";
+		String sqlU = "UPDATE sanatorios_anestesistas SET idAnestesista = ? WHERE idSanatorio = ?"
+				+ "ON DUPLICATE KEY UPDATE idSanatario = ?";
+			
+		try{
+			stmt = conn.prepareStatement(sqlU);
+			
+			stmt.setInt(1, as.getIdAnestesista());
+			stmt.setInt(2, as.getIdSanatorio());
+			stmt.setInt(3, as.getIdSanatorio());
+			
+			stmt.execute();
+			return true;
+		}
+		catch (SQLException e) { 
+			e.printStackTrace();
+			return false;}
+		finally{cerrarConn(stmt, null);}
+		 
+			
+	}
+	
+	
+	//ACTUALIZO EL SANATORIO SEGUN EL ANESTESISTA
+	public boolean modificaSanatorioAnestesistaS(AnestesistaSanatorio as) {
+		
+		//Declaro las variables
+			
+		PreparedStatement stmt = null;
+		String sqlU = "UPDATE sanatorios_anestesistas SET idSanatorio = ? WHERE idAnestesista = ?";
 			
 		try{
 			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setInt(1, as.getIdSanatorio());
 			stmt.setInt(2, as.getIdAnestesista());
-			stmt.setInt(3, as.getIdSanatorio());
-			stmt.setInt(4, as.getIdAnestesista());
-				
+
+			
 			stmt.execute();
 			return true;
 		}
@@ -82,8 +109,8 @@ public class DataSanatoriosAnestesistas {
 	public boolean	bajaSanatorioAnestesista(AnestesistaSanatorio as) {
 			
 		PreparedStatement stmt = null;
-		String sqlD = "DELETE FROM sanatorios_anestesistas where "
-				+ "idSanatorio = ? or idAnestesista = ?";
+		String sqlD = "DELETE FROM sanatorios_anestesistas WHERE "
+				+ "idSanatorio = ? AND idAnestesista = ?";
 			
 		try{
 			stmt = conn.prepareStatement(sqlD);
@@ -108,7 +135,7 @@ public class DataSanatoriosAnestesistas {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		AnestesistaSanatorio a = null;
-		String sqlC = "SELECT * FROM sanatorios_anestesias "
+		String sqlC = "SELECT * FROM sanatorios_anestesistas "
 				+ "WHERE idSanatorio = ? OR idAnestesista = ?";
 		
 		try{
@@ -134,7 +161,7 @@ public class DataSanatoriosAnestesistas {
 		ArrayList<AnestesistaSanatorio>listado = new ArrayList<>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT * FROM procedimientos ORDER BY idSanatorio GROUP BY idSanatorio";
+		String sql = "SELECT * FROM sanatorios_anestesistas ORDER BY idSanatorio";
 		
 		try{
 			stmt = conn.prepareStatement(sql);
@@ -142,6 +169,7 @@ public class DataSanatoriosAnestesistas {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					as = new AnestesistaSanatorio();
 					as.setIdSanatorio(rs.getInt(1));

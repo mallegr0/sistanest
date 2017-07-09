@@ -22,11 +22,15 @@ public class CtrlAnestesistas {
 	private DataSanatoriosAnestesistas das = new DataSanatoriosAnestesistas();
 	private ArrayList<AnestesistaSanatorio> listadoAS = new ArrayList<>();
 	
+	
+	
 	//METODOS
 	
 	public boolean altaAnestesista(Anestesista a, int idSanatorio) {
 		if(da.consultaAnestesista(a) == null){
-			anestesana.setIdAnestesista(a.getIdAnestesista());
+			int i = da.ultimoID()+1;
+			System.out.println("Ultimo ID: "+i);
+			anestesana.setIdAnestesista(i);
 			anestesana.setIdSanatorio(idSanatorio);
 			if(da.altaAnestesista(a) == true && das.altaSanatorioAnestesista(anestesana)) rta = true;
 			}
@@ -52,8 +56,11 @@ public class CtrlAnestesistas {
 	public ArrayList<Anestesista> listarAnestesistas(int idSanatorio){
 		listadoAS = das.listarSanatoriosAnestesistas();
 		for(int i = 0; i<= listadoAS.size(); i++){
-			if(listadoAS.get(i).getIdSanatorio() == idSanatorio){
-				anestesista.setIdAnestesista(listadoAS.get(i).getIdAnestesista());
+			anestesana = listadoAS.get(i);
+			if(anestesana != null ){System.out.println("Tiene un objeto");}
+			
+			if(anestesana.getIdSanatorio() == idSanatorio){
+				anestesista.setIdAnestesista(anestesana.getIdAnestesista());
 				anestesista = da.consultaAnestesista(anestesista);
 				listado.add(anestesista);
 			}

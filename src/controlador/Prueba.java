@@ -1,23 +1,26 @@
 package controlador;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.*;
-import data.*;
+
+import data.DataSanatoriosAnestesistas;
 import entidades.*;
-import jdk.nashorn.internal.parser.DateParser;
 import utilidades.ApplicationException;
 
 public class Prueba {
 	
-	private static Saldo rol = new Saldo();
-	private static Saldo k = new Saldo();
-	private static CtrlSaldo dr = new CtrlSaldo();
-	private static ArrayList<Saldo> listado = new ArrayList<>();
-	private static java.sql.Date fecha = new Date(1);
-	private static int id;
+	private static Anestesista rol = new Anestesista();
+	private static Anestesista k = new Anestesista();
+	private static CtrlAnestesistas dr = new CtrlAnestesistas();
+	private static ArrayList<Anestesista> listado = new ArrayList<>();
+	
+	
+	private static Date fecha = new Date();
+	private static Timestamp ts = new Timestamp(fecha.getTime());
+	private static Calendar c = Calendar.getInstance();
 	
 	public static void main(String[] args){
-		
+
 		Scanner s = new Scanner(System.in);
 		int op;
 		
@@ -57,67 +60,66 @@ public class Prueba {
 
 	public static void alta(){
 		
-		rol.setIdAnestesista(1);
-		rol.setAnio(2017);
-		rol.setMes(1);
-		rol.setMonto(1400);
-		rol.setEstado("Debe");
+		rol.setNombreAnestesista("prueba1");
+		rol.setApellidoAnestesista("prueba2");
+		rol.setMatricula(1);
+		rol.setGrupo(2);
 		
-		if(dr.altaSaldo(rol) == true){
+		
+		if(dr.altaAnestesista(rol, 1) == true){
 			System.out.println("Alta ok");
 		}else {System.out.println("Error en el alta");}
+			
 	}
 	
 	public static void baja(){
-				
+				/*
 		rol.setIdAnestesista(1);
-		rol.setAnio(2017);
-		rol.setMes(1);
 		
-		if(dr.bajaSaldo(rol) == true){
+		if(dr.bajaAnestesista(rol, 1) == true){
 			System.out.println("Baja ok");
-		}else {System.out.println("Error");}
+		}else {System.out.println("Error");}*/
+		
 	}
 	
-	public static void modificar(){
+	public static void modificar(){/*
 		rol.setIdAnestesista(1);
-		rol.setAnio(2017);
-		rol.setMes(1);
+		rol.setNombreAnestesista("prueba1");
+		rol.setApellidoAnestesista("prueba2");
 
-		rol.setEstado("Pago");
 		
-		if(dr.modificaSaldo(rol)== true){
+		if(dr.modificaAnestesista(rol)== true){
 			System.out.println("cambio ok");
-		}else {System.out.println("Error");}
+		}else {System.out.println("Error");}*/
+		
 	}
 	
 	public static void consulta(){
-		
+		/*
 		rol.setIdAnestesista(1);
-		rol.setAnio(2017);
-		rol.setMes(1);
-
 		
-		k = dr.consultaSaldo(rol);
+		k = dr.consultaAnestesista(rol);
 		if(k !=null){
-			System.out.println(k.getIdAnestesista()+" -- "+k.getMonto()+" -- "+k.getEstado());
+			System.out.println(k.getNombreAnestesista()+" "+k.getApellidoAnestesista());
 			
-		}else {System.out.println("Error");}
+		}else {System.out.println("Error");}*/
 		
 	}
 
 	public static void listar(){
-		
-		rol.setIdAnestesista(1);
-		rol.setAnio(2017);
-		listado = dr.listarSaldo(rol);
+		/*
+		listado = dr.listarAnestesistas(1);
 		if(listado != null){
-		for(Saldo r: listado){
-			System.out.println(r.getAnio()+" -- "+r.getMes()+" -- "+r.getMonto()+" -- "+r.getEstado());
+		for(Anestesista r: listado){
+			System.out.println("Sanatorio: 1");
+			System.out.println("");
+			System.out.println("------ ** -----");
+			System.out.println(r.getNombreAnestesista()+" -- "+r.getApellidoAnestesista());
 		}}
-		else{System.out.println("No hay elementos para mostrar");}
+		else{System.out.println("No hay elementos para mostrar");}*/
 	}
 }
+
 
 	
 
