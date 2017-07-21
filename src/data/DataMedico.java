@@ -1,4 +1,6 @@
 package data;
+
+
 import java.sql.*;
 import utilidades.ApplicationException;
 import entidades.Medico;
@@ -8,8 +10,8 @@ public class DataMedico {
 	
 	public DataMedico(){}
 	
-	Conexion conexion = new Conexion();
-	Connection conn = conexion.abrirConn();
+	private Conexion conexion = new Conexion();
+	private Connection conn = conexion.abrirConn();
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs) {
 		try{

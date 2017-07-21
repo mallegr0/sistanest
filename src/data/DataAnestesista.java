@@ -9,8 +9,8 @@ public class DataAnestesista {
 	
 	public DataAnestesista(){}
 	
-	Conexion conexion = new Conexion();
-	Connection conn = conexion.abrirConn();
+	private Conexion conexion = new Conexion();
+	private Connection conn = conexion.abrirConn();
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
@@ -72,8 +72,8 @@ public class DataAnestesista {
 
 	public boolean modificaAnestesista(Anestesista a){
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE anestesistas SET (nombreAnestesista = ?, apellidoAnestesista = ?,"
-				+ " matricula = ?, grupo = ?) WHERE idAnestesista = ?";
+		String sqlU = "UPDATE anestesistas SET nombreAnestesista = ?, apellidoAnestesista = ?,"
+				+ " matricula = ?, grupo = ? WHERE idAnestesista = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlU);
@@ -155,6 +155,7 @@ public class DataAnestesista {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					anes = new Anestesista();
 					anes.setIdAnestesista(rs.getInt(1));

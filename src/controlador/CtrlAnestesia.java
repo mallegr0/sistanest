@@ -1,7 +1,9 @@
 package controlador;
 
-import java.sql.Date;
+import java.sql.*;
 import java.util.*;
+import java.sql.Date;
+
 import entidades.Anestesia;
 import entidades.AnestesiaProcedimiento;
 import entidades.Procedimiento;
@@ -35,29 +37,39 @@ public class CtrlAnestesia {
 	
 	//METODOS
 	
-	public boolean altaAnestesia(Anestesia a, ArrayList<Integer> ids) {
+	public boolean altaAnestesia(Anestesia a, ArrayList<Procedimiento> procedimientos) {
+		int k = 0;
+		a.setIdAnestesia(da.ultimoID() +1);
 		int j = a.getIdAnestesia();
-		for(int i = 0; i <= ids.size(); i++){
-			ap.setIdAnestesia(j);
-			ap.setIdProcedimiento(ids.get(i));
-			if(dap.altaAnestesiaProcedimiento(ap) == true) oks.set(i, true); 
+		if(da.altaAnestesia(a) == true){
+			for(Procedimiento i: procedimientos){
+				ap.setIdAnestesia(j);
+				ap.setIdProcedimiento(i.getIdProcedimiento());
+				if(dap.altaAnestesiaProcedimiento(ap) == true) {
+					oks.add(k, true);;
+					k++;
+				}
+			}
+			if(procedimientos.size() == oks.size()) rta = true;
 		}
-		if(ids.size() == oks.size() && da.altaAnestesia(a) == true) rta = true;
 		return rta;
 	}
 	
 	public boolean bajaAnestesia(Anestesia a) {
 		ap.setIdAnestesia(a.getIdAnestesia());
-		if(da.bajaAnestesia(a) == true && dap.bajaAnestesiaProcedimiento(ap) == true) rta = true;
+		if(dap.bajaAnestesiaProcedimiento(ap) == true){
+			if(da.bajaAnestesia(a) == true) rta = true;
+		}	
 		return rta;
 	}
 	
 	public boolean modificaAnestesia(Anestesia a, ArrayList<Integer> ids) {
 		int j = a.getIdAnestesia();
-		for(int i = 0; i <= ids.size(); i++){
+		for(int i = 0; i <= ids.size()-1; i++){
+			System.out.println(i);
 			ap.setIdAnestesia(j);
 			ap.setIdProcedimiento(ids.get(i));
-			if(dap.modificaAnestesiaProcedimiento(ap) == true) oks.set(i, true);
+			if(dap.modificaAnestesiaProcedimiento(ap) == true) oks.add(true);
 		}
 		if(ids.size() == oks.size() && da.modificaAnestesia(a) == true) rta = true;
 		return rta;
@@ -88,9 +100,9 @@ public class CtrlAnestesia {
 		return listado;
 	}
 
-	public Anestesia buscaPaciente(String paciente){
-		anestesia = da.consultarPaciente(paciente);
-		return anestesia;
+	public ArrayList<Anestesia> buscaPaciente(String paciente){
+		listado = da.listarPaciente(paciente);
+		return listado;
 	}
 	
 	public ArrayList<Procedimiento> listarProcedimientos(Anestesia a){

@@ -15,8 +15,8 @@ public class DataObrasSociales {
 	
 	public DataObrasSociales() {}
 	
-	Conexion conexion = new Conexion();
-	Connection conn = conexion.abrirConn();
+	private Conexion conexion = new Conexion();
+	private Connection conn = conexion.abrirConn();
 	
 	// ALTA -- Hago el metodo con el insert en la BBDD
 	

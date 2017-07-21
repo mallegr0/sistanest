@@ -10,8 +10,8 @@ public class DataAnestesia {
 	
 	public DataAnestesia(){}
 	
-	Conexion conexion = new Conexion();
-	Connection conn = conexion.abrirConn();
+	private Conexion conexion = new Conexion();
+	private Connection conn = conexion.abrirConn();
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
 		try{
@@ -35,10 +35,10 @@ public class DataAnestesia {
 			stmt = conn.prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			stmt.setInt(1, a.getIdAnestesia());
-			stmt.setDate(2, (Date)a.getFecPrestacion());
-			stmt.setDate(3, (Date)a.getFecAra());
-			stmt.setDate(4, (Date)a.getFecRendicion());
-			stmt.setDate(5, (Date)a.getFecCarga());
+			stmt.setTimestamp(2, (Timestamp)a.getFecPrestacion());
+			stmt.setDate(3, cambioFecha((a.getFecAra())));
+			stmt.setDate(4, cambioFecha(a.getFecRendicion()));
+			stmt.setDate(5, cambioFecha(a.getFecCarga()));
 			stmt.setString(6, a.getAfiliado());
 			stmt.setInt(7, a.getNroAfiliado());
 			stmt.setInt(8, a.getNocturno());
@@ -88,16 +88,16 @@ public class DataAnestesia {
 	
 	public boolean modificaAnestesia(Anestesia a){
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE anestesias SET (fecPrestacion = ?, fecARA = ?, fecRendicion = ?, "
+		String sqlU = "UPDATE anestesias SET fecPrestacion = ?, fecARA = ?, fecRendicion = ?, "
 				+ "fecCarga = ?, afiliado = ?, nroAfiliado = ?, nocturno = ?, feriado = ?,"
 				+ "fds = ?, nroTalon = ?, nroVias = ?, edad = ?, user = ?,"
-				+ "idMedico = ?, idAnestesistas = ?, idSanatorio = ?, idOS = ?, "
+				+ "idMedico = ?, idAnestesista = ?, idSanatorio = ?, idOS = ?, "
 				+ "idTpoAnestesia = ? WHERE idAnestesia = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlU);
 			
-			stmt.setDate(1, (Date)a.getFecPrestacion());
+			stmt.setTimestamp(1, (Timestamp)a.getFecPrestacion());
 			stmt.setDate(2, (Date)a.getFecAra());
 			stmt.setDate(3, (Date)a.getFecRendicion());
 			stmt.setDate(4, (Date)a.getFecCarga());
@@ -141,7 +141,8 @@ public class DataAnestesia {
 			
 			if(rs != null && rs.next()){
 				anes = new Anestesia();
-				anes.setFecPrestacion(rs.getDate(2));
+				anes.setIdAnestesia(rs.getInt(1));
+				anes.setFecPrestacion(rs.getTimestamp(2));
 				anes.setFecAra(rs.getDate(3));
 				anes.setFecRendicion(rs.getDate(4));
 				anes.setFecCarga(rs.getDate(5));
@@ -179,9 +180,10 @@ public class DataAnestesia {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					anes = new Anestesia();
-					anes.setFecPrestacion(rs.getDate(2));
+					anes.setFecPrestacion(rs.getTimestamp(2));
 					anes.setFecAra(rs.getDate(3));
 					anes.setFecRendicion(rs.getDate(4));
 					anes.setFecCarga(rs.getDate(5));
@@ -220,15 +222,17 @@ public class DataAnestesia {
 		try{
 			stmt = conn.prepareStatement(sql);
 			
-			stmt.setDate(1, fecIni);
-			stmt.setDate(2, fecFin);
+			stmt.setDate(1, (Date) fecIni);
+			stmt.setDate(2, (Date) fecFin);
 			
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					anes = new Anestesia();
-					anes.setFecPrestacion(rs.getDate(2));
+					anes.setIdAnestesia(rs.getInt(1));
+					anes.setFecPrestacion(rs.getTimestamp(2));
 					anes.setFecAra(rs.getDate(3));
 					anes.setFecRendicion(rs.getDate(4));
 					anes.setFecCarga(rs.getDate(5));
@@ -277,8 +281,8 @@ public class DataAnestesia {
 			
 			if(fecIni != null && fecFin != null){
 				stmt.setInt(1, id);
-				stmt.setDate(2, fecIni);
-				stmt.setDate(3, fecFin);
+				stmt.setDate(2, (Date) fecIni);
+				stmt.setDate(3, (Date) fecFin);
 			}
 			else
 			{
@@ -287,8 +291,10 @@ public class DataAnestesia {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					anes = new Anestesia();
+					anes.setIdAnestesia(rs.getInt(1));
 					anes.setFecPrestacion(rs.getDate(2));
 					anes.setFecAra(rs.getDate(3));
 					anes.setFecRendicion(rs.getDate(4));
@@ -339,8 +345,8 @@ public class DataAnestesia {
 			
 			if(fecIni != null && fecFin != null){
 				stmt.setInt(1, id);
-				stmt.setDate(2, fecIni);
-				stmt.setDate(3, fecFin);
+				stmt.setDate(2, (Date) fecIni);
+				stmt.setDate(3, (Date) fecFin);
 			}
 			else
 			{
@@ -349,9 +355,11 @@ public class DataAnestesia {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					anes = new Anestesia();
-					anes.setFecPrestacion(rs.getDate(2));
+					anes.setIdAnestesia(rs.getInt(1));
+					anes.setFecPrestacion(rs.getTimestamp(2));
 					anes.setFecAra(rs.getDate(3));
 					anes.setFecRendicion(rs.getDate(4));
 					anes.setFecCarga(rs.getDate(5));
@@ -379,7 +387,8 @@ public class DataAnestesia {
 		return listado;
 	}
 
-	public Anestesia consultarPaciente(String paciente){
+	public ArrayList<Anestesia> listarPaciente(String paciente){
+		ArrayList<Anestesia> listado = new ArrayList<>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		Anestesia anes = null;
@@ -392,11 +401,15 @@ public class DataAnestesia {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
+				while(rs.next())
+				{
 					anes = new Anestesia();
-					anes.setFecPrestacion(rs.getDate(2));
-					anes.setFecAra(rs.getDate(3));
-					anes.setFecRendicion(rs.getDate(4));
-					anes.setFecCarga(rs.getDate(5));
+					anes.setIdAnestesia(rs.getInt(1));
+					anes.setFecPrestacion(rs.getTimestamp(2));
+					anes.setFecAra(rs.getTimestamp(3));
+					anes.setFecRendicion(rs.getTimestamp(4));
+					anes.setFecCarga(rs.getTimestamp(5));
 					anes.setAfiliado(rs.getString(6));
 					anes.setNroAfiliado(rs.getInt(7));
 					anes.setNocturno(rs.getInt(8));
@@ -411,11 +424,41 @@ public class DataAnestesia {
 					anes.setIdSanatorio(rs.getInt(17));
 					anes.setIdOS(rs.getInt(18));
 					anes.setIdTpoAnestesia(rs.getInt(19));
+					listado.add(anes);
+				}
 			}
 		}
 		catch(SQLException e){e.printStackTrace();}
 		finally{cerrarConn(stmt, rs);}
-		return anes;
+		return listado;
 	}
 
+	public static java.sql.Date cambioFecha(
+            java.util.Date fecha) {
+        java.sql.Date sqlDate = null;
+        if (fecha != null) {
+            sqlDate = new Date(fecha.getTime());
+        }
+        return sqlDate;
+    }
+
+	public int ultimoID(){
+		int nro = 0;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM anestesias";
+		try{
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			if(rs.last()){
+				nro = rs.getInt(1);
+			}
+			return nro;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return nro;
+		}
+		finally{cerrarConn(stmt, rs);}
+	}
 }

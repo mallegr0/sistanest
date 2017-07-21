@@ -12,6 +12,9 @@ public class DataRol {
 	
 	//--------------------------//
 	
+	private Conexion conexion = new Conexion();
+	private Connection conn = conexion.abrirConn();
+	
 	//METODOS
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
@@ -23,8 +26,7 @@ public class DataRol {
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	Conexion conexion = new Conexion();
-	Connection conn = conexion.abrirConn();
+	
 	
 	//alta
 	public Boolean altaRol(Rol r) {

@@ -12,6 +12,9 @@ public class DataSanatoriosAnestesistas {
 	
 	//--------------------------//
 	
+	private Conexion conexion = new Conexion();
+	private Connection conn = conexion.abrirConn();
+	
 	//METODOS
 	
 	private void cerrarConn(PreparedStatement stmt, ResultSet rs){
@@ -23,8 +26,6 @@ public class DataSanatoriosAnestesistas {
 		catch(SQLException | ApplicationException e){e.printStackTrace();}
 	}
 	
-	Conexion conexion = new Conexion();
-	Connection conn = conexion.abrirConn();
 	
 	//alta
 	public boolean altaSanatorioAnestesista(AnestesistaSanatorio as) {
@@ -109,8 +110,7 @@ public class DataSanatoriosAnestesistas {
 	public boolean	bajaSanatorioAnestesista(AnestesistaSanatorio as) {
 			
 		PreparedStatement stmt = null;
-		String sqlD = "DELETE FROM sanatorios_anestesistas WHERE "
-				+ "idSanatorio = ? AND idAnestesista = ?";
+		String sqlD = "DELETE FROM sanatorios_anestesistas WHERE idSanatorio = ? AND idAnestesista = ?";
 			
 		try{
 			stmt = conn.prepareStatement(sqlD);

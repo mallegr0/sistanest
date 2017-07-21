@@ -7,10 +7,10 @@ import data.DataAnestesista;
 import data.DataSanatoriosAnestesistas;
 import utilidades.ApplicationException;
 
-public class CtrlAnestesistas {
+public class CtrlAnestesista {
 	
 	//CONSTRUCTOR
-	public CtrlAnestesistas(){}
+	public CtrlAnestesista(){}
 	
 	
 	//VARIABLES
@@ -21,7 +21,7 @@ public class CtrlAnestesistas {
 	private AnestesistaSanatorio anestesana = new AnestesistaSanatorio();
 	private DataSanatoriosAnestesistas das = new DataSanatoriosAnestesistas();
 	private ArrayList<AnestesistaSanatorio> listadoAS = new ArrayList<>();
-	
+	private ArrayList<Anestesista> l = new ArrayList<>();
 	
 	
 	//METODOS
@@ -39,7 +39,11 @@ public class CtrlAnestesistas {
 	
 	public boolean bajaAnestesista(Anestesista a, int idSanatorio) {
 		anestesana.setIdAnestesista(a.getIdAnestesista());
-		if(da.bajaAnestesista(a) == true && das.bajaSanatorioAnestesista(anestesana) == true) rta = true;
+		anestesana.setIdSanatorio(idSanatorio);
+		
+		if(das.bajaSanatorioAnestesista(anestesana) == true){
+			if(da.bajaAnestesista(a) == true) rta = true;
+		}
 		return rta;	
 	}
 	
@@ -55,17 +59,18 @@ public class CtrlAnestesistas {
 	
 	public ArrayList<Anestesista> listarAnestesistas(int idSanatorio){
 		listadoAS = das.listarSanatoriosAnestesistas();
-		for(int i = 0; i<= listadoAS.size(); i++){
-			anestesana = listadoAS.get(i);
-			if(anestesana != null ){System.out.println("Tiene un objeto");}
-			
-			if(anestesana.getIdSanatorio() == idSanatorio){
-				anestesista.setIdAnestesista(anestesana.getIdAnestesista());
-				anestesista = da.consultaAnestesista(anestesista);
-				listado.add(anestesista);
+		listado = da.listarAnestesista();
+		if(listadoAS != null){
+			for(AnestesistaSanatorio j: listadoAS){
+				for(Anestesista k: listado){
+					if(j.getIdAnestesista() == k.getIdAnestesista())
+					{
+						l.add(k);
+					}
+				}
 			}
 		}
-		return listado;
+		return l;
 	}
 	
 }

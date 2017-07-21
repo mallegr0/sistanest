@@ -13,8 +13,8 @@ public class DataAnestesiaProcedimiento {
 	
 	//--------------------------//
 
-	Conexion conexion = new Conexion();
-	Connection conn = conexion.abrirConn();
+	private Conexion conexion = new Conexion();
+	private Connection conn = conexion.abrirConn();
 	
 	
 	//METODOS
@@ -33,8 +33,7 @@ public class DataAnestesiaProcedimiento {
 	public boolean altaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sqlI = "INSERT INTO procedimietos_anestesias (idProcedimiento, idAnestesias) "
-				+ "VALUES (?, ?)";
+		String sqlI = "INSERT INTO procedimientos_anestesias SET idProcedimiento = ?, idAnestesia = ?";
 		
 		try {
 			stmt = conn.prepareStatement(sqlI);
@@ -58,16 +57,13 @@ public class DataAnestesiaProcedimiento {
 		//Declaro las variables
 			
 		PreparedStatement stmt = null;
-		String sqlU = "UPDATE procedimientos_anestesias SET (idProcedimiento = ? , "
-				+ "idAnestesia = ? WHERE idProcedimiento = ? OR idAnestesia = ?";
+		String sqlU = "UPDATE procedimientos_anestesias SET idProcedimiento = ? WHERE idAnestesia = ?";
 			
 		try{
 			stmt = conn.prepareStatement(sqlU);
 			
 			stmt.setInt(1, ap.getIdProcedimiento());
 			stmt.setInt(2, ap.getIdAnestesia());
-			stmt.setInt(3, ap.getIdProcedimiento());
-			stmt.setInt(4, ap.getIdAnestesia());
 				
 			stmt.execute();
 			return true;
@@ -83,14 +79,13 @@ public class DataAnestesiaProcedimiento {
 	public boolean bajaAnestesiaProcedimiento(AnestesiaProcedimiento ap) {
 			
 		PreparedStatement stmt = null;
-		String sqlD = "DELETE FROM procedimientos_anestesias where "
-				+ "idProcedimiento = ? or idAnestesia = ?";
+		String sqlD = "DELETE FROM procedimientos_anestesias WHERE idAnestesia = ? OR idProcedimiento = ?";
 			
 		try{
 			stmt = conn.prepareStatement(sqlD);
 			
-			stmt.setInt(1, ap.getIdProcedimiento());
-			stmt.setInt(2, ap.getIdAnestesia());
+			stmt.setInt(1, ap.getIdAnestesia());
+			stmt.setInt(2, ap.getIdProcedimiento());
 				
 			stmt.execute();
 			return true;
@@ -112,7 +107,7 @@ public class DataAnestesiaProcedimiento {
 				+ "WHERE idprocedimiento = ? OR idAnestesia = ?";
 		
 		try{
-			stmt = conn.prepareStatement(sqlC, PreparedStatement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(sqlC);
 			stmt.setInt(1, ap.getIdProcedimiento());
 			stmt.setInt(2, ap.getIdAnestesia());
 			
@@ -134,7 +129,7 @@ public class DataAnestesiaProcedimiento {
 		ArrayList<AnestesiaProcedimiento>listado = new ArrayList<>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		String sql = "SELECT * FROM procedimientos ORDER BY idAnestesia GROUP BY idAnestesia";
+		String sql = "SELECT * FROM procedimientos ORDER BY idAnestesiaa";
 		
 		try{
 			stmt = conn.prepareStatement(sql);
@@ -142,6 +137,7 @@ public class DataAnestesiaProcedimiento {
 			rs = stmt.executeQuery();
 			
 			if(rs != null && rs.next()){
+				rs.beforeFirst();
 				while(rs.next()){
 					ap = new AnestesiaProcedimiento();
 					ap.setIdProcedimiento(rs.getInt(1));
