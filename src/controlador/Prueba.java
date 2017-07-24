@@ -5,32 +5,22 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Date;
+import java.sql.Date;
+import data.DataFeriado;
 import entidades.*;
 import utilidades.ApplicationException;
 
 public class Prueba {
 	
-	private static Anestesia rol = new Anestesia();
-	private static Anestesia k = new Anestesia();
-	private static CtrlAnestesia dr = new CtrlAnestesia();
-	private static ArrayList<Anestesia> listado = new ArrayList<>();
-	private static Procedimiento p = new Procedimiento();
-	private static ArrayList<Procedimiento> procedimientos = new ArrayList<>();
-	private static ArrayList<Integer> ids = new ArrayList<>();
-	
-	String fec;
-	
-
-	private static Date fecha = new Date();
-	private static Date fecIni = new Date();
-	private static Date fecFin = new Date();
-	
+	private static CtrlAnestesia ca = new CtrlAnestesia();
+	private static Anestesia a = new Anestesia();
+	private static Calendar c = Calendar.getInstance();
+	private static java.util.Date fecha = new java.util.Date();
 	private static Timestamp ts = new Timestamp(fecha.getTime());
-
+	
 	
 	public static void main(String[] args){
-
+/*
 		Scanner s = new Scanner(System.in);
 		int op;
 		
@@ -69,29 +59,10 @@ public class Prueba {
 	}
 
 	public static void alta(){
-		rol.setFecPrestacion(ts);
-		rol.setFecAra(parsearFecha("2017/07/20"));
-		rol.setFecRendicion(parsearFecha("2017/08/01"));
-		rol.setFecCarga(ts);
-		rol.setAfiliado("Matias");
-		rol.setNroAfiliado(202);
-		rol.setNocturno(1);
-		rol.setFeriado(1);
-		rol.setFds(1);
-		rol.setNroTalon(2030);
-		rol.setNroVias(3);
-		rol.setEdad(33);
-		rol.setUser("Admin");
-		rol.setIdMedico(2);
-		rol.setIdAnestesista(15);
-		rol.setIdSanatorio(1);
-		rol.setIdOS(1);
-		rol.setIdTpoAnestesia(1);
-		p.setIdProcedimiento(0001);
 		
-		procedimientos.add(p);
+		f.setFecFeriado(parsearFecha("2018/01/01")); 
 		
-		if(dr.altaAnestesia(rol, procedimientos) == true){
+		if(cf.altaFeriado(f) == true){
 			System.out.println("Alta ok");
 		}else {System.out.println("Error en el alta");}
 			
@@ -99,9 +70,9 @@ public class Prueba {
 	
 	public static void baja(){
 
-		rol.setIdAnestesia(7);
+		f.setIdFeriado(2);
 		
-		if(dr.bajaAnestesia(rol) == true){
+		if(cf.bajaFeriado(f) == true){
 			System.out.println("Baja ok");
 		}
 		else {System.out.println("Error");}
@@ -110,14 +81,10 @@ public class Prueba {
 	
 	public static void modificar(){
 		
-		Anestesia r = new Anestesia();
-		r.setIdAnestesia(8);
-		rol = dr.consultaAnestesia(r);
+		f.setIdFeriado(1);
+		f.setFecFeriado(parsearFecha("2018/07/09"));
 		
-		rol.setAfiliado("prueba1");
-		ids.add(2);
-		
-		if(dr.modificaAnestesia(rol, ids)== true){
+		if(cf.modificaFeriado(f) == true){
 			System.out.println("cambio ok");
 		}else {System.out.println("Error");}
 		
@@ -125,11 +92,11 @@ public class Prueba {
 	
 	public static void consulta(){
 		
-		rol.setIdAnestesia(5);
+		f.setIdFeriado(2);;
 		
-		k = dr.consultaAnestesia(rol);
-		if(k !=null){
-			System.out.println(k.getAfiliado()+" "+k.getNroAfiliado());
+		f2 = cf.consultaFeriado(f);
+		if(f2 != null){
+			System.out.println(f2.getIdFeriado()+" "+f2.getFecFeriado());
 			
 		}else {System.out.println("Error");}
 		
@@ -137,21 +104,19 @@ public class Prueba {
 
 	public static void listar(){
 		
-		
-		String paciente = "Matias";
-		listado = dr.buscaPaciente(paciente);
-		System.out.println("Nombre Paciente: "+paciente);
+		listado = cf.listarFeriado();
+		System.out.println("Feriados");
 		if(!listado.isEmpty()){
-			for(Anestesia rol: listado){
-			System.out.println(rol.getIdAnestesia()+" -- "+rol.getFecPrestacion());
+			for(Feriado f: listado){
+			System.out.println(f.getIdFeriado()+" -- "+f.getFecFeriado());
 			}
 		}
 		else{System.out.println("No hay elementos para mostrar");}
 	}
 	
-	private static Date parsearFecha(String fecha){
+	private static java.util.Date parsearFecha(String fecha){
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
-		Date f = null;
+		java.util.Date f = null;
 		
 		try{
 			f = formato.parse(fecha);
@@ -159,7 +124,36 @@ public class Prueba {
 		catch(ParseException e){System.out.println(e);
 		}
 		return f;
+		*/
+		System.out.println("Se ingresa la fecha de prestacion y se valida automaticamente");
+		System.out.println(" ");
+		if(ca.validaFDS(ts) == true){
+			System.out.println("Es finde semana :D");
+		}
+		else
+		{
+			System.out.println("No es finde :(");
+		}
+		System.out.println(" ");
+		if(ca.validaNocturno(ts) == true){
+			System.out.println("Es Nocturno :D");
+		}
+		else
+		{
+			System.out.println("No es nocturno :(");
+		}
+		System.out.println(" ");
+		if(ca.validaFeriado(ts) == true){
+			System.out.println("Es Feriado :D");
+		}
+		else
+		{
+			System.out.println("No es Feriado :(");
+		}
 	}
+	
+	
+	
 }
 
 

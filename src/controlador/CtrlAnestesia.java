@@ -3,13 +3,14 @@ package controlador;
 import java.sql.*;
 import java.util.*;
 import java.sql.Date;
-
 import entidades.Anestesia;
 import entidades.AnestesiaProcedimiento;
 import entidades.Procedimiento;
+import entidades.Feriado;
 import data.DataAnestesia;
 import data.DataAnestesiaProcedimiento;
 import data.DataProcedimientos;
+import data.DataFeriado;
 import utilidades.ApplicationException;
 
 
@@ -33,16 +34,21 @@ public class CtrlAnestesia {
 	private Procedimiento procedimiento = new Procedimiento();
 	private DataProcedimientos dp = new DataProcedimientos();
 	private ArrayList<Boolean> oks = new ArrayList<>();
+	//Variables Feriados
+	private Feriado feriado = new Feriado();
+	private DataFeriado df = new DataFeriado();
+	private ArrayList<Feriado> listadoF = new ArrayList<>();
+	
 	
 	
 	//METODOS
 	
 	public boolean altaAnestesia(Anestesia a, ArrayList<Procedimiento> procedimientos) {
 		int k = 0;
-		a.setIdAnestesia(da.ultimoID() +1);
+		a.setIdAnestesia(da.ultimoID() +1); //Devuelvo el ultimo ID y le sumo 1 para asignar a la variable.
 		int j = a.getIdAnestesia();
 		if(da.altaAnestesia(a) == true){
-			for(Procedimiento i: procedimientos){
+			for(Procedimiento i: procedimientos){ //Para cada Procedimiento que cargo
 				ap.setIdAnestesia(j);
 				ap.setIdProcedimiento(i.getIdProcedimiento());
 				if(dap.altaAnestesiaProcedimiento(ap) == true) {
@@ -50,14 +56,14 @@ public class CtrlAnestesia {
 					k++;
 				}
 			}
-			if(procedimientos.size() == oks.size()) rta = true;
+			if(procedimientos.size() == oks.size()) rta = true; //Valido que no haya habido problemas en la carga
 		}
 		return rta;
 	}
 	
 	public boolean bajaAnestesia(Anestesia a) {
 		ap.setIdAnestesia(a.getIdAnestesia());
-		if(dap.bajaAnestesiaProcedimiento(ap) == true){
+		if(dap.bajaAnestesiaProcedimiento(ap) == true){//Doy de baja la anestesia en la tabla de Anestesias/Procedimientos
 			if(da.bajaAnestesia(a) == true) rta = true;
 		}	
 		return rta;
@@ -116,6 +122,59 @@ public class CtrlAnestesia {
 		}
 		return listadoP;
 	}
+	
+	
+	//Valida si la fecha corresponde a un feriado
+	public boolean validaFeriado(Timestamp fecha){
+		//Variables
+		Feriado k = new Feriado();
+		Date m = new Date(fecha.getTime());
+		
+		//Instancio la variable con la fecha 
+		feriado.setFecFeriado(m);
+		//Realizo la consulta con la fecha que quiero
+		k = df.consultaFeriado(feriado);
+		
+		if(k != null){
+				return true;
+		}
+		return false;
+	}
+	
+	//Valida si la hora corresponde a nocturno
+	public boolean validaNocturno(Timestamp fecha){
+		//Variable Calendario para manejar la fecha que paso como parametro
+		Calendar j = Calendar.getInstance();
+		//Seteo la fecha en la variable
+		j.setTime(fecha);
+		if(j.get(Calendar.HOUR_OF_DAY) < 7){
+			return true;
+		}
+		else if(j.get(Calendar.HOUR_OF_DAY) > 21){
+			return true;
+		}
+		return false;
+	}
+		
+	//Valida si la fecha corresponde a fin de semana
+	public boolean validaFDS(Timestamp fecha){
+		//Variable Calendario para manejar las fechas.
+		Calendar j = Calendar.getInstance();
+		//Seteo la fecha que paso como parametro
+		j.setTime(fecha);
+		int dia = j.get(Calendar.DAY_OF_WEEK);
+		int hora = j.get(Calendar.HOUR_OF_DAY);
+		//Pregunto si el dia que paso como parametro es sabado o domingo
+		if(Calendar.SATURDAY == dia || 13 <= hora || Calendar.MONDAY == dia || hora <= 7 || Calendar.SUNDAY == dia ){
+			return true;
+		}
+		else{ return false;}
+		
+
+	}
+		
+	
+	
 
 }
 

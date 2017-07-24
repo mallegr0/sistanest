@@ -37,7 +37,7 @@ public class DataFeriado {
 		try{
 			stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);//Creo el statement y recupero el ultimo id que se genero,
 																					   //solo con autoinvcremental
-			stmt.setDate(1, f.getFecFeriado()); // Seteo la fecha que quiero guardar.
+			stmt.setDate(1, cambioFecha(f.getFecFeriado())); // Seteo la fecha que quiero guardar.
 			stmt.execute(); //Ejecuto la consulta sql
 			rs = stmt.getGeneratedKeys(); //Obtengo el ultimo ID
 			
@@ -83,7 +83,7 @@ public class DataFeriado {
 		try{
 			stmt = conn.prepareStatement(sql);//Creo el statement
 			
-			stmt.setDate(1, f.getFecFeriado()); // Seteo la fecha que quiero modificar.
+			stmt.setDate(1, cambioFecha(f.getFecFeriado())); // Seteo la fecha que quiero modificar.
 			stmt.setInt(2, f.getIdFeriado()); // Seteo el ID de la fecha a modificar
 			
 			stmt.execute(); //Ejecuto la consulta sql
@@ -107,7 +107,7 @@ public class DataFeriado {
 		try{
 			stmt = conn.prepareStatement(sql);//Creo el statement 
 			
-			stmt.setDate(1, f.getFecFeriado()); // Seteo la fecha que quiero consultar.
+			stmt.setDate(1, cambioFecha(f.getFecFeriado())); // Seteo la fecha que quiero consultar.
 			
 			rs = stmt.executeQuery(); //Ejecuto la consulta sql
 			
@@ -161,5 +161,17 @@ public class DataFeriado {
 	}
 	
 	//Ultimo ID
+	
+	
+	//Cambio Fecha de util.Date a sql.Date
+	
+	public static java.sql.Date cambioFecha(java.util.Date fecha) {
+        java.sql.Date sqlDate = null;
+        if (fecha != null) {
+            sqlDate = new Date(fecha.getTime());
+        }
+        return sqlDate;
+    }
+
 	
 }
