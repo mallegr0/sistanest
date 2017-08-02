@@ -2,7 +2,6 @@ package data;
 
 import java.sql.*;
 import java.util.ArrayList;
-
 import utilidades.ApplicationException;
 import entidades.Usuario;
 
@@ -220,5 +219,4 @@ public class DataUsuario {
 		}
 		finally{cerrarConn(stmt, null);}
 	}
-	
 }

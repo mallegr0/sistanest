@@ -37,39 +37,42 @@ public class CtrlAnestesia {
 	//Variables Feriados
 	private Feriado feriado = new Feriado();
 	private DataFeriado df = new DataFeriado();
-	private ArrayList<Feriado> listadoF = new ArrayList<>();
+
 	
 	
 	
 	//METODOS
 	
-	public boolean altaAnestesia(Anestesia a, ArrayList<Procedimiento> procedimientos) {
+	public boolean altaAnestesia(Anestesia a, ArrayList<Procedimiento> procedimientos) throws ApplicationException{
 		int k = 0;
 		a.setIdAnestesia(da.ultimoID() +1); //Devuelvo el ultimo ID y le sumo 1 para asignar a la variable.
 		int j = a.getIdAnestesia();
-		if(da.altaAnestesia(a) == true){
-			for(Procedimiento i: procedimientos){ //Para cada Procedimiento que cargo
+		if(da.altaAnestesia(a) == true)
+		{
+			for(Procedimiento i: procedimientos)
+			{	 //Para cada Procedimiento que cargo
 				ap.setIdAnestesia(j);
 				ap.setIdProcedimiento(i.getIdProcedimiento());
-				if(dap.altaAnestesiaProcedimiento(ap) == true) {
+				if(dap.altaAnestesiaProcedimiento(ap) == true) 
+				{
 					oks.add(k, true);;
 					k++;
 				}
 			}
 			if(procedimientos.size() == oks.size()) rta = true; //Valido que no haya habido problemas en la carga
 		}
-		return rta;
+			return rta;
 	}
 	
-	public boolean bajaAnestesia(Anestesia a) {
+	public boolean bajaAnestesia(Anestesia a) throws ApplicationException {
 		ap.setIdAnestesia(a.getIdAnestesia());
 		if(dap.bajaAnestesiaProcedimiento(ap) == true){//Doy de baja la anestesia en la tabla de Anestesias/Procedimientos
 			if(da.bajaAnestesia(a) == true) rta = true;
-		}	
+		}
 		return rta;
 	}
 	
-	public boolean modificaAnestesia(Anestesia a, ArrayList<Integer> ids) {
+	public boolean modificaAnestesia(Anestesia a, ArrayList<Integer> ids) throws ApplicationException {
 		int j = a.getIdAnestesia();
 		for(int i = 0; i <= ids.size()-1; i++){
 			System.out.println(i);
@@ -81,37 +84,37 @@ public class CtrlAnestesia {
 		return rta;
 	}
 	
-	public Anestesia consultaAnestesia(Anestesia a){
+	public Anestesia consultaAnestesia(Anestesia a) throws ApplicationException{
 		anestesia = da.consultaAnestesia(a);
 		return anestesia;
 	}
 	
-	public ArrayList<Anestesia> listarAnestesia(){
+	public ArrayList<Anestesia> listarAnestesia() throws ApplicationException{
 		listado = da.listarAnestesias();
 		return listado;
 	}
 
-	public ArrayList<Anestesia> listarPorFecha(Date fecIni, Date fecFin){
+	public ArrayList<Anestesia> listarPorFecha(Date fecIni, Date fecFin) throws ApplicationException{
 		listado = da.listarPorFecha(fecIni, fecFin);
 		return listado;
 	}
 	
-	public ArrayList<Anestesia> listarPorAnestesista(int id, Date fecIni, Date fecFin){
+	public ArrayList<Anestesia> listarPorAnestesista(int id, Date fecIni, Date fecFin) throws ApplicationException{
 		listado = da.listarPorAnestesista(id, fecIni, fecFin);
 		return listado;
 	}
 	
-	public ArrayList<Anestesia> listarPorOS(int id, Date fecIni, Date fecFin){
+	public ArrayList<Anestesia> listarPorOS(int id, Date fecIni, Date fecFin) throws ApplicationException{
 		listado = da.listarPorOS(id, fecIni, fecFin);
 		return listado;
 	}
 
-	public ArrayList<Anestesia> buscaPaciente(String paciente){
+	public ArrayList<Anestesia> buscaPaciente(String paciente) throws ApplicationException{
 		listado = da.listarPaciente(paciente);
 		return listado;
 	}
 	
-	public ArrayList<Procedimiento> listarProcedimientos(Anestesia a){
+	public ArrayList<Procedimiento> listarProcedimientos(Anestesia a) throws ApplicationException{
 		listadoAP = dap.listarProcedimientosAnestesias();
 		for (AnestesiaProcedimiento e: listadoAP){
 			if(a.getIdAnestesia() == e.getIdAnestesia()){
@@ -134,11 +137,11 @@ public class CtrlAnestesia {
 		feriado.setFecFeriado(m);
 		//Realizo la consulta con la fecha que quiero
 		k = df.consultaFeriado(feriado);
-		
-		if(k != null){
+		//Pregunto si la fecha tiene algun valor, es decir si devuelve algo la consulta
+		if(k.getFecFeriado() != null){
 				return true;
 		}
-		return false;
+		return false; 
 	}
 	
 	//Valida si la hora corresponde a nocturno
@@ -165,7 +168,7 @@ public class CtrlAnestesia {
 		int dia = j.get(Calendar.DAY_OF_WEEK);
 		int hora = j.get(Calendar.HOUR_OF_DAY);
 		//Pregunto si el dia que paso como parametro es sabado o domingo
-		if(Calendar.SATURDAY == dia || 13 <= hora || Calendar.MONDAY == dia || hora <= 7 || Calendar.SUNDAY == dia ){
+		if(Calendar.SATURDAY == dia && 13 <= hora || Calendar.MONDAY == dia && hora <= 7 || Calendar.SUNDAY == dia ){
 			return true;
 		}
 		else{ return false;}

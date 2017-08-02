@@ -57,5 +57,12 @@ public class CtrlUsuario {
 		return listado;
 	}
 	
-	
+	public boolean validaUsuario(String usr, String psw){
+		usuario.setUser(usr);
+		usuario = du.consultaUsuario(usuario);
+		if(usuario != null){
+			if(usuario.getUser().equals(usr) && usuario.getPassword().equals(psw))	return true;
+		}
+		return false;	
+		}
 }
