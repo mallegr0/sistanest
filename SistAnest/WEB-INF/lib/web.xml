@@ -15,10 +15,22 @@
 	  <description></description>
 	  <display-name>Login</display-name>
 	  <servlet-name>LoginUsr</servlet-name>
-	 <!--<servlet-class>com.sistanes.src.servlet.LoginUsr</servlet-class>-->
 	 <servlet-class>com.sistanest.src.servlet.LoginUsr</servlet-class>
   </servlet>
   <servlet-mapping>
-  <servlet-name>LoginUsr</servlet-name>
-  <url-pattern>LoginUsr</url-pattern> </servlet-mapping>
+	  <servlet-name>LoginUsr</servlet-name>
+	  <url-pattern>LoginUsr</url-pattern> 
+  </servlet-mapping>
+  <servlet>
+	<description></description>
+	<display-name>Alta_Usuario</display-name>
+	<servlet-name>AltaUsr</servlet-name>
+	<servlet-class>com.sistanest.src.servlet.AltaUsr</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>AltaUsr</servlet-name>
+	<url-pattern>AltaUsr</url-pattern>
+</servlet-mapping>
+
 </web-app>
+

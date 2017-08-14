@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,6 +30,8 @@ public class LoginUsr extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Es el metodo que usaria si el formulario es get y no post
+		doPost(request, response);
+		
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,7 +42,7 @@ public class LoginUsr extends HttpServlet {
 		String usuario = request.getParameter("usuario").trim();
 		String password = request.getParameter("password").trim();
 		
-		//Instancio el controlador
+		//Instancio el controlador y la variable
 		user = new CtrlUsuario();
 		u = new Usuario();
 		try{
@@ -64,7 +68,8 @@ public class LoginUsr extends HttpServlet {
 				}
 			}
 			else{
-				response.sendRedirect("");
+				response.setStatus(1);
+				request.getRequestDispatcher("index.html").forward(request, response);
 			}
 		}
 		catch(ServletException | IOException e){

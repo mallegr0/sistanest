@@ -100,6 +100,7 @@ public class DataUsuarioSanatorio {
 				us.setUsuario(rs.getString(1));
 				us.setSanatorio(rs.getInt(2));
 			}
+			return us;
 			
 		}
 		catch(SQLException e){ 
