@@ -55,21 +55,23 @@ public class LoginUsr extends HttpServlet {
 				switch (u.getIdRol()) {
 				case 1:
 					//administrador
-					request.getRequestDispatcher("menuUsr.jsp").forward(request, response);
+					request.getRequestDispatcher("menuAdministrador.jsp").forward(request, response);
 					break;
 				case 2:
 					//gestor
-					request.getRequestDispatcher("menuUsr.jsp").forward(request, response);
+					request.getRequestDispatcher("menuGestor.jsp").forward(request, response);
 					break;
-				default:
+				case 3:
 					//Anestesista
-					request.getRequestDispatcher("menuUsr.jsp").forward(request, response);
+					request.getRequestDispatcher("menuAnestesista.jsp").forward(request, response);
+				default:
+					//Sin Rol
+					//request.getRequestDispatcher("menuUsr.jsp").forward(request, response);
 					break;
 				}
 			}
 			else{
-				response.setStatus(1);
-				request.getRequestDispatcher("index.html").forward(request, response);
+				response.sendRedirect("index.html");
 			}
 		}
 		catch(ServletException | IOException e){

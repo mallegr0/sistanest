@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Menu de los usuarios sin rol</h1>
+  <h1>Menu Administrador</h1>
 </body>
 </html>
