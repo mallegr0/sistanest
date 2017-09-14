@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Para que se pueda hacer zoom en moviles -->
 	<title>SISTANEST - Alta de Usuario</title>
 	<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" 
 		  integrity="sha384-pVJelSCJ58Og1XDc2E95RVYHZDPb9AVyXsI8NoVpB2xmtxoZKJePbMfE4mlXw7BJ" 
 		  crossorigin="anonymous">
-	<script type="text/javascript" src="/JS/sistanest.js"></script>
+	<script type="text/javascript" src="/JS/sistanest.js">
+		function valida(valor){
+			document.getElementById("matricula").disabled = valor;
+			document.getElementById("grupo").disabled = valor;
+		}
+	</script>
 	</head>
 	<body>
 		<header>
@@ -18,7 +23,7 @@
 		<br>
 		<p class="text-danger">FALTA QUE ME VALIDEN LOS PASSWORD A LA HORA DEL ALTA Y SI ES POSIBLE EL USUARIO</p><BR>
 		<p class="text-danger">FALTA QUE LOS INPUT CAMBIEN DE COLOR LOS INPUTS QUE GENERAN ERROR Y SI VALIDO EL USUARIO DE VERDE</p><br>
-		<p class="text-danger">FALTA VER SI EN EL POST ME PASA TODOS LOS DATOS SELECCIONADOS</p>
+		<p class="text-danger">Falta que cuando haga el alta redireccione al index</p><br>
 		<div class="container">
 			<form class="form-horizontal"  id="AltaUsr" action="AltaUsr" method="POST"  onsubmit="return validaPassword();">
 				<fieldset>
@@ -59,42 +64,51 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-lg-2 control-label">Ud es Anestesista: </label>
-						<div class="checkbox col-sm-6 col-md-4">
-							&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="checkbox"><p class="text-muted"><bold>Si ud es anestesista se tilda</bold></p>
+						<div class="col-sm-6 col-md-4 col-md-offset-2">
+							<hr>
+							<p class="text-muted"><bold>Si ud es anestesista ingrese los siguientes datos:</bold></p>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-lg-2 control-label">Matricula:</label>
-						<div class="col-sm-6 col-md-4  sr-only">
-							<input type="number" id="matricula" name="matricula" class="form-control" placeholder="Matricula" required="required"> 
+						<div class="col-sm-6 col-md-4">
+							<input type="text" id="matricula" name="matricula" class="form-control" placeholder="Matricula"> 
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-lg-2 control-label">Nro Grupo: </label>
+						<div class="col-sm-6 col-md-4">
+							<input type="text" id="grupo" name="grupo" class="form-control" placeholder="Nro de Grupo">
+							<hr>
 						</div>
 					</div>
 					<div class="form-group">
 						<label for="select" class="col-lg-2 control-label">Donde trabaja: </label>
 						<div class="col-sm-6 col-md-4">
-							<select class="form-control" multiple="multiple" id="select">
-								<option>Maternidad Oroño</option>
-								<option>Los Alerces</option>
-								<option>Fertya</option>
+							<select class="form-control" multiple="multiple" id="select" name="opciones">
+								<option value="Maternidad Oroño">Maternidad Oroño</option>
+								<option value="Los Alerces">Los Alerces</option>
+								<option value="Fertya">Fertya</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group" align="right">
 						<div class="col-sm-6 col-md-4 col-md-offset-2">
 					    	<input type="submit" class="btn btn-info" value="Guardar"/>
-							<a href="index.html" type="button" class="btn btn-default">Volver</a>
+							<a href="index.jsp" type="button" class="btn btn-default">Volver</a>
 						</div>
 					</div>
 				</fieldset>
 			</form>
 		</div>
 		<br><br>
-		<footer>
-			<div class="navbar-fixed-bottom" align="center"  style="position:absolute; bottom: -50%">
-				<a href="datosPersonales.html" style="color:#772953">Matias Allegranza</a>
-			</div>
+
+		<footer div class="navbar-fixed-bottom" style="position:absolute; bottom: -75%; background-color: #772953">
+			<p class="lead" align="center">
+				<a href="datosPersonales.html"  style="color: #fff">Matias Allegranza</a>
+			</p>
 		</footer>
+
 		
 		
 		<!-- Script que agrega el jquery para usarlo en la página -->

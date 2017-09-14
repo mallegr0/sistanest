@@ -135,8 +135,7 @@ public class DataSanatoriosAnestesistas {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		AnestesistaSanatorio a = null;
-		String sqlC = "SELECT * FROM sanatorios_anestesistas "
-				+ "WHERE idSanatorio = ? OR idAnestesista = ?";
+		String sqlC = "SELECT * FROM sanatorios_anestesistas WHERE idSanatorio = ? AND idAnestesista = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlC);

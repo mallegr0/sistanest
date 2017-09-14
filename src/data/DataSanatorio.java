@@ -134,4 +134,29 @@ public class DataSanatorio {
 		finally{cerrarConn(stmt, rs);}
 		return listado;
 	}
+	
+	public Sanatorio buscaSanatorio(String nombre){
+		Sanatorio sana = null; 
+		PreparedStatement stmt = null;
+		ResultSet rs = null; 
+		String sql = "SELECT * FROM sanatorios WHERE razonSocial LIKE CONCAT('%', ?, '%')";
+		
+		try{
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, nombre);
+			rs = stmt.executeQuery();
+			
+			if(rs != null && rs.next()){
+				sana = new Sanatorio();
+				sana.setIdSanatorio(rs.getInt(1));
+				sana.setRazonSocial(rs.getString(2));
+
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally{ cerrarConn(stmt, rs);}
+		return sana;
+	}
 }

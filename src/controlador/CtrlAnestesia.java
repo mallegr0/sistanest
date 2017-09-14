@@ -126,6 +126,11 @@ public class CtrlAnestesia {
 		return listadoP;
 	}
 	
+	/*
+	 * PARA LOS METODOS QUE VALIDAN EL FERIADO, NOCTURNO Y FIN DE SEMANA, LA LOGICA ES LA SIGUIENTE:
+	 * 0 - FALSO
+	 * 1 - VERDADERO
+	 */
 	
 	//Valida si la fecha corresponde a un feriado
 	public boolean validaFeriado(Timestamp fecha){
@@ -172,8 +177,6 @@ public class CtrlAnestesia {
 			return true;
 		}
 		else{ return false;}
-		
-
 	}
 		
 	

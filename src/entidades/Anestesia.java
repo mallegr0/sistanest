@@ -8,9 +8,9 @@ public class Anestesia implements Serializable{
 	//Variables
 	private static final long serialVersionUID = 2L;
 	private int idAnestesia, nroAfiliado, nocturno, feriado, fds, nroTalon, nroVias;
-	private int edad, idMedico, idAnestesista, idSanatorio, codProcedimiento, idOS, idTpoAnestesia;
+	private int idMedico, idAnestesista, idSanatorio, codProcedimiento, idOS, idTpoAnestesia;
 	private Date fecPrestacion, fecAra, FecRendicion, fecCarga;
-	private String afiliado, user;
+	private String afiliado, user, edad;
 	
 	
 	//Constructores
@@ -18,7 +18,7 @@ public class Anestesia implements Serializable{
 	
 	public Anestesia(int idAnestesia, Date fecPrestacion, Date fecARA, Date fecRendicion,
 			Date fecCarga, String afiliado, int nroAfiliado, int nocturno, int feriado,
-			int fds, int nroTalon, int nroVias, int edad, String user, int idMedico,
+			int fds, int nroTalon, int nroVias, String edad, String user, int idMedico,
 			int idAnestesista, int idSanatorio, int codProcedimiento, int idOS,
 			int idTpoAnestesia){
 		this.idAnestesia = idAnestesia;
@@ -99,11 +99,11 @@ public class Anestesia implements Serializable{
 		this.nroVias = nroVias;
 	}
 
-	public int getEdad() {
+	public String getEdad() {
 		return edad;
 	}
 
-	public void setEdad(int edad) {
+	public void setEdad(String edad) {
 		this.edad = edad;
 	}
 

@@ -1,9 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="entidades.Usuario" %>
-<%@ page import="controlador.CtrlAnestesia" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="entidades.Anestesia" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -12,15 +10,12 @@
 		<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" 
 			  integrity="sha384-pVJelSCJ58Og1XDc2E95RVYHZDPb9AVyXsI8NoVpB2xmtxoZKJePbMfE4mlXw7BJ"
 		 	  crossorigin="anonymous">
+		<link href="CSS/sistanest.css" rel="stylesheet"> 
 		<title>SistAnest - Menu Usuario</title>
 	</head>
 	<body>
-		<%
-			Usuario u = ((Usuario)session.getAttribute("u"));
-			CtrlAnestesia ca = new CtrlAnestesia();
-			ArrayList<Anestesia> listado = new ArrayList();
-			
-		%>
+		<c:set var="usuario" value="${user}" scope="session"></c:set>
+		<c:set var="i" value="1"></c:set>
 		<header>
 			<nav class="navbar navbar-inverse">
 				<div class="container-fluid">
@@ -48,11 +43,11 @@
 					            	<li><a href="#">Pagos</a></li>
 					        	</ul>
 					    	</li>
-					    	<li><a href="#" type="button">Cambiar Contraseña</a></li>
 						</ul>
 				      	<ul class="nav navbar-nav navbar-right">
-				      		<li><a href="#" class="glyphicon glyphicon-user btn-medium">&nbsp<strong><%=u.getUser()%></strong></a></li>
-				        	<li><a href="../sistanest/index.html" type="button" class="glyphicon glyphicon-log-out btn-medium btn btn-success btn-lg"></a></li>
+				      		<li><a href="#" class="glyphicon glyphicon-user fa-5x btn-medium"></a></li>
+				      		<li><p>&nbsp&nbsp&nbsp</p></li>
+				        	<li><a href="../sistanest/index.jsp" type="button" class="glyphicon glyphicon-log-out btn-medium btn btn-success"></a></li>
 				    	</ul>
 					</div>
 				</div>
@@ -63,8 +58,11 @@
 			<h3>LISTA DE PENDIENTES EN ESTE APARTADO..</h3>
 			<ul>
 				<li><p class="text-danger">Se tiene que hacer un servlet que elimine todos los datos y que no permita volver para atras</p></li>
-				<li><p class="text-danger">Se tiene que hacer un servlet para cambiar contraseña</p></li>
-				<li><p class="text-danger">Se tiene que hacer una pagina que modifique los datos personales</p></li>
+				<li><p class="text-danger">Se tiene que hacer una pagina que modifique los datos personales y el password</p></li>
+				<li><p class="text-danger">Agrandar el boton de usuario</p></li>
+				<li><p class="text-danger">Si es posible agregarle el nombre de usuario, sino se ve en el servlet que le paso para el jsp del los datos personales</p></li>
+				<li><p class="text-danger">Hacer JS de las selecciones.</p></li>
+				<li><p class="text-danger">Ordenar por los campos de la tabla</p></li>
 			</ul>
 			<br>
 			<div class="table-responsive">
@@ -86,14 +84,35 @@
 						<th>Nombre Medico</th>
 						<th>Sanatorio</th>
 						<th>Tpo de Anestesia</th>
+						<th>Usuario</th>
 					</tr>
+					<c:forEach items="${anestesias}" var="anestesia">
+						<tr>
+							<td>${i}</td>
+							<td><fmt:formatDate type="date" value = "${anestesia.fecPrestacion}" /></td>
+							<td><c:out value="${anestesia.fecARA}" default="---"></c:out></td>
+							<td><c:out value="${anestesia.fecRendicion}" default="---"></c:out></td>
+							<td><c:out value="${anestesia.afiliado}"></c:out></td>
+							<td><c:out value="${anestesia.nroAfiliado}"></c:out></td>
+							<td><c:out value="${anestesia.osocial}"></c:out></td>
+							<td><c:if test="${anestesia.nocturno==true}"><c:out value="SI" default="NO"></c:out></c:if></td>
+							<td><c:if test="${anestesia.feriado==true}"><c:out value="SI" default="NO"></c:out></c:if></td>
+							<td><c:if test="${anestesia.fds==true}"><c:out value="SI" default="NO"></c:out></c:if></td>
+							<td><c:out value="${anestesia.nroVias}"></c:out></td>
+							<td><c:out value="${anestesia.edad}"></c:out></td>
+							<td><c:out value="${anestesia.nroTalon}" default="---"></c:out></td>
+							<td><c:out value="${anestesia.medico}"></c:out></td>
+							<td><c:out value="${anestesia.sanatorio}"></c:out></td>
+							<td><c:out value="${anestesia.tpoAnestesia}"></c:out></td>
+							<td><c:out value="${anestesia.usuario}"></c:out></td>
+						</tr>
+						<c:set var="i" value="${i+1}"></c:set>
+					</c:forEach>
 				</table>
 			</div>
 		</div>
 		
-		<!-- <footer class="navbar navbar-fixed-bottom">
-			<p align="center" class="lead"><a href="datosPersonales.html" style="color:#772953">Matias Allegranza</a></p>
-		</footer>-->
+		<!-- INCLUDE que agrega la pagina con el pie de pagina estandarizado  -->
 		<jsp:include page="footer.html"></jsp:include>
 
 		<!-- Script que agrega el jquery para usarlo en la página -->

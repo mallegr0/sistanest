@@ -37,4 +37,8 @@ public class CtrlSanatorio {
 	public  ArrayList<Sanatorio>listarSanatorio(){
 		return ds.listarSanatorios();
 	}
+	
+	public Sanatorio buscaSanatorio(String nombre){
+		return ds.buscaSanatorio(nombre);
+	}
 }

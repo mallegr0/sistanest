@@ -46,7 +46,7 @@ public class DataAnestesia {
 			stmt.setInt(10, a.getFds());
 			stmt.setInt(11, a.getNroTalon());
 			stmt.setInt(12, a.getNroVias());
-			stmt.setInt(13, a.getEdad());
+			stmt.setString(13, a.getEdad());
 			stmt.setString(14, a.getUser());
 			stmt.setInt(15, a.getIdMedico());
 			stmt.setInt(16, a.getIdAnestesista());
@@ -108,7 +108,7 @@ public class DataAnestesia {
 			stmt.setInt(9, a.getFds());
 			stmt.setInt(10, a.getNroTalon());
 			stmt.setInt(11, a.getNroVias());
-			stmt.setInt(12, a.getEdad());
+			stmt.setString(12, a.getEdad());
 			stmt.setString(13, a.getUser());
 			stmt.setInt(14, a.getIdMedico());
 			stmt.setInt(15, a.getIdAnestesista());
@@ -153,7 +153,7 @@ public class DataAnestesia {
 				anes.setFds(rs.getInt(10));
 				anes.setNroTalon(rs.getInt(11));
 				anes.setNroVias(rs.getInt(12));
-				anes.setEdad(rs.getInt(13));
+				anes.setEdad(rs.getString(13));
 				anes.setUser(rs.getString(14));
 				anes.setIdMedico(rs.getInt(15));
 				anes.setIdAnestesista(rs.getInt(16));
@@ -194,7 +194,7 @@ public class DataAnestesia {
 					anes.setFds(rs.getInt(10));
 					anes.setNroTalon(rs.getInt(11));
 					anes.setNroVias(rs.getInt(12));
-					anes.setEdad(rs.getInt(13));
+					anes.setEdad(rs.getString(13));
 					anes.setUser(rs.getString(14));
 					anes.setIdMedico(rs.getInt(15));
 					anes.setIdAnestesista(rs.getInt(16));
@@ -243,7 +243,7 @@ public class DataAnestesia {
 					anes.setFds(rs.getInt(10));
 					anes.setNroTalon(rs.getInt(11));
 					anes.setNroVias(rs.getInt(12));
-					anes.setEdad(rs.getInt(13));
+					anes.setEdad(rs.getString(13));
 					anes.setUser(rs.getString(14));
 					anes.setIdMedico(rs.getInt(15));
 					anes.setIdAnestesista(rs.getInt(16));
@@ -306,7 +306,7 @@ public class DataAnestesia {
 					anes.setFds(rs.getInt(10));
 					anes.setNroTalon(rs.getInt(11));
 					anes.setNroVias(rs.getInt(12));
-					anes.setEdad(rs.getInt(13));
+					anes.setEdad(rs.getString(13));
 					anes.setUser(rs.getString(14));
 					anes.setIdMedico(rs.getInt(15));
 					anes.setIdAnestesista(rs.getInt(16));
@@ -370,7 +370,7 @@ public class DataAnestesia {
 					anes.setFds(rs.getInt(10));
 					anes.setNroTalon(rs.getInt(11));
 					anes.setNroVias(rs.getInt(12));
-					anes.setEdad(rs.getInt(13));
+					anes.setEdad(rs.getString(13));
 					anes.setUser(rs.getString(14));
 					anes.setIdMedico(rs.getInt(15));
 					anes.setIdAnestesista(rs.getInt(16));
@@ -417,7 +417,7 @@ public class DataAnestesia {
 					anes.setFds(rs.getInt(10));
 					anes.setNroTalon(rs.getInt(11));
 					anes.setNroVias(rs.getInt(12));
-					anes.setEdad(rs.getInt(13));
+					anes.setEdad(rs.getString(13));
 					anes.setUser(rs.getString(14));
 					anes.setIdMedico(rs.getInt(15));
 					anes.setIdAnestesista(rs.getInt(16));

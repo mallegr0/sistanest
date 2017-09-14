@@ -26,7 +26,7 @@ public class DataAnestesista {
 		ResultSet rs = null;
 		String sqlI = "INSERT INTO anestesistas "
 				+ "SET idAnestesista = ?, nombreAnestesista = ?, apellidoAnestesista = ?, matricula =? "
-				+ ", grupo = ?";
+				+ ", grupo = ?, usuario = ?";
 		
 		try{
 			stmt = conn.prepareStatement(sqlI, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -36,6 +36,7 @@ public class DataAnestesista {
 			stmt.setString(3, a.getApellidoAnestesista());
 			stmt.setInt(4, a.getMatricula());
 			stmt.setInt(5, a.getGrupo());
+			stmt.setString(6, a.getUser());
 			
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
@@ -133,6 +134,7 @@ public class DataAnestesista {
 				anes.setApellidoAnestesista(rs.getString(3));
 				anes.setMatricula(rs.getInt(4));
 				anes.setGrupo(rs.getInt(5));
+				anes.setUser(rs.getString(6));
 			}
 		}
 		catch(SQLException e){e.printStackTrace();}
@@ -163,6 +165,7 @@ public class DataAnestesista {
 					anes.setApellidoAnestesista(rs.getString(3));
 					anes.setMatricula(rs.getInt(4));
 					anes.setGrupo(rs.getInt(5));
+					anes.setUser(rs.getString(6));
 					listado.add(anes);
 				}
 			}
@@ -193,5 +196,31 @@ public class DataAnestesista {
 			return nro;
 		}
 		finally{ cerrarConn(stmt, rs);}
+	}
+	
+	public Anestesista buscarAnestesista(String user){
+		Anestesista a = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "SELECT * FROM anestesistas WHERE usuario = ?";
+		
+		try{
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, user);
+			
+			rs = stmt.executeQuery();
+			if(rs != null && rs.next()){
+				a = new Anestesista();
+				a.setIdAnestesista(rs.getInt(1));
+				a.setNombreAnestesista(rs.getString(2));
+				a.setApellidoAnestesista(rs.getString(3));
+				a.setMatricula(rs.getInt(4));
+				a.setGrupo(rs.getInt(5));
+				a.setUser(rs.getString(6));
+			}
+		}
+		catch(SQLException e){ e.printStackTrace();}
+		finally{cerrarConn(stmt, rs);}
+		return a;
 	}
 }
