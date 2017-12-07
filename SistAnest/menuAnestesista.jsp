@@ -7,10 +7,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" 
-			  integrity="sha384-pVJelSCJ58Og1XDc2E95RVYHZDPb9AVyXsI8NoVpB2xmtxoZKJePbMfE4mlXw7BJ"
-		 	  crossorigin="anonymous">
-		<link href="CSS/sistanest.css" rel="stylesheet"> 
+		<jsp:include page="EXTRAS/estilos.jsp"></jsp:include>
 		<title>SistAnest - Menu Usuario</title>
 	</head>
 	<body>
@@ -115,15 +112,6 @@
 		<!-- INCLUDE que agrega la pagina con el pie de pagina estandarizado  -->
 		<jsp:include page="footer.html"></jsp:include>
 
-		<!-- Script que agrega el jquery para usarlo en la página -->
-		<script src="http://code.jquery.com/jquery-3.2.1.min.js"
-				integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-				crossorigin="anonymous"></script>
-		<!-- Script que agrega el JScript de bootstrap para usarlo en la página -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
-				integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
-				crossorigin="anonymous"></script>
-		<!-- Script mio -->
-		<script src="JS/sistanest.js"></script>
+		<jsp:include page="EXTRAS/scripts.jsp"></jsp:include>
 	</body>
 </html>

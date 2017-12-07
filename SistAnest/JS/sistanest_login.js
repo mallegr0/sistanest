@@ -3,8 +3,6 @@
  */
 
 
-function inicio(){
-	$('document').getElementsByName("usuario").focus();
-}
-		
-$('document').ready(inicio);
+$(document).ready(function(){
+	$('document').getElementById("usuario").focus();
+});

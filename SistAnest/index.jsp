@@ -7,23 +7,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>SISTANEST - Gestión de Anestesias</title>
-<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" integrity="sha384-pVJelSCJ58Og1XDc2E95RVYHZDPb9AVyXsI8NoVpB2xmtxoZKJePbMfE4mlXw7BJ" crossorigin="anonymous">
-<link href="CSS/sistanest.css" rel="stylesheet">
-<!-- Script que agrega el jquery para usarlo en la página -->
-<script src="http://code.jquery.com/jquery-3.2.1.min.js"
-		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-		crossorigin="anonymous"></script>
-<!-- Script que agrega el JScript de bootstrap para usarlo en la página -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
-		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
-		crossorigin="anonymous"></script>
-<script type="text/javascript" src="JS/sistanest_login.js"></script>
 
-
+<!-- AGREGO TODOS LOS ESTILOS QUE USE -->
+<jsp:include page="EXTRAS/estilos.jsp"></jsp:include>
 </head>
 
-
-<body onload="carga();">
+<!-- Mediante Angular ingreso los metodos de JS que voy a estar usando para darles funcionalidad al HTML del JSP -->
+<body ng-app="loginApp">
 	<header>
 		<nav class="navbar navbar-inverse">
 	  		<div class="container-fluid">
@@ -34,7 +24,7 @@
 	<br>
 	<p class="text-danger">FALTA LAS VALIDACIONES HECHAS EN JS Y CAMBIAR LOS COLORES DE LOS ELEMENTOS QUE NO SE INSERTARON</p><BR>
 	<p class="text-danger">MOSTRAR EL MENSAJE DE ERROR EN UN MODAL</p><BR>
-	<p class="text-danger">CREAR UN META JSP CON TODOS LOS LINK</p>
+	<p class="text-danger">CREAR UN META JSP CON TODOS LOS LINK - ver js</p>
 	
 	
 	
@@ -68,36 +58,30 @@
 		<!-- VENTANA MODAL QUE ME MUESTRA EL ERROR DEL LOGIN -->
 		
 		<c:if test="${not empty error }">
-			<div class="alert alert-dismissible alert-danger">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong>Oh snap!</strong> <a href="#" class="alert-link">Change a few things up</a> and try submitting again.
-</div>
+			<script>
+				$('#modal').modal('show');
+			</script>
 		</c:if>
 	</div>
-	<!-- Modal -->
-  	<div class="modal fade" id="myModal" role="dialog">
-    	<div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body">
-          <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+
+  	<div class="modal" id="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="alert alert-dismissible alert-danger">
+ 				<button type="button" class="close" data-dismiss="alert">&times;</button>
+  				<strong>"${error}"</strong>
+			</div>
       </div>
-      
     </div>
   </div>
+</div>
   
   
 	<!-- INCLUDE QUE AGREGA EL FOOTER -->	 
 	<jsp:include page="footer.html" ></jsp:include>
-
+	
+	<!-- AGREGO TODAS LAS LIBRERIAS DE SCRIPTS QUE VOY A USAR -->
+	<!--<jsp:include page="EXTRAS/scripts.jsp"></jsp:include>-->
 </body>
 </html>
