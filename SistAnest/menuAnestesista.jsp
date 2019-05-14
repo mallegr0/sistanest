@@ -60,6 +60,8 @@
 				<li><p class="text-danger">Si es posible agregarle el nombre de usuario, sino se ve en el servlet que le paso para el jsp del los datos personales</p></li>
 				<li><p class="text-danger">Hacer JS de las selecciones.</p></li>
 				<li><p class="text-danger">Ordenar por los campos de la tabla</p></li>
+				<li><p class="text-danger">Agregar el data-hover para el menu desplegable</p></li>
+				<li><p class="text-danger">Agregar codigo de SPA</p></li> 
 			</ul>
 			<br>
 			<div class="table-responsive">

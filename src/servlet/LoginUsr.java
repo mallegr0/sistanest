@@ -43,7 +43,7 @@ public class LoginUsr extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//NO lo implemento por cuestiones de seguridad, solo hago el llamado a doPost con los parametros
 		
-		doPost(request, response);
+		//doPost(request, response);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
